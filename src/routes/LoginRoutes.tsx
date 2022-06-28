@@ -1,6 +1,6 @@
 // THRID IMPORT
 import React from "react";
-import { Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 
 // PROJECT IMPORT
 import Login from "pages/Login";
@@ -8,7 +8,9 @@ import Login from "pages/Login";
 const LoginRoutes = () => {
   return (
     <>
-      <Route path="/login" element={<Login />} />
+      <Routes>
+        <Route path="/" element={<Login />} />
+      </Routes>
     </>
   );
 };
