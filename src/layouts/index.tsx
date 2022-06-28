@@ -1,4 +1,7 @@
+// THRID IMPORT
 import React from "react";
+
+// PROJECT IMPORT
 
 const index = ({ children }: any) => {
   return <>{children}</>;
