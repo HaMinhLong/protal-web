@@ -27,7 +27,6 @@ import {
 } from "@mui/material";
 
 // third-party
-import PerfectScrollbar from "react-perfect-scrollbar";
 
 // project imports
 import MainCard from "components/Cards/MainCard";
@@ -191,7 +190,7 @@ const ProfileSection = () => {
                     />
                     <Divider />
                   </Box>
-                  <PerfectScrollbar
+                  <div
                     style={{
                       height: "100%",
                       maxHeight: "calc(100vh - 250px)",
@@ -358,7 +357,7 @@ const ProfileSection = () => {
                         </ListItemButton>
                       </List>
                     </Box>
-                  </PerfectScrollbar>
+                  </div>
                 </MainCard>
               </ClickAwayListener>
             </Paper>

@@ -1,4 +1,4 @@
-// THRID IMPORT
+// THIRD IMPORT
 import React from "react";
 
 // PROJECT IMPORT
