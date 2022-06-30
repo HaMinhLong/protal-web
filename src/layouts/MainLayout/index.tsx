@@ -13,7 +13,7 @@ import { Outlet } from "react-router-dom";
 import { styled, useTheme, Theme } from "@mui/material/styles";
 
 // PROJECT IMPORTS
-import Breadcrumbs from "components/extended/Breadcrumbs";
+import Breadcrumbs from "components/Extended/Breadcrumbs";
 import Header from "layouts/Header";
 import navigation from "menu-items";
 import useConfig from "hooks/useConfig";

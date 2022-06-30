@@ -5,7 +5,7 @@ import { CssBaseline } from "@mui/material";
 // PROJECT IMPORT
 import Routes from "routes";
 import { JWTProvider as AuthProvider } from "contexts/JWTContext";
-import Snackbar from "components/extended/Snackbar";
+import Snackbar from "components/Extended/Snackbar";
 
 // TYPE IMPROT
 import ThemeCustomization from "themes";

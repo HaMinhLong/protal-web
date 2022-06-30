@@ -4,7 +4,7 @@ import { memo, useMemo } from "react";
 import { useTheme } from "@mui/material/styles";
 
 // PROJECT IMPORTS
-import Chip from "components/extended/Chip";
+import Chip from "components/Extended/Chip";
 import LogoSection from "../LogoSection";
 import MenuList from "./MenuList";
 import { drawerWidth } from "app/constant";

@@ -17,7 +17,7 @@ import {
 import TranslateTwoToneIcon from "@mui/icons-material/TranslateTwoTone";
 
 // PROJECT IMPORTS
-import Transitions from "components/extended/Transitions";
+import Transitions from "components/Extended/Transitions";
 import useConfig from "hooks/useConfig";
 
 const LocalizationSection = () => {
