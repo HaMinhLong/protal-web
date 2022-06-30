@@ -1,10 +1,18 @@
+// THRID IMPORT
 import React from "react";
 import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
+import { BrowserRouter } from "react-router-dom";
+
+// PROJECT IMPORT
+import App from "App";
 import { store } from "app/store";
-import App from "./App";
-import reportWebVitals from "./reportWebVitals";
-import * as serviceWorker from "./serviceWorker";
+import reportWebVitals from "reportWebVitals";
+import * as serviceWorker from "serviceWorker";
+import { ConfigProvider } from "contexts/ConfigContext";
+import { BASE_PATH } from "config";
+
+// STLYES IMPORT
 import "assets/scss/globalStyle.scss";
 import "assets/scss/style.scss";
 
@@ -14,7 +22,11 @@ const root = createRoot(container);
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <ConfigProvider>
+        <BrowserRouter basename={BASE_PATH}>
+          <App />
+        </BrowserRouter>
+      </ConfigProvider>
     </Provider>
   </React.StrictMode>
 );

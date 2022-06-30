@@ -1,18 +1,29 @@
-// THRID IMPORT
-import React from "react";
-import { Routes, Route } from "react-router-dom";
+// THIRD-PARTY
+import { lazy } from "react";
 
-// PROJECT IMPORT
-import Login from "pages/Login";
+// PROJECT IMPORTS
+import GuestGuard from "utils/route-guard/GuestGuard";
+import Loadable from "components/Loadable";
+import MinimalLayout from "layouts/MinimalLayout";
+import NavMotion from "layouts/NavMotion";
 
-const LoginRoutes = () => {
-  return (
-    <>
-      <Routes>
-        <Route path="/" element={<Login />} />
-      </Routes>
-    </>
-  );
+const AuthLogin = Loadable(lazy(() => import("pages/Login")));
+
+const LoginRoutes = {
+  path: "/",
+  element: (
+    <NavMotion>
+      <GuestGuard>
+        <MinimalLayout />
+      </GuestGuard>
+    </NavMotion>
+  ),
+  children: [
+    {
+      path: "/login",
+      element: <AuthLogin />,
+    },
+  ],
 };
 
 export default LoginRoutes;

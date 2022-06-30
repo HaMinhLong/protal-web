@@ -29,6 +29,17 @@ interface MainStyleProps {
 
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
   ({ theme, open }: MainStyleProps) => ({
+    backgroundColor:
+      theme.palette.mode === "dark"
+        ? theme.palette.primary.dark
+        : theme.palette.primary.light,
+    width: "100%",
+    minHeight: "calc(100vh - 88px)",
+    flexGrow: 1,
+    padding: "20px",
+    marginTop: "88px",
+    marginRight: "20px",
+    borderRadius: `10px`,
     ...(!open && {
       borderBottomLeftRadius: 0,
       borderBottomRightRadius: 0,
@@ -102,7 +113,7 @@ const MainLayout = () => {
         color="inherit"
         elevation={0}
         sx={{
-          bgcolor: theme.palette.background.default,
+          bgcolor: "theme.palette.background.default",
           transition: drawerOpen ? theme.transitions.create("width") : "none",
         }}
       >
