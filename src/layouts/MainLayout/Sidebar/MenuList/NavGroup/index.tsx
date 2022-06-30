@@ -23,7 +23,10 @@ export interface NavGroupProps {
 
 const NavGroup = ({ item }: NavGroupProps) => {
   const theme = useTheme();
-  const user = JSON.parse(localStorage.getItem("user") || "{}");
+  // const user = JSON.parse(localStorage.getItem("user") || "{}");
+  const user = {
+    type: 1,
+  };
   const items = item.children?.map((menu) => {
     switch (menu.type) {
       case "collapse":
@@ -51,10 +54,32 @@ const NavGroup = ({ item }: NavGroupProps) => {
       <List
         subheader={
           item.title && (
-            <Typography variant="caption" display="block" gutterBottom>
+            <Typography
+              variant="caption"
+              sx={{
+                fontSize: "0.875rem",
+                fontWeight: 500,
+                color: theme.palette.grey[600],
+                padding: "6px",
+                textTransform: "capitalize",
+                marginTop: "10px",
+              }}
+              display="block"
+              gutterBottom
+            >
               {item.title}
               {item.caption && (
-                <Typography variant="caption" display="block" gutterBottom>
+                <Typography
+                  variant="caption"
+                  sx={{
+                    fontSize: "0.6875rem",
+                    fontWeight: 500,
+                    color: theme.palette.text.secondary,
+                    textTransform: "capitalize",
+                  }}
+                  display="block"
+                  gutterBottom
+                >
                   {item.caption}
                 </Typography>
               )}
