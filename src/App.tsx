@@ -1,4 +1,4 @@
-// THRID IMPORT
+// THIRD IMPORT
 import React from "react";
 import { CssBaseline } from "@mui/material";
 
@@ -10,23 +10,21 @@ import Snackbar from "components/extended/Snackbar";
 // TYPE IMPROT
 import ThemeCustomization from "themes";
 import NavigationScroll from "layouts/NavigationScroll";
-import RTLLayout from "components/RTLLayout";
+// import RTLLayout from "components/RTLLayout";
 
 const App = () => {
   return (
     <>
       <ThemeCustomization>
-        <RTLLayout>
-          <CssBaseline />
-          <NavigationScroll>
-            <AuthProvider>
-              <>
-                <Routes />
-                <Snackbar />
-              </>
-            </AuthProvider>
-          </NavigationScroll>
-        </RTLLayout>
+        <CssBaseline />
+        <NavigationScroll>
+          <AuthProvider>
+            <>
+              <Routes />
+              <Snackbar />
+            </>
+          </AuthProvider>
+        </NavigationScroll>
       </ThemeCustomization>
     </>
   );

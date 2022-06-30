@@ -1,5 +1,4 @@
 // THIRD-PARTY
-import PerfectScrollbar from "react-perfect-scrollbar";
 import { Box, Drawer, Stack, useMediaQuery } from "@mui/material";
 import { memo, useMemo } from "react";
 import { useTheme } from "@mui/material/styles";
@@ -36,8 +35,7 @@ const Sidebar = ({ window }: SidebarProps) => {
 
   const drawer = useMemo(
     () => (
-      <PerfectScrollbar
-        component="div"
+      <div
         style={{
           height: !matchUpMd ? "calc(100vh - 56px)" : "calc(100vh - 88px)",
           paddingLeft: "16px",
@@ -54,7 +52,7 @@ const Sidebar = ({ window }: SidebarProps) => {
             sx={{ cursor: "pointer" }}
           />
         </Stack>
-      </PerfectScrollbar>
+      </div>
     ),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [matchUpMd]

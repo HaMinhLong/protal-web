@@ -9,6 +9,7 @@ import ProfileSection from "layouts/Header/ProfileSection";
 import { useDispatch, useSelector, RootState } from "app/store";
 import { openDrawer } from "features/menu/menuSlice";
 import LogoSection from "layouts/MainLayout/LogoSection";
+import NotificationSection from "layouts/Header/NotificationSection";
 
 const Header = () => {
   const theme = useTheme();
@@ -71,6 +72,7 @@ const Header = () => {
       <Box sx={{ flexGrow: 1 }} />
       <Box sx={{ flexGrow: 1 }} />
 
+      <NotificationSection />
       <ProfileSection />
     </>
   );
