@@ -25,7 +25,7 @@ import {
 
 // project imports
 import MainCard from "components/Cards/MainCard";
-import Transitions from "components/extended/Transitions";
+import Transitions from "components/Extended/Transitions";
 import NotificationList from "layouts/Header/NotificationSection/NotificationList";
 
 // assets

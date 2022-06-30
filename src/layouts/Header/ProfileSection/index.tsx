@@ -30,7 +30,7 @@ import {
 
 // project imports
 import MainCard from "components/Cards/MainCard";
-import Transitions from "components/extended/Transitions";
+import Transitions from "components/Extended/Transitions";
 import User1 from "assets/images/users/user-round.svg";
 
 // assets

@@ -13,6 +13,8 @@ import { useTheme } from "@mui/material/styles";
 import { BASE_PATH } from "config";
 import { gridSpacing } from "app/constant";
 import { NavItemType, NavItemTypeObject, OverrideIcon } from "types";
+import { activeItem } from "features/menu/menuSlice";
+import { useDispatch, useSelector } from "app/store";
 
 const linkSX = {
   display: "flex",
@@ -55,6 +57,7 @@ const Breadcrumbs = ({
   ...others
 }: BreadCrumbsProps) => {
   const theme = useTheme();
+  const dispatch = useDispatch();
 
   const iconStyle = {
     marginRight: theme.spacing(0.75),
@@ -92,6 +95,10 @@ const Breadcrumbs = ({
         return false;
       });
     }
+  };
+
+  const itemHandler = (id: string) => {
+    dispatch(activeItem([id]));
   };
 
   const SeparatorIcon = separator!;
@@ -144,7 +151,10 @@ const Breadcrumbs = ({
           sx={{
             marginBottom: card === false ? 0 : theme.spacing(gridSpacing),
             border: card === false ? "none" : "1px solid",
-            borderColor: theme.palette.background.default,
+            borderColor:
+              theme.palette.mode === "dark"
+                ? theme.palette.background.default
+                : theme.palette.primary.light,
             background:
               card === false ? "transparent" : theme.palette.background.default,
           }}
@@ -184,6 +194,7 @@ const Breadcrumbs = ({
                     color="inherit"
                     variant="subtitle1"
                     sx={linkSX}
+                    onClick={() => itemHandler("dashboard")}
                   >
                     {icons && <HomeTwoToneIcon sx={iconStyle} />}
                     {icon && <HomeIcon sx={{ ...iconStyle, mr: 0 }} />}
