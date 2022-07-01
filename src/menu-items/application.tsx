@@ -34,6 +34,15 @@ const application = {
       icon: icons.IconWorld,
       breadcrumbs: true,
     },
+    {
+      id: "Article",
+      title: "Article",
+      type: "item",
+      role: 1,
+      url: "/article",
+      icon: icons.IconWorld,
+      breadcrumbs: true,
+    },
   ],
 };
 
