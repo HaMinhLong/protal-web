@@ -27,7 +27,7 @@ const snackbarSlice = createSlice({
   name: "snackbar",
   initialState,
   reducers: {
-    openSnackbar(state, action) {
+    openSnackbar(state: any, action: any) {
       const {
         open,
         message,
@@ -55,7 +55,7 @@ const snackbarSlice = createSlice({
       state.actionButton = actionButton || initialState.actionButton;
     },
 
-    closeSnackbar(state) {
+    closeSnackbar(state: any) {
       state.open = false;
     },
   },
