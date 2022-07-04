@@ -9,7 +9,7 @@ const Index = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = async (e: any) => {
+  const handleLogin = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     console.log("submit");
     await login(username, password);
