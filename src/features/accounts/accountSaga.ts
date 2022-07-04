@@ -6,8 +6,6 @@ const accountFetch = "account/fetch";
 
 function* getList({ payload, callback }: any) {
   const { data } = yield call(getListAccount, payload);
-  console.log("data", data);
-
   if (data && data.success) {
     yield put(save(data.results || {}));
   }

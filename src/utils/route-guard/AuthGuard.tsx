@@ -11,9 +11,9 @@ const AuthGuard = ({ children }: GuardProps) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // if (!isLoggedIn) {
-    //   navigate('login', { replace: true });
-    // }
+    if (!isLoggedIn) {
+      navigate("login", { replace: true });
+    }
   }, [isLoggedIn, navigate]);
 
   return children;

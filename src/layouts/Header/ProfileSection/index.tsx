@@ -32,6 +32,7 @@ import {
 import MainCard from "components/Cards/MainCard";
 import Transitions from "components/Extended/Transitions";
 import User1 from "assets/images/users/user-round.svg";
+import useAuth from "hooks/useAuth";
 
 // assets
 import { IconLogout, IconSearch, IconSettings, IconUser } from "@tabler/icons";
@@ -41,18 +42,24 @@ import { IconLogout, IconSearch, IconSettings, IconUser } from "@tabler/icons";
 const ProfileSection = () => {
   const theme = useTheme();
   const navigate = useNavigate();
+  const { logout, user } = useAuth();
 
   const [sdm, setSdm] = useState(true);
   const [value, setValue] = useState("");
   const [notification, setNotification] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [open, setOpen] = useState(false);
+
   /**
    * anchorRef is used on different componets and specifying one type leads to other components throwing an error
    * */
   const anchorRef = useRef(null);
   const handleLogout = async () => {
-    console.log("Logout");
+    try {
+      await logout();
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const handleClose = (event: any) => {

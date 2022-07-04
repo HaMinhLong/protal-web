@@ -16,7 +16,6 @@ const Article = () => {
   };
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    console.log("handle submit", file);
 
     const addData = new FormData();
     addData.append("title", "title");

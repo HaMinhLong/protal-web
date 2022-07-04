@@ -10,11 +10,11 @@ import { useEffect, useState } from "react";
 import { useTheme } from "@mui/material/styles";
 
 // PROJECT IMPORTS
-import { BASE_PATH } from "config";
+import { BASE_PATH, DASHBOARD_PATH } from "config";
 import { gridSpacing } from "app/constant";
 import { NavItemType, NavItemTypeObject, OverrideIcon } from "types";
 import { activeItem } from "features/menu/menuSlice";
-import { useDispatch, useSelector } from "app/store";
+import { useDispatch } from "app/store";
 
 const linkSX = {
   display: "flex",
@@ -35,7 +35,7 @@ interface BreadCrumbsProps {
   icon?: boolean;
   icons?: boolean;
   maxItems?: number;
-  navigation?: NavItemTypeObject;
+  navigation: NavItemTypeObject;
   rightAlign?: boolean;
   separator?: OverrideIcon;
   title?: boolean;
@@ -67,7 +67,7 @@ const Breadcrumbs = ({
     color: theme.palette.secondary.main,
   };
 
-  const [main, setMain] = useState<NavItemType | undefined>();
+  const [main, setMain] = useState<any>();
   const [item, setItem] = useState<NavItemType>();
 
   useEffect(() => {
@@ -83,7 +83,7 @@ const Breadcrumbs = ({
 
   const getCollapse = (menu: NavItemTypeObject) => {
     if (menu.children) {
-      menu.children.filter((collapse: NavItemType) => {
+      menu.children.filter((collapse: any) => {
         if (collapse.type && collapse.type === "collapse") {
           getCollapse(collapse as { children: NavItemType[]; type?: string });
         } else if (collapse.type && collapse.type === "item") {
@@ -190,7 +190,7 @@ const Breadcrumbs = ({
                 >
                   <Typography
                     component={Link}
-                    to="/dashboard"
+                    to={DASHBOARD_PATH}
                     color="inherit"
                     variant="subtitle1"
                     sx={linkSX}

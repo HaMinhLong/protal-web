@@ -20,29 +20,31 @@ const MainRoutes = {
   children: [
     {
       path: "/dashboard",
-      role: 1,
+      role: [1, 2],
       element: <Dashboard />,
     },
     {
       path: "/account",
-      role: 1,
+      role: [1, 2],
       element: <Account />,
     },
     {
       path: "/article",
-      role: 1,
+      role: [1, 2],
       element: <Article />,
     },
   ],
 };
 
-// const user = JSON.parse(localStorage.getItem("user") || "{}");
+const user = JSON.parse(localStorage.getItem("user") || "{}");
 
-// MainRoutes.children = MainRoutes.children.filter((child) => {
-//   if (child.role) {
-//     return user.type === child.role;
-//   }
-//   return true;
-// });
+MainRoutes.children = MainRoutes.children.filter((child) => {
+  if (child.role.length > 0) {
+    return child.role.findIndex((item: number) => item === user.type) !== -1
+      ? 1
+      : 0;
+  }
+  return true;
+});
 
 export default MainRoutes;

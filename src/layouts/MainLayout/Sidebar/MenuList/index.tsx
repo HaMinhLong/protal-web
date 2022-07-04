@@ -7,10 +7,7 @@ import NavGroup from "./NavGroup";
 import menuItem from "menu-items";
 
 const MenuList = () => {
-  // const user = JSON.parse(localStorage.getItem("user") || "{}");
-  const user = {
-    type: 1,
-  };
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
 
   const navItems = menuItem.items.map((item) => {
     switch (item.type) {

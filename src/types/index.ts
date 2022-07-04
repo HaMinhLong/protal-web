@@ -29,7 +29,7 @@ export type NavItemType = {
   external?: string;
   url?: string | undefined;
   type?: string;
-  role?: number;
+  role: number[];
   title?: React.ReactNode | string;
   color?: "primary" | "secondary" | "default" | undefined;
   caption?: React.ReactNode | string;
