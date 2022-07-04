@@ -9,12 +9,14 @@ import { createArticle } from "api/article";
 
 const Article = () => {
   const dispatch = useDispatch();
-  const [file, setFile] = useState("");
-  const handleChangeFile = (e: any) => {
-    const file = e.target.files[0];
+  const [file, setFile] = useState<File | string>("");
+  const handleChangeFile = (e: React.ChangeEvent) => {
+    const target = e.target as HTMLInputElement;
+
+    const file: File = (target.files as FileList)[0];
     setFile(file);
   };
-  const handleSubmit = (e: any) => {
+  const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
 
     const addData = new FormData();
