@@ -13,9 +13,8 @@ const GuestGuard = ({ children }: GuardProps) => {
 
   useEffect(() => {
     if (isLoggedIn) {
-      navigate(user?.type === ADMIN_TYPE ? DASHBOARD_PATH : ARTICLE_PATH, {
-        replace: true,
-      });
+      window.location.href =
+        user?.type === ADMIN_TYPE ? DASHBOARD_PATH : ARTICLE_PATH;
     }
   }, [isLoggedIn, navigate]);
 
