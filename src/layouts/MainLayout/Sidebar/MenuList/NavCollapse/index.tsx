@@ -26,6 +26,7 @@ interface NavCollapseProps {
 const NavCollapse = ({ menu, level }: NavCollapseProps) => {
   const theme = useTheme();
   const { borderRadius } = useConfig();
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
 
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState<string | null | undefined>(null);
@@ -58,11 +59,30 @@ const NavCollapse = ({ menu, level }: NavCollapseProps) => {
   }, [pathname, menu.children, menu.id]);
   // menu collapse & item
   const menus = menu.children?.map((item) => {
+    console.log("menu.children", menu.children);
     switch (item.type) {
       case "collapse":
-        return <NavCollapse key={item.id} menu={item} level={level + 1} />;
+        if (
+          item.role.findIndex((roleItem: number) => roleItem === user.type) !==
+          -1
+            ? 1
+            : 0
+        ) {
+          return <NavCollapse key={item.id} menu={item} level={level + 1} />;
+        }
+        return null;
+
       case "item":
-        return <NavItem key={item.id} item={item} level={level + 1} />;
+        if (
+          item.role.findIndex((roleItem: number) => roleItem === user.type) !==
+          -1
+            ? 1
+            : 0
+        ) {
+          return <NavItem key={item.id} item={item} level={level + 1} />;
+        }
+        return null;
+
       default:
         return (
           <Typography key={item.id} variant="h6" color="error" align="center">

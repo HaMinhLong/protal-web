@@ -1,28 +1,14 @@
 // THIRD-PARTY
 import {
-  IconStairsUp,
-  IconUserCheck,
-  IconHistory,
-  IconFilePlus,
-  IconWorld,
   IconUser,
+  IconNews,
+  IconDice,
+  IconView360,
+  IconShoppingCart,
 } from "@tabler/icons";
-import QuizIcon from "@mui/icons-material/Quiz";
-import CorporateFareIcon from "@mui/icons-material/CorporateFare";
 
 // PROJECT IMPORT
 import { ADMIN_TYPE, CUSTOMER_TYPE } from "config";
-
-const icons = {
-  IconStairsUp,
-  IconUserCheck,
-  IconHistory,
-  IconFilePlus,
-  CorporateFareIcon,
-  IconWorld,
-  QuizIcon,
-  IconUser,
-};
 
 const application = {
   id: "application",
@@ -33,20 +19,65 @@ const application = {
     {
       id: "Tài khoản",
       title: "Tài khoản",
-      type: "item",
-      role: [ADMIN_TYPE, CUSTOMER_TYPE],
-      url: "/account",
-      icon: icons.IconUser,
+      type: "collapse",
+      role: [ADMIN_TYPE],
       breadcrumbs: true,
+      children: [
+        {
+          id: "Tài khoản",
+          title: "Tài khoản",
+          type: "item",
+          url: "/account",
+          icon: IconUser,
+          breadcrumbs: true,
+          role: [ADMIN_TYPE],
+        },
+      ],
     },
     {
-      id: "Tin tức",
-      title: "Tin tức",
-      type: "item",
+      id: "Nội dung website",
+      title: "Nội dung website",
+      type: "collapse",
       role: [ADMIN_TYPE, CUSTOMER_TYPE],
-      url: "/article",
-      icon: icons.IconWorld,
       breadcrumbs: true,
+      children: [
+        {
+          id: "Thông tin website",
+          title: "Thông tin website",
+          type: "item",
+          url: "/website",
+          icon: IconView360,
+          breadcrumbs: true,
+          role: [ADMIN_TYPE],
+        },
+        {
+          id: "Chuyên mục",
+          title: "Chuyên mục",
+          type: "item",
+          url: "/category",
+          icon: IconDice,
+          breadcrumbs: true,
+          role: [ADMIN_TYPE],
+        },
+        {
+          id: "Tin tức",
+          title: "Tin tức",
+          type: "item",
+          url: "/article",
+          icon: IconNews,
+          breadcrumbs: true,
+          role: [ADMIN_TYPE, CUSTOMER_TYPE],
+        },
+      ],
+    },
+    {
+      id: "Sản phẩm",
+      title: "Sản phẩm",
+      type: "item",
+      url: "/product",
+      role: [ADMIN_TYPE, CUSTOMER_TYPE],
+      breadcrumbs: true,
+      icon: IconShoppingCart,
     },
   ],
 };

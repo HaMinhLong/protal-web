@@ -9,7 +9,10 @@ import { ADMIN_TYPE, CUSTOMER_TYPE } from "config";
 
 const Dashboard = Loadable(lazy(() => import("pages/Dashboard")));
 const Account = Loadable(lazy(() => import("pages/Account")));
+const Website = Loadable(lazy(() => import("pages/Website")));
+const Category = Loadable(lazy(() => import("pages/Category")));
 const Article = Loadable(lazy(() => import("pages/Article")));
+const Product = Loadable(lazy(() => import("pages/Product")));
 
 const MainRoutes = {
   path: "/",
@@ -26,13 +29,28 @@ const MainRoutes = {
     },
     {
       path: "/account",
-      role: [ADMIN_TYPE, CUSTOMER_TYPE],
+      role: [ADMIN_TYPE],
       element: <Account />,
+    },
+    {
+      path: "/website",
+      role: [ADMIN_TYPE],
+      element: <Website />,
+    },
+    {
+      path: "/category",
+      role: [ADMIN_TYPE],
+      element: <Category />,
     },
     {
       path: "/article",
       role: [ADMIN_TYPE, CUSTOMER_TYPE],
       element: <Article />,
+    },
+    {
+      path: "/product",
+      role: [ADMIN_TYPE, CUSTOMER_TYPE],
+      element: <Product />,
     },
   ],
 };
