@@ -20,7 +20,7 @@ const MainRoutes = {
   children: [
     {
       path: "/dashboard",
-      role: [1, 2],
+      role: [1],
       element: <Dashboard />,
     },
     {

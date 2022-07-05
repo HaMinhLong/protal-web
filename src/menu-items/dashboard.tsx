@@ -29,8 +29,8 @@ const dashboard: DashboardMenuProps = {
   role: [1],
   children: [
     {
-      id: "dashboard",
-      title: "Dashboard",
+      id: "Trang chủ",
+      title: "Trang chủ",
       type: "item",
       role: [1],
       url: "/dashboard",

@@ -7,22 +7,17 @@ import { useTheme } from "@mui/material/styles";
 import {
   Avatar,
   Box,
-  Card,
-  CardContent,
   Chip,
   ClickAwayListener,
   Divider,
   Grid,
-  InputAdornment,
   List,
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  OutlinedInput,
   Paper,
   Popper,
   Stack,
-  Switch,
   Typography,
 } from "@mui/material";
 
@@ -35,7 +30,7 @@ import User1 from "assets/images/users/user-round.svg";
 import useAuth from "hooks/useAuth";
 
 // assets
-import { IconLogout, IconSearch, IconSettings, IconUser } from "@tabler/icons";
+import { IconLogout, IconSettings, IconUser } from "@tabler/icons";
 
 // ==============================|| PROFILE MENU ||============================== //
 
@@ -44,9 +39,6 @@ const ProfileSection = () => {
   const navigate = useNavigate();
   const { logout, user } = useAuth();
 
-  const [sdm, setSdm] = useState(true);
-  const [value, setValue] = useState("");
-  const [notification, setNotification] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [open, setOpen] = useState(false);
 
@@ -164,37 +156,17 @@ const ProfileSection = () => {
                   <Box sx={{ p: 2 }}>
                     <Stack>
                       <Stack direction="row" spacing={0.5} alignItems="center">
-                        <Typography variant="h4">Good Morning,</Typography>
+                        <Typography variant="h4">Xin chào,</Typography>
                         <Typography
                           component="span"
                           variant="h4"
                           sx={{ fontWeight: 400 }}
                         >
-                          Johne Doe
+                          {user?.name}
                         </Typography>
                       </Stack>
-                      <Typography variant="subtitle2">Project Admin</Typography>
+                      <Typography variant="subtitle2">Protal CMS</Typography>
                     </Stack>
-                    <OutlinedInput
-                      sx={{ width: "100%", pr: 1, pl: 2, my: 2 }}
-                      id="input-search-profile"
-                      value={value}
-                      onChange={(e) => setValue(e.target.value)}
-                      placeholder="Search profile options"
-                      startAdornment={
-                        <InputAdornment position="start">
-                          <IconSearch
-                            stroke={1.5}
-                            size="1rem"
-                            color={theme.palette.grey[500]}
-                          />
-                        </InputAdornment>
-                      }
-                      aria-describedby="search-helper-text"
-                      inputProps={{
-                        "aria-label": "weight",
-                      }}
-                    />
                     <Divider />
                   </Box>
                   <div
@@ -205,65 +177,6 @@ const ProfileSection = () => {
                     }}
                   >
                     <Box sx={{ p: 2 }}>
-                      <Card
-                        sx={{
-                          bgcolor: theme.palette.primary.light,
-                          my: 2,
-                        }}
-                      >
-                        <CardContent>
-                          <Grid container spacing={3} direction="column">
-                            <Grid item>
-                              <Grid
-                                item
-                                container
-                                alignItems="center"
-                                justifyContent="space-between"
-                              >
-                                <Grid item>
-                                  <Typography variant="subtitle1">
-                                    Start DND Mode
-                                  </Typography>
-                                </Grid>
-                                <Grid item>
-                                  <Switch
-                                    color="primary"
-                                    checked={sdm}
-                                    onChange={(e) => setSdm(e.target.checked)}
-                                    name="sdm"
-                                    size="small"
-                                  />
-                                </Grid>
-                              </Grid>
-                            </Grid>
-                            <Grid item>
-                              <Grid
-                                item
-                                container
-                                alignItems="center"
-                                justifyContent="space-between"
-                              >
-                                <Grid item>
-                                  <Typography variant="subtitle1">
-                                    Allow Notifications
-                                  </Typography>
-                                </Grid>
-                                <Grid item>
-                                  <Switch
-                                    checked={notification}
-                                    onChange={(e) =>
-                                      setNotification(e.target.checked)
-                                    }
-                                    name="sdm"
-                                    size="small"
-                                  />
-                                </Grid>
-                              </Grid>
-                            </Grid>
-                          </Grid>
-                        </CardContent>
-                      </Card>
-                      <Divider />
                       <List
                         component="nav"
                         sx={{
@@ -274,9 +187,6 @@ const ProfileSection = () => {
                           borderRadius: "10px",
                           [theme.breakpoints.down("md")]: {
                             minWidth: "100%",
-                          },
-                          "& .MuiListItemButton-root": {
-                            mt: 0.5,
                           },
                         }}
                       >
@@ -299,7 +209,7 @@ const ProfileSection = () => {
                           <ListItemText
                             primary={
                               <Typography variant="body2">
-                                Account Settings
+                                Cài đặt tài khoản
                               </Typography>
                             }
                           />
@@ -329,7 +239,7 @@ const ProfileSection = () => {
                               >
                                 <Grid item>
                                   <Typography variant="body2">
-                                    Social Profile
+                                    Tài khoản mạng xã hội
                                   </Typography>
                                 </Grid>
                                 <Grid item>
@@ -358,7 +268,7 @@ const ProfileSection = () => {
                           </ListItemIcon>
                           <ListItemText
                             primary={
-                              <Typography variant="body2">Logout</Typography>
+                              <Typography variant="body2">Đăng xuất</Typography>
                             }
                           />
                         </ListItemButton>

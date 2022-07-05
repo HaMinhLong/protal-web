@@ -36,7 +36,7 @@ const Article = () => {
             name="file"
             onChange={(e) => handleChangeFile(e)}
           />
-          <button type="submit">submit</button>
+          <button type="submit">Lưu lại</button>
         </form>
       </Box>
     </MainCard>
