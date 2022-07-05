@@ -3,6 +3,7 @@ import { IconDashboard, IconDeviceAnalytics } from "@tabler/icons";
 
 // PROJECT IMPORTS
 import { OverrideIcon } from "types";
+import { ADMIN_TYPE } from "config";
 
 const icons = { IconDashboard, IconDeviceAnalytics };
 
@@ -26,13 +27,13 @@ const dashboard: DashboardMenuProps = {
   id: "dashboard",
   title: "",
   type: "group",
-  role: [1],
+  role: [ADMIN_TYPE],
   children: [
     {
       id: "Trang chủ",
       title: "Trang chủ",
       type: "item",
-      role: [1],
+      role: [ADMIN_TYPE],
       url: "/dashboard",
       icon: icons.IconDashboard,
       breadcrumbs: true,

@@ -10,6 +10,8 @@ export const BASE_PATH = "";
 
 export const DASHBOARD_PATH = "/dashboard";
 export const ARTICLE_PATH = "/article";
+export const ADMIN_TYPE = 1;
+export const CUSTOMER_TYPE = 2;
 
 const config: ConfigProps = {
   fontFamily: `'Roboto', sans-serif`,

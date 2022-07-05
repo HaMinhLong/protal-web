@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 // PROJECT IMPORTS
 import useAuth from "hooks/useAuth";
-import { DASHBOARD_PATH, ARTICLE_PATH } from "config";
+import { DASHBOARD_PATH, ARTICLE_PATH, ADMIN_TYPE } from "config";
 import { GuardProps } from "types";
 import { useEffect } from "react";
 
@@ -13,7 +13,7 @@ const GuestGuard = ({ children }: GuardProps) => {
 
   useEffect(() => {
     if (isLoggedIn) {
-      navigate(user?.type === 1 ? DASHBOARD_PATH : ARTICLE_PATH, {
+      navigate(user?.type === ADMIN_TYPE ? DASHBOARD_PATH : ARTICLE_PATH, {
         replace: true,
       });
     }

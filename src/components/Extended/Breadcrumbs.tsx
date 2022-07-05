@@ -10,11 +10,12 @@ import { useEffect, useState } from "react";
 import { useTheme } from "@mui/material/styles";
 
 // PROJECT IMPORTS
-import { BASE_PATH, DASHBOARD_PATH } from "config";
+import { ARTICLE_PATH, BASE_PATH, DASHBOARD_PATH, ADMIN_TYPE } from "config";
 import { gridSpacing } from "app/constant";
 import { NavItemType, NavItemTypeObject, OverrideIcon } from "types";
 import { activeItem } from "features/menu/menuSlice";
 import { useDispatch } from "app/store";
+import useAuth from "hooks/useAuth";
 
 const linkSX = {
   display: "flex",
@@ -58,6 +59,7 @@ const Breadcrumbs = ({
 }: BreadCrumbsProps) => {
   const theme = useTheme();
   const dispatch = useDispatch();
+  const { user } = useAuth();
 
   const iconStyle = {
     marginRight: theme.spacing(0.75),
@@ -190,11 +192,17 @@ const Breadcrumbs = ({
                 >
                   <Typography
                     component={Link}
-                    to={DASHBOARD_PATH}
+                    to={
+                      user?.type === ADMIN_TYPE ? DASHBOARD_PATH : ARTICLE_PATH
+                    }
                     color="inherit"
                     variant="subtitle1"
                     sx={linkSX}
-                    onClick={() => itemHandler("dashboard")}
+                    onClick={() =>
+                      itemHandler(
+                        user?.type === ADMIN_TYPE ? "dashboard" : "article"
+                      )
+                    }
                   >
                     {icons && <HomeTwoToneIcon sx={iconStyle} />}
                     {icon && <HomeIcon sx={{ ...iconStyle, mr: 0 }} />}

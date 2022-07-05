@@ -5,6 +5,7 @@ import { lazy } from "react";
 import MainLayout from "layouts/MainLayout";
 import Loadable from "components/Loadable";
 import AuthGuard from "utils/route-guard/AuthGuard";
+import { ADMIN_TYPE, CUSTOMER_TYPE } from "config";
 
 const Dashboard = Loadable(lazy(() => import("pages/Dashboard")));
 const Account = Loadable(lazy(() => import("pages/Account")));
@@ -20,17 +21,17 @@ const MainRoutes = {
   children: [
     {
       path: "/dashboard",
-      role: [1],
+      role: [ADMIN_TYPE],
       element: <Dashboard />,
     },
     {
       path: "/account",
-      role: [1, 2],
+      role: [ADMIN_TYPE, CUSTOMER_TYPE],
       element: <Account />,
     },
     {
       path: "/article",
-      role: [1, 2],
+      role: [ADMIN_TYPE, CUSTOMER_TYPE],
       element: <Article />,
     },
   ],
