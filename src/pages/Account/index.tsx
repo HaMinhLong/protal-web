@@ -24,9 +24,9 @@ const Account = () => {
   };
 
   return (
-    <MainCard title="search form" content={false}>
+    <MainCard title="Tìm kiếm" content={false}>
       <Box sx={{ padding: 2 }}>
-        <p>Account</p>
+        <p>Tài khoản</p>
       </Box>
     </MainCard>
   );

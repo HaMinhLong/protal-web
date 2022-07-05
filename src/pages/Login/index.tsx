@@ -35,7 +35,7 @@ const Index = () => {
                   type="text"
                   required
                 />
-                <span>Login</span>
+                <span>Tài khoản</span>
                 <i className="fas fa-user-circle"></i>
               </div>
               <div className="inputBx password">
@@ -46,12 +46,12 @@ const Index = () => {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                 />
-                <span>Password</span>
+                <span>Mật khẩu</span>
                 <i className="fas fa-key"></i>
               </div>
 
               <div className="inputBx">
-                <button type="submit">Log In</button>
+                <button type="submit">Đăng nhập</button>
               </div>
             </form>
           </div>

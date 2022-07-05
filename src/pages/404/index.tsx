@@ -1,59 +1,46 @@
+// THIRD IMPORT
 import { useNavigate } from "react-router-dom";
-import { styled } from "@mui/material/styles";
-import { Button, Typography, Container, Box, Stack } from "@mui/material";
 
-import Illustration_404 from "assets/images/logo/illustration_404.svg";
-
-const ContentStyle = styled("div")(({ theme }) => ({
-  maxWidth: 580,
-  margin: "auto",
-  minHeight: "100vh",
-  display: "flex",
-  justifyContent: "center",
-  flexDirection: "column",
-  padding: theme.spacing(2, 0),
-}));
+// PROJECT IMPORT
+import "assets/scss/404.scss";
+import { DASHBOARD_PATH, ARTICLE_PATH } from "config";
+import useAuth from "hooks/useAuth";
 
 const PageNotFound = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
+  console.log("user", user);
   return (
-    <Stack direction="column" title="404 Page Not Found">
-      <Container>
-        <ContentStyle sx={{ textAlign: "center", alignItems: "center" }}>
-          <Typography variant="h1" paragraph>
-            Sorry, page not found!
-          </Typography>
+    <section className="page_404">
+      <div className="container">
+        <div className="row">
+          <div className="col-sm-12 ">
+            <div className="col-sm-10 col-sm-offset-1  text-center">
+              <div className="four_zero_four_bg">
+                <h1 className="text-center ">404</h1>
+              </div>
 
-          <Typography sx={{ color: "#807d7d", fontSize: 20 }}>
-            Sorry, we couldn’t find the page you’re looking for. Perhaps you’ve
-            mistyped the URL? Be sure to check your spelling.
-          </Typography>
+              <div className="contant_box_404">
+                <h3 className="h2">Có vẻ như bạn đang bị lạc</h3>
 
-          <Box
-            component="img"
-            src={Illustration_404}
-            sx={{ height: 260, mx: "auto", my: { xs: 5, sm: 10 } }}
-            style={{ cursor: "pointer" }}
-          />
+                <p>trang bạn đang tìm kiếm không có sẵn!</p>
 
-          <Button
-            variant="contained"
-            color="secondary"
-            sx={{
-              marginTop: "3em !important",
-              fontSize: 22,
-              padding: "0.5em 1.5em",
-              backgroundColor: "#00abff",
-            }}
-            onClick={() => {
-              navigate("/dashboard", { replace: true });
-            }}
-          >
-            Back To Dashboard
-          </Button>
-        </ContentStyle>
-      </Container>
-    </Stack>
+                <button
+                  className="link_404"
+                  onClick={() => {
+                    navigate(user?.type === 1 ? DASHBOARD_PATH : ARTICLE_PATH, {
+                      replace: true,
+                    });
+                  }}
+                >
+                  Go to Home
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   );
 };
 

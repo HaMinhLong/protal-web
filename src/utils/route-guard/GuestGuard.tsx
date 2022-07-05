@@ -3,17 +3,19 @@ import { useNavigate } from "react-router-dom";
 
 // PROJECT IMPORTS
 import useAuth from "hooks/useAuth";
-import { DASHBOARD_PATH } from "config";
+import { DASHBOARD_PATH, ARTICLE_PATH } from "config";
 import { GuardProps } from "types";
 import { useEffect } from "react";
 
 const GuestGuard = ({ children }: GuardProps) => {
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, user } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
     if (isLoggedIn) {
-      navigate(DASHBOARD_PATH, { replace: true });
+      navigate(user?.type === 1 ? DASHBOARD_PATH : ARTICLE_PATH, {
+        replace: true,
+      });
     }
   }, [isLoggedIn, navigate]);
 

@@ -6,9 +6,9 @@ import MainCard from "components/Cards/MainCard";
 
 const index = () => {
   return (
-    <MainCard title="search form" content={false}>
+    <MainCard content={false}>
       <Box sx={{ padding: 2 }}>
-        <p>Dashboard</p>
+        <p>Thống kê</p>
       </Box>
     </MainCard>
   );
