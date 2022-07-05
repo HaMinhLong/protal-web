@@ -10,6 +10,9 @@ import {
 import QuizIcon from "@mui/icons-material/Quiz";
 import CorporateFareIcon from "@mui/icons-material/CorporateFare";
 
+// PROJECT IMPORT
+import { ADMIN_TYPE, CUSTOMER_TYPE } from "config";
+
 const icons = {
   IconStairsUp,
   IconUserCheck,
@@ -25,13 +28,13 @@ const application = {
   id: "application",
   title: "Application",
   type: "group",
-  role: [1, 2],
+  role: [ADMIN_TYPE, CUSTOMER_TYPE],
   children: [
     {
       id: "Tài khoản",
       title: "Tài khoản",
       type: "item",
-      role: [1, 2],
+      role: [ADMIN_TYPE, CUSTOMER_TYPE],
       url: "/account",
       icon: icons.IconUser,
       breadcrumbs: true,
@@ -40,7 +43,7 @@ const application = {
       id: "Tin tức",
       title: "Tin tức",
       type: "item",
-      role: [1, 2],
+      role: [ADMIN_TYPE, CUSTOMER_TYPE],
       url: "/article",
       icon: icons.IconWorld,
       breadcrumbs: true,

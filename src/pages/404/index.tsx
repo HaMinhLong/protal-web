@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 // PROJECT IMPORT
 import "assets/scss/404.scss";
-import { DASHBOARD_PATH, ARTICLE_PATH } from "config";
+import { DASHBOARD_PATH, ARTICLE_PATH, ADMIN_TYPE } from "config";
 import useAuth from "hooks/useAuth";
 
 const PageNotFound = () => {
@@ -28,12 +28,15 @@ const PageNotFound = () => {
                 <button
                   className="link_404"
                   onClick={() => {
-                    navigate(user?.type === 1 ? DASHBOARD_PATH : ARTICLE_PATH, {
-                      replace: true,
-                    });
+                    navigate(
+                      user?.type === ADMIN_TYPE ? DASHBOARD_PATH : ARTICLE_PATH,
+                      {
+                        replace: true,
+                      }
+                    );
                   }}
                 >
-                  Go to Home
+                  Quay lại trang chủ
                 </button>
               </div>
             </div>
