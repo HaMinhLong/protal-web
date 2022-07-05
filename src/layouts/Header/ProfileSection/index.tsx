@@ -162,7 +162,7 @@ const ProfileSection = () => {
                           variant="h4"
                           sx={{ fontWeight: 400 }}
                         >
-                          {user?.name}
+                          {user?.fullName}
                         </Typography>
                       </Stack>
                       <Typography variant="subtitle2">Protal CMS</Typography>

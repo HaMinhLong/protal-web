@@ -6,7 +6,7 @@ import { Box } from "@mui/material";
 import MainCard from "components/Cards/MainCard";
 import { useDispatch } from "app/store";
 
-const Account = () => {
+const Index = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -16,7 +16,7 @@ const Account = () => {
   const getList = () => {
     const params = {};
     dispatch({
-      type: "account/fetch",
+      type: "user/fetch",
       payload: params,
       callback: (res: any) => {
         console.log("res", res);
@@ -33,4 +33,4 @@ const Account = () => {
   );
 };
 
-export default Account;
+export default Index;

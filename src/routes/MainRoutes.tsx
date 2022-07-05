@@ -8,7 +8,8 @@ import AuthGuard from "utils/route-guard/AuthGuard";
 import { ADMIN_TYPE, CUSTOMER_TYPE } from "config";
 
 const Dashboard = Loadable(lazy(() => import("pages/Dashboard")));
-const Account = Loadable(lazy(() => import("pages/Account")));
+const UserGroup = Loadable(lazy(() => import("pages/UserGroup")));
+const User = Loadable(lazy(() => import("pages/User")));
 const Website = Loadable(lazy(() => import("pages/Website")));
 const Category = Loadable(lazy(() => import("pages/Category")));
 const Article = Loadable(lazy(() => import("pages/Article")));
@@ -28,9 +29,14 @@ const MainRoutes = {
       element: <Dashboard />,
     },
     {
-      path: "/account",
+      path: "/userGroup",
       role: [ADMIN_TYPE],
-      element: <Account />,
+      element: <UserGroup />,
+    },
+    {
+      path: "/user",
+      role: [ADMIN_TYPE],
+      element: <User />,
     },
     {
       path: "/website",
@@ -59,7 +65,9 @@ const user = JSON.parse(localStorage.getItem("user") || "{}");
 
 MainRoutes.children = MainRoutes.children.filter((child) => {
   if (child.role.length > 0) {
-    return child.role.findIndex((item: number) => item === user.type) !== -1
+    return child.role.findIndex(
+      (item: number) => item === user?.userGroupId
+    ) !== -1
       ? 1
       : 0;
   }

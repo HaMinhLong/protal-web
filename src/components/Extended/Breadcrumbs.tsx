@@ -193,14 +193,18 @@ const Breadcrumbs = ({
                   <Typography
                     component={Link}
                     to={
-                      user?.type === ADMIN_TYPE ? DASHBOARD_PATH : ARTICLE_PATH
+                      user?.userGroupId === ADMIN_TYPE
+                        ? DASHBOARD_PATH
+                        : ARTICLE_PATH
                     }
                     color="inherit"
                     variant="subtitle1"
                     sx={linkSX}
                     onClick={() =>
                       itemHandler(
-                        user?.type === ADMIN_TYPE ? "dashboard" : "article"
+                        user?.userGroupId === ADMIN_TYPE
+                          ? "dashboard"
+                          : "article"
                       )
                     }
                   >

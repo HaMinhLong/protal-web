@@ -29,8 +29,9 @@ const NavGroup = ({ item }: NavGroupProps) => {
     switch (menu.type) {
       case "collapse":
         if (
-          menu.role.findIndex((roleItem: number) => roleItem === user.type) !==
-          -1
+          menu.role.findIndex(
+            (roleItem: number) => roleItem === user?.userGroupId
+          ) !== -1
             ? 1
             : 0 || !menu.role
         ) {
@@ -40,8 +41,9 @@ const NavGroup = ({ item }: NavGroupProps) => {
 
       case "item":
         if (
-          menu.role.findIndex((roleItem: number) => roleItem === user.type) !==
-          -1
+          menu.role.findIndex(
+            (roleItem: number) => roleItem === user?.userGroupId
+          ) !== -1
             ? 1
             : 0 || !menu.role
         ) {

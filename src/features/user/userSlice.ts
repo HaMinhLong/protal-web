@@ -11,8 +11,8 @@ const initialState = {
   filter: {},
 };
 
-export const accountSlice = createSlice({
-  name: "account",
+export const userSlice = createSlice({
+  name: "user",
   initialState,
   reducers: {
     save: (state, action) => {
@@ -65,8 +65,8 @@ export const accountSlice = createSlice({
 });
 
 export const { filter, save, saveAll, removeAndSave, info, query } =
-  accountSlice.actions;
+  userSlice.actions;
 
-export const account = ({ account }: any) => account;
+export const user = ({ user }: any) => user;
 
-export default accountSlice.reducer;
+export default userSlice.reducer;

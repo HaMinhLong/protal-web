@@ -9,7 +9,7 @@ import useAuth from "hooks/useAuth";
 const PageNotFound = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
-  console.log("user", user);
+
   return (
     <section className="page_404">
       <div className="container">
@@ -29,7 +29,9 @@ const PageNotFound = () => {
                   className="link_404"
                   onClick={() => {
                     navigate(
-                      user?.type === ADMIN_TYPE ? DASHBOARD_PATH : ARTICLE_PATH,
+                      user?.userGroupId === ADMIN_TYPE
+                        ? DASHBOARD_PATH
+                        : ARTICLE_PATH,
                       {
                         replace: true,
                       }

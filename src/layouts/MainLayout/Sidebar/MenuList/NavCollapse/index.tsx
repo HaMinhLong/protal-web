@@ -59,12 +59,12 @@ const NavCollapse = ({ menu, level }: NavCollapseProps) => {
   }, [pathname, menu.children, menu.id]);
   // menu collapse & item
   const menus = menu.children?.map((item) => {
-    console.log("menu.children", menu.children);
     switch (item.type) {
       case "collapse":
         if (
-          item.role.findIndex((roleItem: number) => roleItem === user.type) !==
-          -1
+          item.role.findIndex(
+            (roleItem: number) => roleItem === user?.userGroupId
+          ) !== -1
             ? 1
             : 0
         ) {
@@ -74,8 +74,9 @@ const NavCollapse = ({ menu, level }: NavCollapseProps) => {
 
       case "item":
         if (
-          item.role.findIndex((roleItem: number) => roleItem === user.type) !==
-          -1
+          item.role.findIndex(
+            (roleItem: number) => roleItem === user?.userGroupId
+          ) !== -1
             ? 1
             : 0
         ) {

@@ -11,7 +11,7 @@ import { KeyedObject } from "types";
 import { LOGIN, LOGOUT } from "features/auth/actions";
 import { loginUser, currentUser } from "api/auth";
 
-export const LOGIN_URL = `${process.env.REACT_APP_SERVER}/login`;
+export const LOGIN_URL = `${process.env.REACT_APP_SERVER}/auth/signIn`;
 export const ME_URL = `${process.env.REACT_APP_SERVER}/me`;
 
 const initialState: InitialLoginContextProps = {
@@ -59,8 +59,12 @@ export const JWTProvider = ({ children }: { children: React.ReactElement }) => {
         if (serviceToken && verifyToken(serviceToken)) {
           setSession(serviceToken);
           const { data } = await currentUser(serviceToken);
-          state.user = data.data;
-          const user = data.data;
+          const user = {
+            ...data.results.list,
+            userGroupId: Number(data.results.list.userGroupId),
+          };
+
+          state.user = user;
 
           dispatch({
             type: LOGIN,
@@ -96,9 +100,12 @@ export const JWTProvider = ({ children }: { children: React.ReactElement }) => {
       username,
       password,
     });
-    const { token } = data.data;
-    const { user } = data.data;
-    setSession(token);
+    const { accessToken } = data.results.list;
+    const user = {
+      ...data.results.list,
+      userGroupId: Number(data.results.list.userGroupId),
+    };
+    setSession(accessToken);
     setUser(user);
     dispatch({
       type: LOGIN,

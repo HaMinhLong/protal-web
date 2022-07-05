@@ -12,12 +12,12 @@ const MenuList = () => {
   const navItems = menuItem.items.map((item) => {
     switch (item.type) {
       case "group":
-        if (item.role === user.type || !item.role) {
+        if (item.role === user?.userGroupId || !item.role) {
           return <NavGroup key={item.id} item={item} />;
         }
         return <NavGroup key={item.id} item={item} />;
       case "item":
-        if (item.role === user.type) {
+        if (item.role === user?.userGroupId) {
           return <NavGroup key={item.id} item={item} />;
         }
         return <NavGroup key={item.id} item={item} />;

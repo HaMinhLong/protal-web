@@ -19,9 +19,9 @@ const LogoSection = () => {
   return (
     <Link
       component={RouterLink}
-      to={user?.type === ADMIN_TYPE ? DASHBOARD_PATH : ARTICLE_PATH}
+      to={user?.userGroupId === ADMIN_TYPE ? DASHBOARD_PATH : ARTICLE_PATH}
       onClick={() =>
-        itemHandler(user?.type === ADMIN_TYPE ? "dashboard" : "article")
+        itemHandler(user?.userGroupId === ADMIN_TYPE ? "dashboard" : "article")
       }
     >
       <Logo />

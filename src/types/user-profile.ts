@@ -1,6 +1,6 @@
 export type UserProfile = {
   id?: string;
-  name?: string;
+  fullName?: string;
   username?: string;
   password?: string;
   password_confirmation?: string;
@@ -8,7 +8,7 @@ export type UserProfile = {
   dob?: string;
   phone?: string;
   gender?: string;
-  type?: number;
+  userGroupId?: number;
   status?: number;
   created_at?: Date;
   updated_at?: Date;

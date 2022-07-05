@@ -1,6 +1,7 @@
 // THIRD-PARTY
 import {
   IconUser,
+  IconUsers,
   IconNews,
   IconDice,
   IconView360,
@@ -17,17 +18,26 @@ const application = {
   role: [ADMIN_TYPE, CUSTOMER_TYPE],
   children: [
     {
-      id: "Tài khoản",
-      title: "Tài khoản",
+      id: "Nhóm tài khoản",
+      title: "Nhóm tài khoản",
       type: "collapse",
       role: [ADMIN_TYPE],
       breadcrumbs: true,
       children: [
         {
+          id: "Nhóm tài khoản",
+          title: "Nhóm tài khoản",
+          type: "item",
+          url: "/userGroup",
+          icon: IconUsers,
+          breadcrumbs: true,
+          role: [ADMIN_TYPE],
+        },
+        {
           id: "Tài khoản",
           title: "Tài khoản",
           type: "item",
-          url: "/account",
+          url: "/user",
           icon: IconUser,
           breadcrumbs: true,
           role: [ADMIN_TYPE],
