@@ -15,6 +15,7 @@ import { BASE_PATH } from "config";
 // STLYES IMPORT
 import "assets/scss/globalStyle.scss";
 import "assets/scss/style.scss";
+import "react-notifications/lib/notifications.css";
 
 const container = document.getElementById("root")!;
 const root = createRoot(container);

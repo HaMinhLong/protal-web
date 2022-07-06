@@ -11,7 +11,6 @@ const Index = () => {
 
   const handleLogin = async (e: React.SyntheticEvent) => {
     e.preventDefault();
-    console.log("submit");
     await login(username, password);
   };
 

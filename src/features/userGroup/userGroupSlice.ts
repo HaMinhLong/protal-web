@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
+const initialState: any = {
   dataAll: [],
   data: {
     list: [],
@@ -11,8 +11,8 @@ const initialState = {
   filter: {},
 };
 
-export const userSlice = createSlice({
-  name: "user",
+export const userGroupSlice = createSlice({
+  name: "userGroup",
   initialState,
   reducers: {
     save: (state, action) => {
@@ -29,6 +29,21 @@ export const userSlice = createSlice({
       return {
         ...state,
         dataAll: action.payload && action.payload.results,
+      };
+    },
+    updateStatusSlice: (state, action) => {
+      const { id, status } = action.payload;
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          list: state.data.list?.map((item) => {
+            if (item.id === id) {
+              return { ...item, status: status };
+            }
+            return item;
+          }),
+        },
       };
     },
     removeAndSave(state, action) {
@@ -64,9 +79,16 @@ export const userSlice = createSlice({
   },
 });
 
-export const { filter, save, saveAll, removeAndSave, info, query } =
-  userSlice.actions;
+export const {
+  filter,
+  save,
+  saveAll,
+  updateStatusSlice,
+  removeAndSave,
+  info,
+  query,
+} = userGroupSlice.actions;
 
-export const user = ({ user }) => user;
+export const userGroup = ({ userGroup }) => userGroup;
 
-export default userSlice.reducer;
+export default userGroupSlice.reducer;

@@ -1,15 +1,19 @@
 // THIRD-PARTY
-import jwtDecode from "jwt-decode";
 import React, { createContext, useEffect, useReducer } from "react";
+import jwtDecode from "jwt-decode";
+import { NotificationContainer } from "react-notifications";
 
 // PROJECT IMPORTS
+import { loginUser, currentUser } from "api/auth";
 import accountReducer from "features/auth/accountReducer";
 import axios from "utils/axios";
 import Loader from "components/Loader";
-import { InitialLoginContextProps, JWTContextType } from "types/auth";
-import { KeyedObject } from "types";
 import { LOGIN, LOGOUT } from "features/auth/actions";
-import { loginUser, currentUser } from "api/auth";
+import createNotification from "components/Extended/Notification";
+
+// TYPES IMPORT
+import { KeyedObject } from "types";
+import { InitialLoginContextProps, JWTContextType } from "types/auth";
 
 export const LOGIN_URL = `${process.env.REACT_APP_SERVER}/auth/signIn`;
 export const ME_URL = `${process.env.REACT_APP_SERVER}/me`;
@@ -96,24 +100,35 @@ export const JWTProvider = ({ children }: { children: React.ReactElement }) => {
   }
 
   const login = async (username: string, password: string) => {
-    const { data } = await loginUser({
+    const response = await loginUser({
       username,
       password,
-    });
-    const { accessToken } = data.results.list;
-    const user = {
-      ...data.results.list,
-      userGroupId: Number(data.results.list.userGroupId),
-    };
-    setSession(accessToken);
-    setUser(user);
-    dispatch({
-      type: LOGIN,
-      payload: {
-        isLoggedIn: true,
-        user,
-      },
-    });
+    })
+      .then((res) => {
+        return res.data;
+      })
+      .catch((err) => {
+        return err.response.data;
+      });
+
+    if (response?.success) {
+      const { accessToken } = response.results.list;
+      const user = {
+        ...response.results.list,
+        userGroupId: Number(response.results.list.userGroupId),
+      };
+      setSession(accessToken);
+      setUser(user);
+      dispatch({
+        type: LOGIN,
+        payload: {
+          isLoggedIn: true,
+          user,
+        },
+      });
+    } else if (response?.success === false) {
+      createNotification("error", response?.message);
+    }
   };
 
   const logout = () => {
@@ -124,6 +139,7 @@ export const JWTProvider = ({ children }: { children: React.ReactElement }) => {
 
   return (
     <JWTContext.Provider value={{ ...state, login, logout }}>
+      <NotificationContainer />
       {children}
     </JWTContext.Provider>
   );
