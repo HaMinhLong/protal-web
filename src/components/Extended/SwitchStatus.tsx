@@ -3,9 +3,9 @@ import { Switch } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 interface Props {
-  status: number;
-  id: number;
-  handleStatus: (status: number, id: number) => void;
+  status: number | undefined;
+  id: number | undefined;
+  handleStatus: (status: number, id: number | undefined) => void;
 }
 
 const SwitchStatus = ({ status, id, handleStatus }: Props) => {

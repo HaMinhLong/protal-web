@@ -9,9 +9,10 @@ import SortStatus from "components/Common/SortStatus";
 interface Props {
   formik: any;
   setFieldValue: any;
+  addOrEdit: boolean;
 }
 
-const StatusFilter = ({ formik, setFieldValue }: Props) => {
+const StatusFilter = ({ formik, setFieldValue, addOrEdit }: Props) => {
   return (
     <>
       <Autocomplete
@@ -22,7 +23,11 @@ const StatusFilter = ({ formik, setFieldValue }: Props) => {
         value={
           SortStatus?.filter((item) => item.value === formik?.values?.status)[0]
         }
-        options={SortStatus}
+        options={
+          addOrEdit
+            ? SortStatus.filter((item) => item.value !== "")
+            : SortStatus
+        }
         renderInput={(params) => <TextField {...params} label="Trạng thái" />}
         onChange={(e, status) => setFieldValue("status", status?.value)}
       />

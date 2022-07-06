@@ -1,5 +1,5 @@
 // THIRD IMPORT
-import { useState, useEffect } from "react";
+import { useState, useEffect, ChangeEvent } from "react";
 import {
   Box,
   Grid,
@@ -13,6 +13,7 @@ import {
   TableRow,
   TableBody,
   Typography,
+  Pagination,
 } from "@mui/material";
 import moment from "moment";
 import { useTheme } from "@mui/material/styles";
@@ -34,6 +35,8 @@ import SwitchStatus from "components/Extended/SwitchStatus";
 import createNotification from "components/Extended/Notification";
 import Loading from "components/Extended/Loading";
 import NoData from "components/Extended/NoData";
+import UserGroupDrawer from "components/DrawerPage/UserGroupDrawer";
+import AlertDelete from "components/Extended/AlertDelete";
 
 // TYPES IMPORT
 import { FilterUserGroup, UserGroupType } from "types/userGroup";
@@ -43,15 +46,22 @@ const PAGE_SIZE = Number(process.env.REACT_APP_PAGE_SIZE);
 const Index = () => {
   const dispatch = useDispatch();
   const theme = useTheme();
-  const matchDownMD = useMediaQuery(theme.breakpoints.down("lg"));
-  const spacingMD = matchDownMD ? 1 : 1.5;
+  const matchDownSM = useMediaQuery(theme.breakpoints.down("md"));
 
   const userGroupState = useSelector(userGroup);
   const userGroups = userGroupState.data.list;
   const pagination = userGroupState.data.pagination;
 
-  const [dataEdit, setDataEdit] = useState({});
   const [loading, setLoading] = useState(false);
+  const [visibleDrawer, setVisibleDrawer] = useState(false);
+  const [dataEdit, setDataEdit] = useState<UserGroupType>({
+    id: 0,
+    name: "",
+    description: "",
+    createdAt: "",
+    status: 0,
+  });
+  const [confirmDelete, setConfirmDelete] = useState(false);
 
   const formik = useFormik({
     enableReinitialize: true,
@@ -104,7 +114,8 @@ const Index = () => {
       payload: params,
       callback: (res: any) => {
         setLoading(false);
-        if (res?.success) {
+        if (res?.success === false) {
+          createNotification("error", res?.message);
         }
       },
     });
@@ -136,10 +147,88 @@ const Index = () => {
       payload: query,
       callback: (res) => {
         setLoading(false);
-        if (res?.success) {
+        if (res?.success === false) {
+          createNotification("error", res?.message);
         }
       },
     });
+  };
+
+  const handleTableChange = (e: ChangeEvent<unknown>, page: number) => {
+    setLoading(true);
+    const queryFilter = userGroupState.filter;
+
+    const queryName = {
+      name: queryFilter?.name?.trim(),
+      status: queryFilter?.status,
+    };
+    if (!queryFilter?.name?.trim()) {
+      delete queryName.name;
+    }
+    if (queryFilter?.status === "") {
+      delete queryName.status;
+    }
+    const query = {
+      filter: JSON.stringify(queryName),
+      range: JSON.stringify([
+        page * pagination.pageSize - pagination.pageSize,
+        page * pagination.pageSize,
+      ]),
+      sort: JSON.stringify(["createdAt", "DESC"]),
+      attributes: "id,name,description,status,createdAt",
+    };
+
+    dispatch({
+      type: "userGroup/fetch",
+      payload: query,
+      callback: (res) => {
+        setLoading(false);
+        if (res?.success === false) {
+          createNotification("error", res?.message);
+        }
+      },
+    });
+  };
+
+  const handleStatus = (value: number, id: number | undefined) => {
+    const status = value;
+    const item = {
+      status,
+    };
+    dispatch({
+      type: "userGroup/updateStatus",
+      payload: {
+        id: id,
+        params: item,
+      },
+      callback: (res) => {
+        if (res?.success === true) {
+          createNotification("success", "Cập nhật trạng thái thành công!");
+        } else {
+          createNotification("error", res?.message);
+        }
+      },
+    });
+  };
+
+  const handleRemove = (confirmDelete: boolean) => {
+    setConfirmDelete(false);
+    if (confirmDelete) {
+      dispatch({
+        type: "userGroup/delete",
+        payload: {
+          id: dataEdit?.id,
+        },
+        callback: (res) => {
+          if (res?.success === true) {
+            createNotification("success", "Xóa bản ghi thành công!");
+            getList();
+          } else if (res?.success === false) {
+            createNotification("error", res && res.message);
+          }
+        },
+      });
+    }
   };
 
   const renderSearchForm = () => {
@@ -159,6 +248,7 @@ const Index = () => {
           </Grid>
           <Grid item xs={12} md={6} lg={3}>
             <StatusFilter
+              addOrEdit={false}
               formik={formik}
               setFieldValue={formik.setFieldValue}
             />
@@ -178,6 +268,10 @@ const Index = () => {
               color="success"
               endIcon={<AddIcon />}
               sx={{ ml: 2 }}
+              onClick={() => {
+                setDataEdit({});
+                setVisibleDrawer(true);
+              }}
             >
               Thêm mới
             </Button>
@@ -188,20 +282,21 @@ const Index = () => {
   };
 
   const renderTableHead = () => {
+    const styleCell = { whiteSpace: "nowrap", fontWeight: "bold" };
     return (
-      <TableRow sx={{ fontWeight: "bold" }}>
-        <TableCell sx={{ width: "5%" }} align="center">
+      <TableRow>
+        <TableCell sx={{ ...styleCell, width: "5%" }} align="center">
           #
         </TableCell>
-        <TableCell sx={{ whiteSpace: "nowrap" }}>Tên</TableCell>
-        <TableCell sx={{ whiteSpace: "nowrap" }}>Mô tả</TableCell>
-        <TableCell align="right" sx={{ whiteSpace: "nowrap" }}>
+        <TableCell sx={styleCell}>Tên</TableCell>
+        <TableCell sx={styleCell}>Mô tả</TableCell>
+        <TableCell align="right" sx={{ fontWeight: "bold" }}>
           Ngày tạo
         </TableCell>
-        <TableCell align="right" sx={{ whiteSpace: "nowrap" }}>
+        <TableCell align="right" sx={styleCell}>
           Trạng thái
         </TableCell>
-        <TableCell align="right" sx={{ whiteSpace: "nowrap" }}>
+        <TableCell align="right" sx={styleCell}>
           Hành động
         </TableCell>
       </TableRow>
@@ -244,32 +339,11 @@ const Index = () => {
   const renderStatus = (item: UserGroupType) => {
     return (
       <SwitchStatus
-        status={item.status}
-        id={item.id}
+        status={item?.status}
+        id={item?.id}
         handleStatus={handleStatus}
       />
     );
-  };
-
-  const handleStatus = (value: number, id: number) => {
-    const status = value;
-    const item = {
-      status,
-    };
-    dispatch({
-      type: "userGroup/updateStatus",
-      payload: {
-        id: id,
-        params: item,
-      },
-      callback: (res) => {
-        if (res?.success === true) {
-          createNotification("success", "Cập nhật trạng thái thành công!");
-        } else {
-          createNotification("error", res?.message);
-        }
-      },
-    });
   };
 
   const renderMenuButton = (item: UserGroupType) => (
@@ -277,7 +351,10 @@ const Index = () => {
       <Button
         variant="outlined"
         endIcon={<EditIcon />}
-        onClick={() => setDataEdit(item)}
+        onClick={() => {
+          setDataEdit(item);
+          setVisibleDrawer(true);
+        }}
       >
         Sửa
       </Button>
@@ -286,6 +363,10 @@ const Index = () => {
         color="error"
         sx={{ ml: 1 }}
         endIcon={<DeleteIcon />}
+        onClick={() => {
+          setConfirmDelete(true);
+          setDataEdit(item);
+        }}
       >
         Xóa
       </Button>
@@ -293,21 +374,52 @@ const Index = () => {
   );
 
   return (
-    <MainCard title={renderSearchForm()} content={false}>
-      <Box sx={{ position: "relative" }}>
-        <TableContainer sx={{ overflow: "auto" }}>
-          <Table>
-            <TableHead>{renderTableHead()}</TableHead>
-            <TableBody>
-              {userGroups?.map((item, index) => renderTableBody(item, index))}
-            </TableBody>
-          </Table>
+    <>
+      <MainCard title={renderSearchForm()} content={false}>
+        <Box sx={{ position: "relative", pb: 2 }}>
+          <TableContainer sx={{ overflow: "auto" }}>
+            <Table>
+              <TableHead>{renderTableHead()}</TableHead>
+              <TableBody>
+                {userGroups?.map((item, index) => renderTableBody(item, index))}
+              </TableBody>
+            </Table>
+            {userGroups?.length > 0 && (
+              <Pagination
+                sx={{
+                  mt: 2,
+                  display: "flex",
+                  justifyContent: "flex-end",
+                }}
+                size={matchDownSM ? "small" : "medium"}
+                count={Math.floor(pagination?.total / pagination?.pageSize) + 1}
+                page={pagination?.current}
+                color="primary"
+                shape="rounded"
+                onChange={handleTableChange}
+              />
+            )}
+          </TableContainer>
+
           {userGroups?.length === 0 && <NoData />}
-        </TableContainer>
-        {loading && <Loading />}
-      </Box>
+          {loading && <Loading />}
+        </Box>
+      </MainCard>
       <NotificationContainer />
-    </MainCard>
+      {confirmDelete && (
+        <AlertDelete
+          name={dataEdit?.name}
+          open={confirmDelete}
+          handleClose={handleRemove}
+        />
+      )}
+      <UserGroupDrawer
+        visible={visibleDrawer}
+        closeDrawer={() => setVisibleDrawer(false)}
+        dataEdit={dataEdit}
+        getList={getList}
+      />
+    </>
   );
 };
 
