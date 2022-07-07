@@ -28,6 +28,7 @@ const StatusFilter = ({ formik, setFieldValue, addOrEdit }: Props) => {
             ? SortStatus.filter((item) => item.value !== "")
             : SortStatus
         }
+        disableClearable={addOrEdit ? true : false}
         renderInput={(params) => <TextField {...params} label="Trạng thái" />}
         onChange={(e, status) => setFieldValue("status", status?.value)}
       />
