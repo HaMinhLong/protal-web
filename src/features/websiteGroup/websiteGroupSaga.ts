@@ -4,19 +4,19 @@ import {
   info,
   query,
   updateStatusSlice,
-} from "features/userGroup/userGroupSlice";
+} from "features/websiteGroup/websiteGroupSlice";
 import {
-  getListUserGroup,
-  getOneUserGroup,
-  createUserGroup,
-  updateUserGroup,
-  updateStatusUserGroup,
-  deleteUserGroup,
-} from "api/userGroup";
+  getListWebsiteGroup,
+  getOneWebsiteGroup,
+  createWebsiteGroup,
+  updateWebsiteGroup,
+  updateStatusWebsiteGroup,
+  deleteWebsiteGroup,
+} from "api/websiteGroup";
 
 function* getList({ payload, callback }) {
   try {
-    const { data } = yield call(getListUserGroup, payload);
+    const { data } = yield call(getListWebsiteGroup, payload);
 
     if (data && data.success) {
       yield put(save(data.results || {}));
@@ -30,7 +30,7 @@ function* getList({ payload, callback }) {
 
 function* fetchLazyLoading({ payload, callback }) {
   try {
-    const { data } = yield call(getListUserGroup, payload);
+    const { data } = yield call(getListWebsiteGroup, payload);
     if (callback) callback(data);
   } catch (error: any) {
     if (callback) callback(error);
@@ -39,7 +39,7 @@ function* fetchLazyLoading({ payload, callback }) {
 
 function* getOne({ payload: { id }, callback }) {
   try {
-    const { data } = yield call(getOneUserGroup, id);
+    const { data } = yield call(getOneWebsiteGroup, id);
     if (data) {
       yield put(info(data.results.list || {}));
     }
@@ -51,7 +51,7 @@ function* getOne({ payload: { id }, callback }) {
 
 function* create({ payload, callback }) {
   try {
-    const { data } = yield call(createUserGroup, payload);
+    const { data } = yield call(createWebsiteGroup, payload);
     if (callback) callback(data);
   } catch (error: any) {
     if (callback) callback(error);
@@ -60,7 +60,7 @@ function* create({ payload, callback }) {
 
 function* updateRecord({ payload: { id, params }, callback }) {
   try {
-    const { data } = yield call(updateUserGroup, id, params);
+    const { data } = yield call(updateWebsiteGroup, id, params);
     if (callback) callback(data);
   } catch (error: any) {
     console.log("error", error);
@@ -70,7 +70,7 @@ function* updateRecord({ payload: { id, params }, callback }) {
 
 function* updateStatus({ payload: { id, params }, callback }) {
   try {
-    const { data } = yield call(updateStatusUserGroup, id, params);
+    const { data } = yield call(updateStatusWebsiteGroup, id, params);
 
     yield put(
       updateStatusSlice({
@@ -87,22 +87,22 @@ function* updateStatus({ payload: { id, params }, callback }) {
 
 function* deleteRecord({ payload: { id }, callback }) {
   try {
-    const { data } = yield call(deleteUserGroup, id);
+    const { data } = yield call(deleteWebsiteGroup, id);
     if (callback) callback(data);
   } catch (error: any) {
     if (callback) callback(error);
   }
 }
 
-const typeFetch: any = "userGroup/fetch";
-const typeGetOne: any = "userGroup/getOne";
-const typeAdd: any = "userGroup/add";
-const typeFetchLazyLoading: any = "userGroup/fetchLazyLoading";
-const typeUpdate: any = "userGroup/update";
-const typeUpdateStatus: any = "userGroup/updateStatus";
-const typeDelete: any = "userGroup/delete";
+const typeFetch: any = "websiteGroup/fetch";
+const typeGetOne: any = "websiteGroup/getOne";
+const typeAdd: any = "websiteGroup/add";
+const typeFetchLazyLoading: any = "websiteGroup/fetchLazyLoading";
+const typeUpdate: any = "websiteGroup/update";
+const typeUpdateStatus: any = "websiteGroup/updateStatus";
+const typeDelete: any = "websiteGroup/delete";
 
-export function* userGroupSaga(): any {
+export function* websiteGroupSaga(): any {
   yield takeLatest(typeFetch, getList);
   yield takeLatest(typeGetOne, getOne);
   yield takeLatest(typeAdd, create);

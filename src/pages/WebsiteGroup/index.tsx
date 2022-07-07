@@ -30,17 +30,16 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import MainCard from "components/Cards/MainCard";
 import { useDispatch, useSelector } from "app/store";
 import StatusFilter from "components/Common/StatusFilter";
-import { user, filter } from "features/user/userSlice";
+import { websiteGroup, filter } from "features/websiteGroup/websiteGroupSlice";
 import SwitchStatus from "components/Extended/SwitchStatus";
 import createNotification from "components/Extended/Notification";
 import Loading from "components/Extended/Loading";
 import NoData from "components/Extended/NoData";
-import UserDrawer from "components/DrawerPage/UserDrawer";
+import WebsiteGroupDrawer from "components/DrawerPage/WebsiteGroupDrawer";
 import AlertDelete from "components/Extended/AlertDelete";
-import UserGroupSelect from "components/Common/UserGroupSelect";
 
 // TYPES IMPORT
-import { FilterUser, UserType } from "types/user";
+import { FilterWebsiteGroup, WebsiteGroupType } from "types/websiteGroup";
 
 const PAGE_SIZE = Number(process.env.REACT_APP_PAGE_SIZE);
 
@@ -49,30 +48,26 @@ const Index = () => {
   const theme = useTheme();
   const matchDownSM = useMediaQuery(theme.breakpoints.down("md"));
 
-  const userGroupState = useSelector(user);
-  const userGroups = userGroupState.data.list;
-  const pagination = userGroupState.data.pagination;
+  const websiteGroupState = useSelector(websiteGroup);
+  const websiteGroups = websiteGroupState.data.list;
+  const pagination = websiteGroupState.data.pagination;
 
   const [loading, setLoading] = useState(false);
   const [visibleDrawer, setVisibleDrawer] = useState(false);
-  const [dataEdit, setDataEdit] = useState<UserType>({
+  const [dataEdit, setDataEdit] = useState<WebsiteGroupType>({
     id: 0,
-    username: "",
-    password: "",
-    fullName: "",
-    email: "",
-    mobile: 0,
-    status: 0,
+    name: "",
+    description: "",
     createdAt: "",
+    status: 0,
   });
   const [confirmDelete, setConfirmDelete] = useState(false);
 
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      email: userGroupState?.filter?.email || "",
-      userGroupId: userGroupState?.filter?.userGroupId || "",
-      status: userGroupState?.filter?.status || "",
+      name: websiteGroupState?.filter?.name || "",
+      status: websiteGroupState?.filter?.status || "",
     },
     onSubmit: (values) => {
       handleSearch(values);
@@ -85,15 +80,14 @@ const Index = () => {
 
   const getList = () => {
     setLoading(true);
-    const { query } = userGroupState;
-    const queryFilter = userGroupState.filter;
+    const { query } = websiteGroupState;
+    const queryFilter = websiteGroupState.filter;
 
     let params = {
       filter: JSON.stringify({}),
       range: JSON.stringify([0, PAGE_SIZE]),
       sort: JSON.stringify(["createdAt", "DESC"]),
-      attributes:
-        "id,username,fullName,email,mobile,status,createdAt,userGroupId",
+      attributes: "id,name,description,status,createdAt",
     };
     if (query?.filter !== "{}") {
       params = {
@@ -116,7 +110,7 @@ const Index = () => {
 
     dispatch(filter(queryFilter));
     dispatch({
-      type: "user/fetch",
+      type: "websiteGroup/fetch",
       payload: params,
       callback: (res: any) => {
         setLoading(false);
@@ -127,18 +121,14 @@ const Index = () => {
     });
   };
 
-  const handleSearch = (values: FilterUser) => {
+  const handleSearch = (values: FilterWebsiteGroup) => {
     setLoading(true);
     const queryName = {
-      email: values?.email?.trim(),
-      userGroupId: values?.userGroupId,
+      name: values?.name?.trim(),
       status: values?.status,
     };
-    if (!values?.email?.trim()) {
-      delete queryName.email;
-    }
-    if (!values?.userGroupId) {
-      delete queryName.userGroupId;
+    if (!values?.name?.trim()) {
+      delete queryName.name;
     }
     if (values?.status === "") {
       delete queryName.status;
@@ -148,13 +138,12 @@ const Index = () => {
       filter: JSON.stringify(queryName),
       range: JSON.stringify([0, PAGE_SIZE]),
       sort: JSON.stringify(["createdAt", "DESC"]),
-      attributes:
-        "id,username,fullName,email,mobile,status,createdAt,userGroupId",
+      attributes: "id,name,description,status,createdAt",
     };
 
     dispatch(filter(values));
     dispatch({
-      type: "user/fetch",
+      type: "websiteGroup/fetch",
       payload: query,
       callback: (res) => {
         setLoading(false);
@@ -167,18 +156,14 @@ const Index = () => {
 
   const handleTableChange = (e: ChangeEvent<unknown>, page: number) => {
     setLoading(true);
-    const queryFilter = userGroupState.filter;
+    const queryFilter = websiteGroupState.filter;
 
     const queryName = {
-      email: queryFilter?.email?.trim(),
-      userGroupId: queryFilter?.userGroupId,
+      name: queryFilter?.name?.trim(),
       status: queryFilter?.status,
     };
-    if (!queryFilter?.email?.trim()) {
-      delete queryName.email;
-    }
-    if (!queryFilter?.userGroupId) {
-      delete queryName.userGroupId;
+    if (!queryFilter?.name?.trim()) {
+      delete queryName.name;
     }
     if (queryFilter?.status === "") {
       delete queryName.status;
@@ -190,12 +175,11 @@ const Index = () => {
         page * pagination.pageSize,
       ]),
       sort: JSON.stringify(["createdAt", "DESC"]),
-      attributes:
-        "id,username,fullName,email,mobile,status,createdAt,userGroupId",
+      attributes: "id,name,description,status,createdAt",
     };
 
     dispatch({
-      type: "user/fetch",
+      type: "websiteGroup/fetch",
       payload: query,
       callback: (res) => {
         setLoading(false);
@@ -212,7 +196,7 @@ const Index = () => {
       status,
     };
     dispatch({
-      type: "user/updateStatus",
+      type: "websiteGroup/updateStatus",
       payload: {
         id: id,
         params: item,
@@ -231,7 +215,7 @@ const Index = () => {
     setConfirmDelete(false);
     if (confirmDelete) {
       dispatch({
-        type: "user/delete",
+        type: "websiteGroup/delete",
         payload: {
           id: dataEdit?.id,
         },
@@ -240,7 +224,7 @@ const Index = () => {
             createNotification("success", "Xóa bản ghi thành công!");
             getList();
           } else if (res?.success === false) {
-            createNotification("error", res?.message);
+            createNotification("error", res && res.message);
           }
         },
       });
@@ -254,19 +238,12 @@ const Index = () => {
           <Grid item xs={12} md={6} lg={3}>
             <TextField
               fullWidth
-              label="Email"
-              id="email"
-              name="email"
+              label="Tên nhóm website"
+              id="name"
+              name="name"
               size="small"
-              value={formik?.values?.email}
+              value={formik?.values?.name}
               onChange={formik.handleChange}
-            />
-          </Grid>
-          <Grid item xs={12} md={6} lg={3}>
-            <UserGroupSelect
-              formik={formik}
-              setFieldValue={formik.setFieldValue}
-              addOrEdit={false}
             />
           </Grid>
           <Grid item xs={12} md={6} lg={3}>
@@ -276,12 +253,11 @@ const Index = () => {
               setFieldValue={formik.setFieldValue}
             />
           </Grid>
-
           <Grid
             item
             xs={12}
             md={6}
-            lg={3}
+            lg={6}
             sx={{ display: "flex", justifyContent: "flex-end" }}
           >
             <Button variant="contained" endIcon={<SearchIcon />} type="submit">
@@ -312,11 +288,8 @@ const Index = () => {
         <TableCell sx={{ ...styleCell, width: "5%" }} align="center">
           #
         </TableCell>
-        <TableCell sx={styleCell}>Họ tên</TableCell>
-        <TableCell sx={styleCell}>Username</TableCell>
-        <TableCell sx={styleCell}>Email</TableCell>
-        <TableCell sx={styleCell}>Số điện thoại</TableCell>
-        <TableCell sx={styleCell}>Nhóm tài khoản</TableCell>
+        <TableCell sx={styleCell}>Tên nhóm website</TableCell>
+        <TableCell sx={styleCell}>Mô tả</TableCell>
         <TableCell align="right" sx={{ fontWeight: "bold" }}>
           Ngày tạo
         </TableCell>
@@ -330,7 +303,7 @@ const Index = () => {
     );
   };
 
-  const renderTableBody = (item: UserType, index: number) => {
+  const renderTableBody = (item: WebsiteGroupType, index: number) => {
     return (
       <TableRow hover key={item.id}>
         <TableCell sx={{ width: "5%" }} align="center">
@@ -343,12 +316,17 @@ const Index = () => {
           component="th"
           scope="row"
         >
-          {item.fullName}
+          {item.name}
         </TableCell>
-        <TableCell>{item?.username}</TableCell>
-        <TableCell>{item?.email}</TableCell>
-        <TableCell>{item?.mobile}</TableCell>
-        <TableCell>{item?.userGroup?.name}</TableCell>
+        <TableCell
+          sx={{
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            maxWidth: "624px",
+          }}
+        >
+          {item?.description}
+        </TableCell>
         <TableCell align="right">
           {moment(item?.createdAt).format("DD/MM/YYYY HH:mm")}
         </TableCell>
@@ -358,7 +336,7 @@ const Index = () => {
     );
   };
 
-  const renderStatus = (item: UserType) => {
+  const renderStatus = (item: WebsiteGroupType) => {
     return (
       <SwitchStatus
         status={item?.status}
@@ -368,7 +346,7 @@ const Index = () => {
     );
   };
 
-  const renderMenuButton = (item: UserType) => (
+  const renderMenuButton = (item: WebsiteGroupType) => (
     <>
       <Button
         variant="outlined"
@@ -403,10 +381,12 @@ const Index = () => {
             <Table>
               <TableHead>{renderTableHead()}</TableHead>
               <TableBody>
-                {userGroups?.map((item, index) => renderTableBody(item, index))}
+                {websiteGroups?.map((item, index) =>
+                  renderTableBody(item, index)
+                )}
               </TableBody>
             </Table>
-            {userGroups?.length > 0 && (
+            {websiteGroups?.length > 0 && (
               <Pagination
                 sx={{
                   mt: 2,
@@ -423,19 +403,19 @@ const Index = () => {
             )}
           </TableContainer>
 
-          {userGroups?.length === 0 && <NoData />}
+          {websiteGroups?.length === 0 && <NoData />}
           {loading && <Loading />}
         </Box>
       </MainCard>
       <NotificationContainer />
       {confirmDelete && (
         <AlertDelete
-          name={dataEdit?.fullName}
+          name={dataEdit?.name}
           open={confirmDelete}
           handleClose={handleRemove}
         />
       )}
-      <UserDrawer
+      <WebsiteGroupDrawer
         visible={visibleDrawer}
         closeDrawer={() => setVisibleDrawer(false)}
         dataEdit={dataEdit}

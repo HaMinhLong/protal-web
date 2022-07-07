@@ -108,7 +108,7 @@ export const JWTProvider = ({ children }: { children: React.ReactElement }) => {
         return res.data;
       })
       .catch((err) => {
-        return err.response.data;
+        return err;
       });
 
     if (response?.success) {
@@ -127,7 +127,10 @@ export const JWTProvider = ({ children }: { children: React.ReactElement }) => {
         },
       });
     } else if (response?.success === false) {
-      createNotification("error", response?.message);
+      createNotification(
+        "error",
+        response?.error?.username || response?.error?.password
+      );
     }
   };
 

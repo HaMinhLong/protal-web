@@ -19,7 +19,7 @@ function* getList({ payload, callback }) {
     yield put(query(payload));
     if (callback) callback(data);
   } catch (error: any) {
-    if (callback) callback(error.response.data);
+    if (callback) callback(error);
   }
 }
 
@@ -28,7 +28,7 @@ function* fetchLazyLoading({ payload, callback }) {
     const { data } = yield call(getListUser, payload);
     if (callback) callback(data);
   } catch (error: any) {
-    if (callback) callback(error.response.data);
+    if (callback) callback(error);
   }
 }
 
@@ -40,7 +40,7 @@ function* getOne({ payload: { id }, callback }) {
     }
     if (callback) callback(data);
   } catch (error: any) {
-    if (callback) callback(error.response.data);
+    if (callback) callback(error);
   }
 }
 
@@ -49,7 +49,7 @@ function* create({ payload, callback }) {
     const { data } = yield call(createUser, payload);
     if (callback) callback(data);
   } catch (error: any) {
-    if (callback) callback(error.response.data);
+    if (callback) callback(error);
   }
 }
 
@@ -58,7 +58,7 @@ function* updateRecord({ payload: { id, params }, callback }) {
     const { data } = yield call(updateUser, id, params);
     if (callback) callback(data);
   } catch (error: any) {
-    if (callback) callback(error.response.data);
+    if (callback) callback(error);
   }
 }
 
@@ -75,7 +75,7 @@ function* updateStatus({ payload: { id, params }, callback }) {
 
     if (callback) callback(data);
   } catch (error: any) {
-    if (callback) callback(error.response.data);
+    if (callback) callback(error);
   }
 }
 
@@ -84,7 +84,7 @@ function* deleteRecord({ payload: { id }, callback }) {
     const { data } = yield call(deleteUser, id);
     if (callback) callback(data);
   } catch (error: any) {
-    if (callback) callback(error.response.data);
+    if (callback) callback(error);
   }
 }
 

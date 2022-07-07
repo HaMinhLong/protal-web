@@ -24,16 +24,16 @@ import { useDispatch } from "app/store";
 import createNotification from "components/Extended/Notification";
 
 // TYPES IMPORT
-import { UserGroupType, ErrorAddOrEdit } from "types/userGroup";
+import { WebsiteGroupType, ErrorAddOrEdit } from "types/websiteGroup";
 
 interface Props {
   visible: boolean;
-  dataEdit: UserGroupType;
+  dataEdit: WebsiteGroupType;
   closeDrawer: () => void;
   getList: () => void;
 }
 
-const UserGroupDrawer = ({
+const WebsiteGroupDrawer = ({
   visible,
   closeDrawer,
   dataEdit,
@@ -51,7 +51,7 @@ const UserGroupDrawer = ({
       .string()
       .trim()
       .max(50)
-      .required("Vui lòng nhập tên nhóm tài khoản"),
+      .required("Vui lòng nhập tên nhóm website"),
     description: yup.string().trim().max(255),
   });
 
@@ -77,7 +77,7 @@ const UserGroupDrawer = ({
     };
     if (dataEdit?.id) {
       dispatch({
-        type: "userGroup/update",
+        type: "websiteGroup/update",
         payload: {
           id: dataEdit?.id,
           params: {
@@ -86,10 +86,7 @@ const UserGroupDrawer = ({
         },
         callback: (res) => {
           if (res?.success) {
-            createNotification(
-              "success",
-              "Thêm mới nhóm tài khoản thành công!"
-            );
+            createNotification("success", "Thêm mới nhóm website thành công!");
             getList();
             changeDrawer();
           } else {
@@ -101,15 +98,12 @@ const UserGroupDrawer = ({
       });
     } else {
       dispatch({
-        type: "userGroup/add",
+        type: "websiteGroup/add",
         payload: addItem,
         callback: (res) => {
           setLoading(false);
           if (res?.success) {
-            createNotification(
-              "success",
-              "Thêm mới nhóm tài khoản thành công!"
-            );
+            createNotification("success", "Thêm mới nhóm website thành công!");
             getList();
             changeDrawer();
           } else {
@@ -140,7 +134,7 @@ const UserGroupDrawer = ({
           <Typography variant="h4" sx={{ mb: 3 }}>
             {dataEdit?.id
               ? `Cập nhật thông tin ${dataEdit?.name}`
-              : "Thêm mới nhóm tài khoản"}
+              : "Thêm mới nhóm website"}
             <Divider sx={{ mt: 1 }} />
           </Typography>
           <form onSubmit={formik.handleSubmit}>
@@ -156,8 +150,8 @@ const UserGroupDrawer = ({
                         top: "-3px",
                       }}
                     >
-                      <span style={{ color: "#f44336" }}>*</span> Tên nhóm tài
-                      khoản
+                      <span style={{ color: "#f44336" }}>*</span> Tên nhóm
+                      website
                     </span>
                   }
                   id="name"
@@ -227,4 +221,4 @@ const UserGroupDrawer = ({
   );
 };
 
-export default UserGroupDrawer;
+export default WebsiteGroupDrawer;

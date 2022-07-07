@@ -16,3 +16,12 @@ export interface FilterUser {
   userGroupId?: number;
   status?: string | number;
 }
+export interface ErrorAddOrEdit {
+  fullName?: string;
+  username?: string;
+  password?: string;
+  mobile?: string;
+  email?: string;
+  userGroupId?: string;
+  status?: string;
+}

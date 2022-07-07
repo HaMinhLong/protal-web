@@ -10,6 +10,7 @@ import { ADMIN_TYPE, CUSTOMER_TYPE } from "config";
 const Dashboard = Loadable(lazy(() => import("pages/Dashboard")));
 const UserGroup = Loadable(lazy(() => import("pages/UserGroup")));
 const User = Loadable(lazy(() => import("pages/User")));
+const WebsiteGroup = Loadable(lazy(() => import("pages/WebsiteGroup")));
 const Website = Loadable(lazy(() => import("pages/Website")));
 const Category = Loadable(lazy(() => import("pages/Category")));
 const Article = Loadable(lazy(() => import("pages/Article")));
@@ -37,6 +38,11 @@ const MainRoutes = {
       path: "/user",
       role: [ADMIN_TYPE],
       element: <User />,
+    },
+    {
+      path: "/website-group",
+      role: [ADMIN_TYPE],
+      element: <WebsiteGroup />,
     },
     {
       path: "/website",

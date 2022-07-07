@@ -36,7 +36,7 @@ import {
 import UserGroupSelect from "components/Common/UserGroupSelect";
 
 // TYPES IMPORT
-import { UserType } from "types/user";
+import { UserType, ErrorAddOrEdit } from "types/user";
 
 interface Props {
   visible: boolean;
@@ -51,6 +51,7 @@ const UserDrawer = ({ visible, closeDrawer, dataEdit, getList }: Props) => {
   const matchDownSM = useMediaQuery(theme.breakpoints.down("md"));
 
   const [loading, setLoading] = useState<boolean>(false);
+  const [errors, setErrors] = useState<ErrorAddOrEdit>({});
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
 
@@ -150,6 +151,7 @@ const UserDrawer = ({ visible, closeDrawer, dataEdit, getList }: Props) => {
             getList();
             changeDrawer();
           } else {
+            setErrors(res.error);
             createNotification("error", res.message);
           }
           setLoading(false);
@@ -166,6 +168,7 @@ const UserDrawer = ({ visible, closeDrawer, dataEdit, getList }: Props) => {
             getList();
             changeDrawer();
           } else {
+            setErrors(res.error);
             createNotification("error", res.message);
           }
         },
@@ -175,6 +178,7 @@ const UserDrawer = ({ visible, closeDrawer, dataEdit, getList }: Props) => {
 
   const changeDrawer = () => {
     closeDrawer();
+    setErrors({});
     formik.resetForm();
     formik.setTouched({}, false);
   };
@@ -196,7 +200,7 @@ const UserDrawer = ({ visible, closeDrawer, dataEdit, getList }: Props) => {
         >
           <Typography variant="h4" sx={{ mb: 3 }}>
             {dataEdit?.id
-              ? `Cập nhật thông tin ${dataEdit?.fullName}`
+              ? `Cập nhật thông tin ${dataEdit?.username}`
               : "Thêm mới nhóm tài khoản"}
             <Divider sx={{ mt: 1 }} />
           </Typography>
@@ -216,11 +220,13 @@ const UserDrawer = ({ visible, closeDrawer, dataEdit, getList }: Props) => {
                   value={formik?.values?.username}
                   onChange={formik.handleChange}
                   error={
-                    formik?.touched?.username &&
-                    Boolean(formik?.errors?.username)
+                    (formik?.touched?.username &&
+                      Boolean(formik?.errors?.username)) ||
+                    Boolean(errors?.username)
                   }
                   helperText={
-                    formik?.touched?.username && formik?.errors?.username
+                    (formik?.touched?.username && formik?.errors?.username) ||
+                    errors?.username
                   }
                 />
               </Grid>
@@ -254,10 +260,13 @@ const UserDrawer = ({ visible, closeDrawer, dataEdit, getList }: Props) => {
                     value={formik.values.password}
                     onChange={formik.handleChange}
                     error={
-                      formik.touched.password && Boolean(formik.errors.password)
+                      (formik.touched.password &&
+                        Boolean(formik.errors.password)) ||
+                      Boolean(errors?.password)
                     }
                     helperText={
-                      formik.touched.password && formik.errors.password
+                      (formik.touched.password && formik.errors.password) ||
+                      errors?.password
                     }
                   />
                 </Grid>
@@ -321,11 +330,13 @@ const UserDrawer = ({ visible, closeDrawer, dataEdit, getList }: Props) => {
                   value={formik?.values?.fullName}
                   onChange={formik.handleChange}
                   error={
-                    formik?.touched?.fullName &&
-                    Boolean(formik?.errors?.fullName)
+                    (formik?.touched?.fullName &&
+                      Boolean(formik?.errors?.fullName)) ||
+                    Boolean(errors?.fullName)
                   }
                   helperText={
-                    formik?.touched?.fullName && formik?.errors?.fullName
+                    (formik?.touched?.fullName && formik?.errors?.fullName) ||
+                    errors?.fullName
                   }
                 />
               </Grid>
@@ -342,9 +353,14 @@ const UserDrawer = ({ visible, closeDrawer, dataEdit, getList }: Props) => {
                   value={formik?.values?.email}
                   onChange={formik.handleChange}
                   error={
-                    formik?.touched?.email && Boolean(formik?.errors?.email)
+                    (formik?.touched?.email &&
+                      Boolean(formik?.errors?.email)) ||
+                    Boolean(errors?.email)
                   }
-                  helperText={formik?.touched?.email && formik?.errors?.email}
+                  helperText={
+                    (formik?.touched?.email && formik?.errors?.email) ||
+                    errors?.email
+                  }
                 />
               </Grid>
               <Grid item xs={12}>
@@ -361,9 +377,14 @@ const UserDrawer = ({ visible, closeDrawer, dataEdit, getList }: Props) => {
                   value={formik?.values?.mobile}
                   onChange={formik.handleChange}
                   error={
-                    formik?.touched?.mobile && Boolean(formik?.errors?.mobile)
+                    (formik?.touched?.mobile &&
+                      Boolean(formik?.errors?.mobile)) ||
+                    Boolean(errors?.mobile)
                   }
-                  helperText={formik?.touched?.mobile && formik?.errors?.mobile}
+                  helperText={
+                    (formik?.touched?.mobile && formik?.errors?.mobile) ||
+                    errors?.mobile
+                  }
                 />
               </Grid>
               <Grid item xs={12}>

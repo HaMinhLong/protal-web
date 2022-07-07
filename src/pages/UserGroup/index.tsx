@@ -288,7 +288,7 @@ const Index = () => {
         <TableCell sx={{ ...styleCell, width: "5%" }} align="center">
           #
         </TableCell>
-        <TableCell sx={styleCell}>Tên</TableCell>
+        <TableCell sx={styleCell}>Tên nhóm tài khoản</TableCell>
         <TableCell sx={styleCell}>Mô tả</TableCell>
         <TableCell align="right" sx={{ fontWeight: "bold" }}>
           Ngày tạo

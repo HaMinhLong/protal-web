@@ -52,6 +52,15 @@ const application = {
       breadcrumbs: true,
       children: [
         {
+          id: "Nhóm website",
+          title: "Nhóm website",
+          type: "item",
+          url: "/website-group",
+          icon: IconView360,
+          breadcrumbs: true,
+          role: [ADMIN_TYPE],
+        },
+        {
           id: "Thông tin website",
           title: "Thông tin website",
           type: "item",

@@ -1,4 +1,4 @@
-export interface UserGroupType {
+export interface WebsiteGroupType {
   id?: number;
   name?: string;
   description?: string;
@@ -6,7 +6,7 @@ export interface UserGroupType {
   status?: number;
 }
 
-export interface FilterUserGroup {
+export interface FilterWebsiteGroup {
   name?: string;
   status?: string | number;
 }
