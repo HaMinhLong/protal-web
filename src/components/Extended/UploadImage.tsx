@@ -15,16 +15,17 @@ import "assets/scss/uploadImage.scss";
 interface Props {
   image: any;
   setFieldValue: any;
+  field: string;
 }
 
-const UploadImage = ({ image, setFieldValue }: Props) => {
+const UploadImage = ({ image, setFieldValue, field }: Props) => {
   const [urlFile, setUrlFile] = useState("");
 
   const handleImage = (e) => {
     const fileUpload = e.target.files[0];
     if (fileUpload) {
       setUrlFile(URL.createObjectURL(fileUpload));
-      setFieldValue("logo", fileUpload);
+      setFieldValue(field, fileUpload);
     }
   };
 

@@ -71,14 +71,21 @@ const WebsiteDrawer = ({ visible, closeDrawer, dataEdit, getList }: Props) => {
       name: values?.name?.trim(),
       nameOld: dataEdit?.name?.trim(),
     };
+
+    const addItemFormData = new FormData();
+    addItemFormData.append("name", addItem.name);
+    addItemFormData.append("nameOld", addItem.nameOld);
+    addItemFormData.append("description", addItem.description);
+    addItemFormData.append("logo", addItem.logo);
+    addItemFormData.append("websiteGroupId", addItem.websiteGroupId);
+    addItemFormData.append("status", addItem.status);
+
     if (dataEdit?.id) {
       dispatch({
         type: "website/update",
         payload: {
           id: dataEdit?.id,
-          params: {
-            ...addItem,
-          },
+          params: addItemFormData,
         },
         callback: (res) => {
           if (res?.success) {
@@ -95,7 +102,7 @@ const WebsiteDrawer = ({ visible, closeDrawer, dataEdit, getList }: Props) => {
     } else {
       dispatch({
         type: "website/add",
-        payload: addItem,
+        payload: addItemFormData,
         callback: (res) => {
           setLoading(false);
           if (res?.success) {
@@ -141,6 +148,7 @@ const WebsiteDrawer = ({ visible, closeDrawer, dataEdit, getList }: Props) => {
                   : ""
               }
               setFieldValue={formik.setFieldValue}
+              field="logo"
             />
             <Grid container spacing={3}>
               <Grid item xs={12}>
