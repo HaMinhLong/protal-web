@@ -13,7 +13,7 @@ interface Props {
   addOrEdit: boolean;
 }
 
-const UserGroupSelect = ({ formik, setFieldValue, addOrEdit }: Props) => {
+const WebsiteGroupSelect = ({ formik, setFieldValue, addOrEdit }: Props) => {
   const dispatch = useDispatch();
 
   const [lists, setLists] = useState<any>([]);
@@ -24,7 +24,7 @@ const UserGroupSelect = ({ formik, setFieldValue, addOrEdit }: Props) => {
 
   const getList = () => {
     dispatch({
-      type: "userGroup/fetchLazyLoading",
+      type: "websiteGroup/fetchLazyLoading",
       payload: { filter: JSON.stringify({ status: 1 }) },
       callback: (res) => {
         const { list } = res?.results;
@@ -54,7 +54,7 @@ const UserGroupSelect = ({ formik, setFieldValue, addOrEdit }: Props) => {
       value={
         lists?.length > 0
           ? lists?.filter(
-              (item) => item.value === formik?.values?.userGroupId
+              (item) => item.value === formik?.values?.websiteGroupId
             )[0]
           : { value: "", label: "" }
       }
@@ -63,25 +63,28 @@ const UserGroupSelect = ({ formik, setFieldValue, addOrEdit }: Props) => {
       renderInput={(params) => (
         <TextField
           {...params}
-          name="userGroupId"
+          name="websiteGroupId"
           label={
             addOrEdit ? (
               <span style={styleLabel}>
-                <span style={{ color: "#f44336" }}>*</span> Nhóm tài khoản
+                <span style={{ color: "#f44336" }}>*</span> Nhóm website
               </span>
             ) : (
-              "Nhóm tài khoản"
+              "Nhóm website"
             )
           }
           error={
-            formik.touched.userGroupId && Boolean(formik.errors?.userGroupId)
+            formik.touched.websiteGroupId &&
+            Boolean(formik.errors?.websiteGroupId)
           }
-          helperText={formik.touched.userGroupId && formik.errors.userGroupId}
+          helperText={
+            formik.touched.websiteGroupId && formik.errors.websiteGroupId
+          }
         />
       )}
-      onChange={(e, data) => setFieldValue("userGroupId", data?.value)}
+      onChange={(e, data) => setFieldValue("websiteGroupId", data?.value)}
     />
   );
 };
 
-export default UserGroupSelect;
+export default WebsiteGroupSelect;

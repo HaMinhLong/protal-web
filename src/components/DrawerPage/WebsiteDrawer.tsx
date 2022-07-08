@@ -22,23 +22,20 @@ import SaveIcon from "@mui/icons-material/Save";
 import StatusFilter from "components/Common/StatusFilter";
 import { useDispatch } from "app/store";
 import createNotification from "components/Extended/Notification";
+import WebsiteGroupSelect from "components/Common/WebsiteGroupSelect";
+import UploadImage from "components/Extended/UploadImage";
 
 // TYPES IMPORT
-import { WebsiteGroupType, ResponseError } from "types/websiteGroup";
+import { WebsiteType, ResponseError } from "types/website";
 
 interface Props {
   visible: boolean;
-  dataEdit: WebsiteGroupType;
+  dataEdit: WebsiteType;
   closeDrawer: () => void;
   getList: () => void;
 }
 
-const WebsiteGroupDrawer = ({
-  visible,
-  closeDrawer,
-  dataEdit,
-  getList,
-}: Props) => {
+const WebsiteDrawer = ({ visible, closeDrawer, dataEdit, getList }: Props) => {
   const dispatch = useDispatch();
   const theme = useTheme();
   const matchDownSM = useMediaQuery(theme.breakpoints.down("md"));
@@ -47,12 +44,9 @@ const WebsiteGroupDrawer = ({
   const [errors, setErrors] = useState<ResponseError>({});
 
   const validationSchema = yup.object().shape({
-    name: yup
-      .string()
-      .trim()
-      .max(50)
-      .required("Vui lòng nhập tên nhóm website"),
+    name: yup.string().trim().max(50).required("Vui lòng nhập tên website"),
     description: yup.string().trim().max(255),
+    websiteGroupId: yup.string().required("Vui lòng chọn nhóm website"),
   });
 
   const formik = useFormik({
@@ -60,6 +54,8 @@ const WebsiteGroupDrawer = ({
     initialValues: {
       name: dataEdit?.name || "",
       description: dataEdit?.description || "",
+      logo: dataEdit?.logo || "",
+      websiteGroupId: dataEdit?.websiteGroupId || "",
       status: dataEdit?.status === 0 ? 0 : 1,
     },
     validationSchema,
@@ -77,7 +73,7 @@ const WebsiteGroupDrawer = ({
     };
     if (dataEdit?.id) {
       dispatch({
-        type: "websiteGroup/update",
+        type: "website/update",
         payload: {
           id: dataEdit?.id,
           params: {
@@ -86,7 +82,7 @@ const WebsiteGroupDrawer = ({
         },
         callback: (res) => {
           if (res?.success) {
-            createNotification("success", "Thêm mới nhóm website thành công!");
+            createNotification("success", "Thêm mới website thành công!");
             getList();
             changeDrawer();
           } else {
@@ -98,12 +94,12 @@ const WebsiteGroupDrawer = ({
       });
     } else {
       dispatch({
-        type: "websiteGroup/add",
+        type: "website/add",
         payload: addItem,
         callback: (res) => {
           setLoading(false);
           if (res?.success) {
-            createNotification("success", "Thêm mới nhóm website thành công!");
+            createNotification("success", "Thêm mới website thành công!");
             getList();
             changeDrawer();
           } else {
@@ -134,10 +130,18 @@ const WebsiteGroupDrawer = ({
           <Typography variant="h4" sx={{ mb: 3 }}>
             {dataEdit?.id
               ? `Cập nhật thông tin ${dataEdit?.name}`
-              : "Thêm mới nhóm website"}
+              : "Thêm mới website"}
             <Divider sx={{ mt: 1 }} />
           </Typography>
           <form onSubmit={formik.handleSubmit}>
+            <UploadImage
+              image={
+                formik.values.logo
+                  ? `${process.env.REACT_APP_SERVER}${formik.values.logo}`
+                  : ""
+              }
+              setFieldValue={formik.setFieldValue}
+            />
             <Grid container spacing={3}>
               <Grid item xs={12}>
                 <TextField
@@ -169,6 +173,7 @@ const WebsiteGroupDrawer = ({
                   }
                 />
               </Grid>
+
               <Grid item xs={12}>
                 <TextField
                   fullWidth
@@ -187,6 +192,15 @@ const WebsiteGroupDrawer = ({
                   }
                 />
               </Grid>
+
+              <Grid item xs={12}>
+                <WebsiteGroupSelect
+                  formik={formik}
+                  setFieldValue={formik.setFieldValue}
+                  addOrEdit={true}
+                />
+              </Grid>
+
               <Grid item xs={12}>
                 <StatusFilter
                   addOrEdit={true}
@@ -221,4 +235,4 @@ const WebsiteGroupDrawer = ({
   );
 };
 
-export default WebsiteGroupDrawer;
+export default WebsiteDrawer;

@@ -61,8 +61,8 @@ const application = {
           role: [ADMIN_TYPE],
         },
         {
-          id: "Thông tin website",
-          title: "Thông tin website",
+          id: "Website",
+          title: "Website",
           type: "item",
           url: "/website",
           icon: IconView360,

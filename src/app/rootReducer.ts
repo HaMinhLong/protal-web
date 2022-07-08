@@ -6,6 +6,7 @@ import snackbarReducer from "features/snackbar/snackbarSlice";
 import userReducer from "features/user/userSlice";
 import userGroupReducer from "features/userGroup/userGroupSlice";
 import websiteGroupReducer from "features/websiteGroup/websiteGroupSlice";
+import websiteReducer from "features/website/websiteSlice";
 
 const rootReducer = combineReducers({
   customization: customizationReducer,
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
   user: userReducer,
   userGroup: userGroupReducer,
   websiteGroup: websiteGroupReducer,
+  website: websiteReducer,
 });
 
 export default rootReducer;

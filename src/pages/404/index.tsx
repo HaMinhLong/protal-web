@@ -2,9 +2,11 @@
 import { useNavigate } from "react-router-dom";
 
 // PROJECT IMPORT
-import "assets/scss/404.scss";
 import { DASHBOARD_PATH, ARTICLE_PATH, ADMIN_TYPE } from "config";
 import useAuth from "hooks/useAuth";
+
+// STYLES IMPORT
+import "assets/scss/404.scss";
 
 const PageNotFound = () => {
   const navigate = useNavigate();

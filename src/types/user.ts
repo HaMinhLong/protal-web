@@ -16,7 +16,7 @@ export interface FilterUser {
   userGroupId?: number;
   status?: string | number;
 }
-export interface ErrorAddOrEdit {
+export interface ResponseError {
   fullName?: string;
   username?: string;
   password?: string;

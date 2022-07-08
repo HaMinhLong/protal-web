@@ -24,7 +24,7 @@ import { useDispatch } from "app/store";
 import createNotification from "components/Extended/Notification";
 
 // TYPES IMPORT
-import { UserGroupType, ErrorAddOrEdit } from "types/userGroup";
+import { UserGroupType, ResponseError } from "types/userGroup";
 
 interface Props {
   visible: boolean;
@@ -44,7 +44,7 @@ const UserGroupDrawer = ({
   const matchDownSM = useMediaQuery(theme.breakpoints.down("md"));
 
   const [loading, setLoading] = useState<boolean>(false);
-  const [errors, setErrors] = useState<ErrorAddOrEdit>({});
+  const [errors, setErrors] = useState<ResponseError>({});
 
   const validationSchema = yup.object().shape({
     name: yup

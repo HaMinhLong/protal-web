@@ -36,7 +36,7 @@ import {
 import UserGroupSelect from "components/Common/UserGroupSelect";
 
 // TYPES IMPORT
-import { UserType, ErrorAddOrEdit } from "types/user";
+import { UserType, ResponseError } from "types/user";
 
 interface Props {
   visible: boolean;
@@ -51,7 +51,7 @@ const UserDrawer = ({ visible, closeDrawer, dataEdit, getList }: Props) => {
   const matchDownSM = useMediaQuery(theme.breakpoints.down("md"));
 
   const [loading, setLoading] = useState<boolean>(false);
-  const [errors, setErrors] = useState<ErrorAddOrEdit>({});
+  const [errors, setErrors] = useState<ResponseError>({});
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
 

@@ -11,7 +11,7 @@ export interface FilterWebsiteGroup {
   status?: string | number;
 }
 
-export interface ErrorAddOrEdit {
+export interface ResponseError {
   name?: string;
   status?: string;
 }

@@ -11,7 +11,7 @@ export interface FilterUserGroup {
   status?: string | number;
 }
 
-export interface ErrorAddOrEdit {
+export interface ResponseError {
   name?: string;
   status?: string;
 }
