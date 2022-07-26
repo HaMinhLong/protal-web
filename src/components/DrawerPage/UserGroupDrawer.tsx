@@ -5,7 +5,6 @@ import {
   Box,
   useMediaQuery,
   Grid,
-  TextField,
   Typography,
   Divider,
 } from "@mui/material";
@@ -19,6 +18,7 @@ import * as yup from "yup";
 import SaveIcon from "@mui/icons-material/Save";
 
 // PROJECT IMPORT
+import TextFieldCustom from "components/Extended/TextFieldCustom";
 import StatusFilter from "components/Common/StatusFilter";
 import { useDispatch } from "app/store";
 import createNotification from "components/Extended/Notification";
@@ -146,51 +146,20 @@ const UserGroupDrawer = ({
           <form onSubmit={formik.handleSubmit}>
             <Grid container spacing={3}>
               <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  label={
-                    <span
-                      style={{
-                        fontSize: "14px",
-                        position: "relative",
-                        top: "-3px",
-                      }}
-                    >
-                      <span style={{ color: "#f44336" }}>*</span> Tên nhóm tài
-                      khoản
-                    </span>
-                  }
-                  id="name"
+                <TextFieldCustom
                   name="name"
-                  size="small"
-                  value={formik?.values?.name}
-                  onChange={formik.handleChange}
-                  error={
-                    (formik?.touched?.name && Boolean(formik?.errors?.name)) ||
-                    Boolean(errors?.name)
-                  }
-                  helperText={
-                    (formik?.touched?.name && formik?.errors?.name) ||
-                    errors?.name
-                  }
+                  formik={formik}
+                  label="Tên nhóm tài khoản"
+                  required
                 />
               </Grid>
               <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  label="Mô tả"
-                  id="description"
+                <TextFieldCustom
                   name="description"
-                  size="small"
-                  value={formik?.values?.description}
-                  onChange={formik.handleChange}
-                  error={
-                    formik?.touched?.description &&
-                    Boolean(formik?.errors?.description)
-                  }
-                  helperText={
-                    formik?.touched?.description && formik?.errors?.description
-                  }
+                  formik={formik}
+                  label="Mô tả"
+                  multiline
+                  rows={3}
                 />
               </Grid>
               <Grid item xs={12}>

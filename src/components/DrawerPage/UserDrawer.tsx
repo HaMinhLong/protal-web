@@ -5,7 +5,6 @@ import {
   Box,
   useMediaQuery,
   Grid,
-  TextField,
   Typography,
   InputAdornment,
   IconButton,
@@ -23,6 +22,7 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 // PROJECT IMPORT
+import TextFieldCustom from "components/Extended/TextFieldCustom";
 import StatusFilter from "components/Common/StatusFilter";
 import { useDispatch } from "app/store";
 import createNotification from "components/Extended/Notification";
@@ -183,12 +183,6 @@ const UserDrawer = ({ visible, closeDrawer, dataEdit, getList }: Props) => {
     formik.setTouched({}, false);
   };
 
-  const styleLabel: any = {
-    fontSize: "14px",
-    position: "relative",
-    top: "-3px",
-  };
-
   return (
     <>
       <Drawer anchor={"right"} open={visible} onClose={changeDrawer}>
@@ -207,36 +201,20 @@ const UserDrawer = ({ visible, closeDrawer, dataEdit, getList }: Props) => {
           <form onSubmit={formik.handleSubmit}>
             <Grid container spacing={3}>
               <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  label={
-                    <span style={styleLabel}>
-                      <span style={{ color: "#f44336" }}>*</span> Tài khoản
-                    </span>
-                  }
-                  id="username"
+                <TextFieldCustom
                   name="username"
-                  size="small"
-                  value={formik?.values?.username}
-                  onChange={formik.handleChange}
-                  error={
-                    (formik?.touched?.username &&
-                      Boolean(formik?.errors?.username)) ||
-                    Boolean(errors?.username)
-                  }
-                  helperText={
-                    (formik?.touched?.username && formik?.errors?.username) ||
-                    errors?.username
-                  }
+                  formik={formik}
+                  label="Tài khoản"
+                  required
                 />
               </Grid>
               {!dataEdit.id && (
                 <Grid item xs={12}>
-                  <TextField
-                    fullWidth
-                    id="password"
+                  <TextFieldCustom
                     name="password"
-                    size="small"
+                    formik={formik}
+                    label="Mật khẩu"
+                    required
                     InputProps={{
                       endAdornment: (
                         <InputAdornment position="end">
@@ -251,33 +229,16 @@ const UserDrawer = ({ visible, closeDrawer, dataEdit, getList }: Props) => {
                         </InputAdornment>
                       ),
                     }}
-                    type={showPassword ? "text" : "password"}
-                    label={
-                      <span style={styleLabel}>
-                        <span style={{ color: "#f44336" }}>*</span> Mật khẩu
-                      </span>
-                    }
-                    value={formik.values.password}
-                    onChange={formik.handleChange}
-                    error={
-                      (formik.touched.password &&
-                        Boolean(formik.errors.password)) ||
-                      Boolean(errors?.password)
-                    }
-                    helperText={
-                      (formik.touched.password && formik.errors.password) ||
-                      errors?.password
-                    }
                   />
                 </Grid>
               )}
               {!dataEdit.id && (
                 <Grid item xs={12}>
-                  <TextField
-                    fullWidth
-                    id="password_confirmation"
+                  <TextFieldCustom
                     name="password_confirmation"
-                    size="small"
+                    formik={formik}
+                    label="Xác nhận mật khẩu"
+                    required
                     InputProps={{
                       endAdornment: (
                         <InputAdornment position="end">
@@ -296,95 +257,31 @@ const UserDrawer = ({ visible, closeDrawer, dataEdit, getList }: Props) => {
                         </InputAdornment>
                       ),
                     }}
-                    type={showPasswordConfirm ? "text" : "password"}
-                    label={
-                      <span style={styleLabel}>
-                        <span style={{ color: "#f44336" }}>*</span> Xác nhận mật
-                        khẩu
-                      </span>
-                    }
-                    value={formik.values.password_confirmation}
-                    onChange={formik.handleChange}
-                    error={
-                      formik.touched.password_confirmation &&
-                      Boolean(formik.errors?.password_confirmation)
-                    }
-                    helperText={
-                      formik.touched.password_confirmation &&
-                      formik.errors.password_confirmation
-                    }
                   />
                 </Grid>
               )}
               <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  label={
-                    <span style={styleLabel}>
-                      <span style={{ color: "#f44336" }}>*</span> Họ tên
-                    </span>
-                  }
-                  id="fullName"
+                <TextFieldCustom
                   name="fullName"
-                  size="small"
-                  value={formik?.values?.fullName}
-                  onChange={formik.handleChange}
-                  error={
-                    (formik?.touched?.fullName &&
-                      Boolean(formik?.errors?.fullName)) ||
-                    Boolean(errors?.fullName)
-                  }
-                  helperText={
-                    (formik?.touched?.fullName && formik?.errors?.fullName) ||
-                    errors?.fullName
-                  }
+                  formik={formik}
+                  label="Họ tên"
+                  required
                 />
               </Grid>
               <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  label={
-                    <span style={styleLabel}>
-                      <span style={{ color: "#f44336" }}>*</span> Email
-                    </span>
-                  }
+                <TextFieldCustom
                   name="email"
-                  size="small"
-                  value={formik?.values?.email}
-                  onChange={formik.handleChange}
-                  error={
-                    (formik?.touched?.email &&
-                      Boolean(formik?.errors?.email)) ||
-                    Boolean(errors?.email)
-                  }
-                  helperText={
-                    (formik?.touched?.email && formik?.errors?.email) ||
-                    errors?.email
-                  }
+                  formik={formik}
+                  label="Email"
+                  required
                 />
               </Grid>
               <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  label={
-                    <span style={styleLabel}>
-                      <span style={{ color: "#f44336" }}>*</span> Số điện thoại
-                    </span>
-                  }
-                  id="mobile"
+                <TextFieldCustom
                   name="mobile"
-                  size="small"
-                  value={formik?.values?.mobile}
-                  onChange={formik.handleChange}
-                  error={
-                    (formik?.touched?.mobile &&
-                      Boolean(formik?.errors?.mobile)) ||
-                    Boolean(errors?.mobile)
-                  }
-                  helperText={
-                    (formik?.touched?.mobile && formik?.errors?.mobile) ||
-                    errors?.mobile
-                  }
+                  formik={formik}
+                  label="Số điện thoại"
+                  required
                 />
               </Grid>
               <Grid item xs={12}>

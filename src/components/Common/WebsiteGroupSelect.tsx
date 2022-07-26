@@ -1,6 +1,7 @@
 // THIRD IMPORT
 import { useState, useEffect } from "react";
-import { TextField, Autocomplete } from "@mui/material";
+import { TextField, Autocomplete, FormHelperText } from "@mui/material";
+import ErrorIcon from "@mui/icons-material/Error";
 
 // TYPES IMPORT
 
@@ -46,44 +47,52 @@ const WebsiteGroupSelect = ({ formik, setFieldValue, addOrEdit }: Props) => {
   };
 
   return (
-    <Autocomplete
-      fullWidth
-      size="small"
-      disablePortal
-      id="combo-box-demo"
-      value={
-        lists?.length > 0
-          ? lists?.filter(
-              (item) => item.value === formik?.values?.websiteGroupId
-            )[0]
-          : { value: "", label: "" }
-      }
-      options={lists}
-      disableClearable={addOrEdit}
-      renderInput={(params) => (
-        <TextField
-          {...params}
-          name="websiteGroupId"
-          label={
-            addOrEdit ? (
-              <span style={styleLabel}>
-                <span style={{ color: "#f44336" }}>*</span> Nhóm website
-              </span>
-            ) : (
-              "Nhóm website"
-            )
-          }
-          error={
-            formik.touched.websiteGroupId &&
-            Boolean(formik.errors?.websiteGroupId)
-          }
-          helperText={
-            formik.touched.websiteGroupId && formik.errors.websiteGroupId
-          }
-        />
+    <>
+      <Autocomplete
+        fullWidth
+        size="small"
+        disablePortal
+        id="combo-box-demo"
+        value={
+          lists?.length > 0
+            ? lists?.filter(
+                (item) => item.value === formik?.values?.websiteGroupId
+              )[0]
+            : { value: "", label: "" }
+        }
+        options={lists}
+        disableClearable={addOrEdit}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            name="websiteGroupId"
+            label={
+              addOrEdit ? (
+                <span className="input-label">
+                  Nhóm website <span> *</span>
+                </span>
+              ) : (
+                "Nhóm website"
+              )
+            }
+            error={
+              formik.touched.websiteGroupId &&
+              Boolean(formik.errors?.websiteGroupId)
+            }
+          />
+        )}
+        onChange={(e, data) => setFieldValue("websiteGroupId", data?.value)}
+      />
+      {formik.touched.websiteGroupId && formik.errors.websiteGroupId && (
+        <FormHelperText error className="error-custom">
+          <ErrorIcon
+            fontSize="small"
+            sx={{ mr: 0.5, width: "18px", height: "18px" }}
+          />
+          {formik.errors.websiteGroupId}
+        </FormHelperText>
       )}
-      onChange={(e, data) => setFieldValue("websiteGroupId", data?.value)}
-    />
+    </>
   );
 };
 

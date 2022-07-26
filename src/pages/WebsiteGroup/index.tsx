@@ -4,7 +4,6 @@ import {
   Box,
   Grid,
   useMediaQuery,
-  TextField,
   Button,
   TableContainer,
   Table,
@@ -28,6 +27,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 
 // PROJECT IMPORT
 import MainCard from "components/Cards/MainCard";
+import TextFieldCustom from "components/Extended/TextFieldCustom";
 import { useDispatch, useSelector } from "app/store";
 import StatusFilter from "components/Common/StatusFilter";
 import { websiteGroup, filter } from "features/websiteGroup/websiteGroupSlice";
@@ -236,14 +236,11 @@ const Index = () => {
       <form onSubmit={formik.handleSubmit}>
         <Grid container spacing={2}>
           <Grid item xs={12} md={6} lg={3}>
-            <TextField
-              fullWidth
-              label="Tên nhóm website"
-              id="name"
+            <TextFieldCustom
               name="name"
-              size="small"
-              value={formik?.values?.name}
-              onChange={formik.handleChange}
+              formik={formik}
+              label="Tên nhóm website"
+              required
             />
           </Grid>
           <Grid item xs={12} md={6} lg={3}>

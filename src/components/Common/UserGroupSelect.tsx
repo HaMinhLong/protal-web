@@ -1,6 +1,7 @@
 // THIRD IMPORT
 import { useState, useEffect } from "react";
-import { TextField, Autocomplete } from "@mui/material";
+import { TextField, Autocomplete, FormHelperText } from "@mui/material";
+import ErrorIcon from "@mui/icons-material/Error";
 
 // TYPES IMPORT
 
@@ -46,41 +47,51 @@ const UserGroupSelect = ({ formik, setFieldValue, addOrEdit }: Props) => {
   };
 
   return (
-    <Autocomplete
-      fullWidth
-      size="small"
-      disablePortal
-      id="combo-box-demo"
-      value={
-        lists?.length > 0
-          ? lists?.filter(
-              (item) => item.value === formik?.values?.userGroupId
-            )[0]
-          : { value: "", label: "" }
-      }
-      options={lists}
-      disableClearable={addOrEdit}
-      renderInput={(params) => (
-        <TextField
-          {...params}
-          name="userGroupId"
-          label={
-            addOrEdit ? (
-              <span style={styleLabel}>
-                <span style={{ color: "#f44336" }}>*</span> Nhóm tài khoản
-              </span>
-            ) : (
-              "Nhóm tài khoản"
-            )
-          }
-          error={
-            formik.touched.userGroupId && Boolean(formik.errors?.userGroupId)
-          }
-          helperText={formik.touched.userGroupId && formik.errors.userGroupId}
-        />
+    <>
+      <Autocomplete
+        fullWidth
+        size="small"
+        disablePortal
+        id="combo-box-demo"
+        value={
+          lists?.length > 0
+            ? lists?.filter(
+                (item) => item.value === formik?.values?.userGroupId
+              )[0]
+            : { value: "", label: "" }
+        }
+        options={lists}
+        disableClearable={addOrEdit}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            name="userGroupId"
+            label={
+              addOrEdit ? (
+                <span className="input-label">
+                  Nhóm tài khoản <span> *</span>
+                </span>
+              ) : (
+                "Nhóm tài khoản"
+              )
+            }
+            error={
+              formik.touched.userGroupId && Boolean(formik.errors?.userGroupId)
+            }
+          />
+        )}
+        onChange={(e, data) => setFieldValue("userGroupId", data?.value)}
+      />
+      {formik.touched.userGroupId && formik.errors.userGroupId && (
+        <FormHelperText error className="error-custom">
+          <ErrorIcon
+            fontSize="small"
+            sx={{ mr: 0.5, width: "18px", height: "18px" }}
+          />
+          {formik.errors.userGroupId}
+        </FormHelperText>
       )}
-      onChange={(e, data) => setFieldValue("userGroupId", data?.value)}
-    />
+    </>
   );
 };
 
