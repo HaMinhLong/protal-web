@@ -86,6 +86,7 @@ const TextFieldCustom = ({
       errors?.[name],
       required,
       label,
+      type,
     ]
   );
 

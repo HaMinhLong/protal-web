@@ -24,7 +24,7 @@ import { useDispatch } from "app/store";
 import createNotification from "components/Extended/Notification";
 
 // TYPES IMPORT
-import { WebsiteGroupType } from "types/websiteGroup";
+import { WebsiteGroupType, ResponseError } from "types/websiteGroup";
 
 interface Props {
   visible: boolean;
@@ -44,6 +44,7 @@ const WebsiteGroupDrawer = ({
   const matchDownSM = useMediaQuery(theme.breakpoints.down("md"));
 
   const [loading, setLoading] = useState<boolean>(false);
+  const [errors, setErrors] = useState<ResponseError>({});
 
   const validationSchema = yup.object().shape({
     name: yup
@@ -89,6 +90,7 @@ const WebsiteGroupDrawer = ({
             getList();
             changeDrawer();
           } else {
+            setErrors(res.error);
             createNotification("error", res.message);
           }
           setLoading(false);
@@ -105,6 +107,7 @@ const WebsiteGroupDrawer = ({
             getList();
             changeDrawer();
           } else {
+            setErrors(res.error);
             createNotification("error", res.message);
           }
         },
@@ -116,6 +119,7 @@ const WebsiteGroupDrawer = ({
     closeDrawer();
     formik.resetForm();
     formik.setTouched({}, false);
+    setErrors({});
   };
 
   return (
@@ -139,18 +143,22 @@ const WebsiteGroupDrawer = ({
                 <TextFieldCustom
                   name="name"
                   formik={formik}
+                  errors={errors}
                   label="Tên nhóm website"
                 />
               </Grid>
+
               <Grid item xs={12}>
                 <TextFieldCustom
                   name="description"
                   formik={formik}
+                  errors={errors}
                   label="Mô tả"
                   multiline
                   rows={3}
                 />
               </Grid>
+
               <Grid item xs={12}>
                 <StatusFilter
                   addOrEdit={true}

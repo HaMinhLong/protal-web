@@ -155,6 +155,7 @@ const WebsiteDrawer = ({ visible, closeDrawer, dataEdit, getList }: Props) => {
                 <TextFieldCustom
                   name="name"
                   formik={formik}
+                  errors={errors}
                   label="Tên nhóm website"
                   required
                 />
@@ -172,6 +173,7 @@ const WebsiteDrawer = ({ visible, closeDrawer, dataEdit, getList }: Props) => {
                 <TextFieldCustom
                   name="description"
                   formik={formik}
+                  errors={errors}
                   label="Mô tả"
                   multiline
                   rows={3}

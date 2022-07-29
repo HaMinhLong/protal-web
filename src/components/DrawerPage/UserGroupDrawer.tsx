@@ -149,6 +149,7 @@ const UserGroupDrawer = ({
                 <TextFieldCustom
                   name="name"
                   formik={formik}
+                  errors={errors}
                   label="Tên nhóm tài khoản"
                   required
                 />
@@ -157,6 +158,7 @@ const UserGroupDrawer = ({
                 <TextFieldCustom
                   name="description"
                   formik={formik}
+                  errors={errors}
                   label="Mô tả"
                   multiline
                   rows={3}

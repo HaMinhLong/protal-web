@@ -205,13 +205,17 @@ const UserDrawer = ({ visible, closeDrawer, dataEdit, getList }: Props) => {
                   name="username"
                   formik={formik}
                   label="Tài khoản"
+                  errors={errors}
                   required
                 />
               </Grid>
+
               {!dataEdit.id && (
                 <Grid item xs={12}>
                   <TextFieldCustom
+                    errors={errors}
                     name="password"
+                    type={showPassword ? "text" : "password"}
                     formik={formik}
                     label="Mật khẩu"
                     required
@@ -232,12 +236,15 @@ const UserDrawer = ({ visible, closeDrawer, dataEdit, getList }: Props) => {
                   />
                 </Grid>
               )}
+
               {!dataEdit.id && (
                 <Grid item xs={12}>
                   <TextFieldCustom
                     name="password_confirmation"
                     formik={formik}
+                    type={showPasswordConfirm ? "text" : "password"}
                     label="Xác nhận mật khẩu"
+                    errors={errors}
                     required
                     InputProps={{
                       endAdornment: (
@@ -260,30 +267,37 @@ const UserDrawer = ({ visible, closeDrawer, dataEdit, getList }: Props) => {
                   />
                 </Grid>
               )}
+
               <Grid item xs={12}>
                 <TextFieldCustom
                   name="fullName"
                   formik={formik}
                   label="Họ tên"
+                  errors={errors}
                   required
                 />
               </Grid>
+
               <Grid item xs={12}>
                 <TextFieldCustom
                   name="email"
                   formik={formik}
                   label="Email"
+                  errors={errors}
                   required
                 />
               </Grid>
+
               <Grid item xs={12}>
                 <TextFieldCustom
                   name="mobile"
                   formik={formik}
                   label="Số điện thoại"
+                  errors={errors}
                   required
                 />
               </Grid>
+
               <Grid item xs={12}>
                 <UserGroupSelect
                   formik={formik}
