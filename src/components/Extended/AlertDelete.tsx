@@ -24,11 +24,7 @@ export default function AlertDelete({ name, open, handleClose }: Props) {
             <p>{name} - Bạn có chắc chắn muốn xóa không?</p>
           </DialogTitle>{" "}
           <DialogActions sx={{ mr: 2 }}>
-            <Button
-              onClick={() => handleClose(false)}
-              variant="contained"
-              color="error"
-            >
+            <Button onClick={() => handleClose(false)} variant="outlined">
               Hủy
             </Button>
             <Button

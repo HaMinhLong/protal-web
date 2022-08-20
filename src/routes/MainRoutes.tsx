@@ -15,6 +15,7 @@ const Website = Loadable(lazy(() => import("pages/Website")));
 const Category = Loadable(lazy(() => import("pages/Category")));
 const Article = Loadable(lazy(() => import("pages/Article")));
 const Product = Loadable(lazy(() => import("pages/Product")));
+const Menu = Loadable(lazy(() => import("pages/Menu")));
 
 const MainRoutes = {
   path: "/",
@@ -63,6 +64,11 @@ const MainRoutes = {
       path: "/product",
       role: [ADMIN_TYPE, CUSTOMER_TYPE],
       element: <Product />,
+    },
+    {
+      path: "/menu",
+      role: [ADMIN_TYPE],
+      element: <Menu />,
     },
   ],
 };

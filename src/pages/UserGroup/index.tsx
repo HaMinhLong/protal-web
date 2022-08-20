@@ -2,7 +2,6 @@
 import { useState, useEffect, ChangeEvent } from "react";
 import {
   Box,
-  Grid,
   useMediaQuery,
   Button,
   TableContainer,
@@ -16,20 +15,13 @@ import {
 } from "@mui/material";
 import moment from "moment";
 import { useTheme } from "@mui/material/styles";
-import { useFormik } from "formik";
-import { NotificationContainer } from "react-notifications";
-
 // ICON IMPORT
-import SearchIcon from "@mui/icons-material/Search";
-import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 // PROJECT IMPORT
 import MainCard from "components/Cards/MainCard";
-import TextFieldCustom from "components/Extended/TextFieldCustom";
 import { useDispatch, useSelector } from "app/store";
-import StatusFilter from "components/Common/StatusFilter";
 import { userGroup, filter } from "features/userGroup/userGroupSlice";
 import SwitchStatus from "components/Extended/SwitchStatus";
 import createNotification from "components/Extended/Notification";
@@ -37,9 +29,10 @@ import Loading from "components/Extended/Loading";
 import NoData from "components/Extended/NoData";
 import UserGroupDrawer from "components/DrawerPage/UserGroupDrawer";
 import AlertDelete from "components/Extended/AlertDelete";
+import SearchForm from "pages/UserGroup/SearchForm";
 
 // TYPES IMPORT
-import { FilterUserGroup, UserGroupType } from "types/userGroup";
+import { UserGroupType } from "types/userGroup";
 
 const PAGE_SIZE = Number(process.env.REACT_APP_PAGE_SIZE);
 
@@ -62,17 +55,6 @@ const Index = () => {
     status: 0,
   });
   const [confirmDelete, setConfirmDelete] = useState(false);
-
-  const formik = useFormik({
-    enableReinitialize: true,
-    initialValues: {
-      name: userGroupState?.filter?.name || "",
-      status: userGroupState?.filter?.status || "",
-    },
-    onSubmit: (values) => {
-      handleSearch(values);
-    },
-  });
 
   useEffect(() => {
     getList();
@@ -113,39 +95,6 @@ const Index = () => {
       type: "userGroup/fetch",
       payload: params,
       callback: (res: any) => {
-        setLoading(false);
-        if (res?.success === false) {
-          createNotification("error", res?.message);
-        }
-      },
-    });
-  };
-
-  const handleSearch = (values: FilterUserGroup) => {
-    setLoading(true);
-    const queryName = {
-      name: values?.name?.trim(),
-      status: values?.status,
-    };
-    if (!values?.name?.trim()) {
-      delete queryName.name;
-    }
-    if (values?.status === "") {
-      delete queryName.status;
-    }
-
-    const query = {
-      filter: JSON.stringify(queryName),
-      range: JSON.stringify([0, PAGE_SIZE]),
-      sort: JSON.stringify(["createdAt", "DESC"]),
-      attributes: "id,name,description,status,createdAt",
-    };
-
-    dispatch(filter(values));
-    dispatch({
-      type: "userGroup/fetch",
-      payload: query,
-      callback: (res) => {
         setLoading(false);
         if (res?.success === false) {
           createNotification("error", res?.message);
@@ -231,52 +180,6 @@ const Index = () => {
     }
   };
 
-  const renderSearchForm = () => {
-    return (
-      <form onSubmit={formik.handleSubmit}>
-        <Grid container spacing={2}>
-          <Grid item xs={12} md={6} lg={3}>
-            <TextFieldCustom
-              name="name"
-              formik={formik}
-              label="Tên nhóm tài khoản"
-            />
-          </Grid>
-          <Grid item xs={12} md={6} lg={3}>
-            <StatusFilter
-              addOrEdit={false}
-              formik={formik}
-              setFieldValue={formik.setFieldValue}
-            />
-          </Grid>
-          <Grid
-            item
-            xs={12}
-            md={6}
-            lg={6}
-            sx={{ display: "flex", justifyContent: "flex-end" }}
-          >
-            <Button variant="contained" endIcon={<SearchIcon />} type="submit">
-              Tìm kiếm
-            </Button>
-            <Button
-              variant="outlined"
-              color="success"
-              endIcon={<AddIcon />}
-              sx={{ ml: 2 }}
-              onClick={() => {
-                setDataEdit({});
-                setVisibleDrawer(true);
-              }}
-            >
-              Thêm mới
-            </Button>
-          </Grid>
-        </Grid>
-      </form>
-    );
-  };
-
   const renderTableHead = () => {
     const styleCell = { whiteSpace: "nowrap", fontWeight: "bold" };
     return (
@@ -312,7 +215,7 @@ const Index = () => {
           component="th"
           scope="row"
         >
-          {item.name}
+          {item?.name}
         </TableCell>
         <TableCell
           sx={{
@@ -371,7 +274,15 @@ const Index = () => {
 
   return (
     <>
-      <MainCard title={renderSearchForm()} content={false}>
+      <MainCard
+        title={
+          <SearchForm
+            setDataEdit={setDataEdit}
+            setVisibleDrawer={setVisibleDrawer}
+          />
+        }
+        content={false}
+      >
         <Box sx={{ position: "relative", pb: 2 }}>
           <TableContainer sx={{ overflow: "auto" }}>
             <Table>
@@ -380,6 +291,7 @@ const Index = () => {
                 {userGroups?.map((item, index) => renderTableBody(item, index))}
               </TableBody>
             </Table>
+
             {userGroups?.length > 0 && (
               <Pagination
                 sx={{
@@ -401,7 +313,6 @@ const Index = () => {
           {loading && <Loading />}
         </Box>
       </MainCard>
-      <NotificationContainer />
       {confirmDelete && (
         <AlertDelete
           name={dataEdit?.name}
