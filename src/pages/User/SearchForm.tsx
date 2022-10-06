@@ -1,53 +1,59 @@
-// tHIRD IMPORT
-import { Dispatch, SetStateAction } from "react";
-import { useFormik } from "formik";
+// THIRD IMPORT
+import React, { Dispatch, SetStateAction } from "react";
 import { Grid, Button } from "@mui/material";
+import { useFormik } from "formik";
 
 // ICON IMPORT
 import SearchIcon from "@mui/icons-material/Search";
 import AddIcon from "@mui/icons-material/Add";
 
 // PROJECT IMPORT
+import { user, filter } from "features/user/userSlice";
 import { useDispatch, useSelector } from "app/store";
-import { userGroup, filter } from "features/userGroup/userGroupSlice";
 import TextFieldCustom from "components/Extended/TextFieldCustom";
 import StatusFilter from "components/Common/StatusFilter";
 import createNotification from "components/Extended/Notification";
+import UserGroupSelect from "components/Common/UserGroupSelect";
 
 // TYPES IMPORT
-import { FilterUserGroup, UserGroupType } from "types/userGroup";
+import { FilterUser, UserType } from "types/user";
+interface Props {
+  setDataEdit: Dispatch<SetStateAction<UserType>>;
+  setVisibleDrawer: Dispatch<SetStateAction<boolean>>;
+  setLoading: Dispatch<SetStateAction<boolean>>;
+}
 
 const PAGE_SIZE = Number(process.env.REACT_APP_PAGE_SIZE);
 
-type Props = {
-  setDataEdit: Dispatch<SetStateAction<UserGroupType>>;
-  setVisibleDrawer: Dispatch<SetStateAction<boolean>>;
-  setLoading: Dispatch<SetStateAction<boolean>>;
-};
-
 const SearchForm = ({ setDataEdit, setVisibleDrawer, setLoading }: Props) => {
   const dispatch = useDispatch();
-  const userGroupState = useSelector(userGroup);
+
+  const userState = useSelector(user);
 
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      name: userGroupState?.filter?.name || "",
-      status: userGroupState?.filter?.status || "",
+      email: userState?.filter?.email || "",
+      userGroupId: userState?.filter?.userGroupId || "",
+      status: userState?.filter?.status || "",
     },
     onSubmit: (values) => {
       handleSearch(values);
     },
   });
 
-  const handleSearch = (values: FilterUserGroup) => {
+  const handleSearch = (values: FilterUser) => {
     setLoading(true);
-    const queryName: FilterUserGroup = {
-      name: values?.name?.trim(),
-      status: `${values?.status}`,
+    const queryName = {
+      email: values?.email?.trim(),
+      userGroupId: values?.userGroupId,
+      status: values?.status,
     };
-    if (!values?.name?.trim()) {
-      delete queryName.name;
+    if (!values?.email?.trim()) {
+      delete queryName.email;
+    }
+    if (!values?.userGroupId) {
+      delete queryName.userGroupId;
     }
     if (values?.status === "") {
       delete queryName.status;
@@ -57,12 +63,13 @@ const SearchForm = ({ setDataEdit, setVisibleDrawer, setLoading }: Props) => {
       filter: JSON.stringify(queryName),
       range: JSON.stringify([0, PAGE_SIZE]),
       sort: JSON.stringify(["createdAt", "DESC"]),
-      attributes: "id,name,description,status,createdAt",
+      attributes:
+        "id,username,fullName,email,mobile,status,createdAt,userGroupId",
     };
 
     dispatch(filter(values));
     dispatch({
-      type: "userGroup/fetch",
+      type: "user/fetch",
       payload: query,
       callback: (res) => {
         setLoading(false);
@@ -77,10 +84,13 @@ const SearchForm = ({ setDataEdit, setVisibleDrawer, setLoading }: Props) => {
     <form onSubmit={formik.handleSubmit}>
       <Grid container spacing={2}>
         <Grid item xs={12} md={6} lg={3}>
-          <TextFieldCustom
-            name="name"
+          <TextFieldCustom name="email" formik={formik} label="Email" />
+        </Grid>
+        <Grid item xs={12} md={6} lg={3}>
+          <UserGroupSelect
             formik={formik}
-            label="Tên nhóm tài khoản"
+            setFieldValue={formik.setFieldValue}
+            addOrEdit={false}
           />
         </Grid>
         <Grid item xs={12} md={6} lg={3}>
@@ -90,11 +100,12 @@ const SearchForm = ({ setDataEdit, setVisibleDrawer, setLoading }: Props) => {
             setFieldValue={formik.setFieldValue}
           />
         </Grid>
+
         <Grid
           item
           xs={12}
           md={6}
-          lg={6}
+          lg={3}
           sx={{ display: "flex", justifyContent: "flex-end" }}
         >
           <Button variant="contained" endIcon={<SearchIcon />} type="submit">

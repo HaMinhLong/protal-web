@@ -19,6 +19,7 @@ const StatusFilter = ({ formik, setFieldValue, addOrEdit }: Props) => {
         fullWidth
         size="small"
         disablePortal
+        disableClearable
         id="combo-box-demo"
         value={
           SortStatus?.filter((item) => item.value === formik?.values?.status)[0]
@@ -28,7 +29,6 @@ const StatusFilter = ({ formik, setFieldValue, addOrEdit }: Props) => {
             ? SortStatus.filter((item) => item.value !== "")
             : SortStatus
         }
-        disableClearable={addOrEdit ? true : false}
         renderInput={(params) => <TextField {...params} label="Trạng thái" />}
         onChange={(e, status) => setFieldValue("status", status?.value)}
       />

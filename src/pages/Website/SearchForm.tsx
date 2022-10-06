@@ -1,49 +1,53 @@
-// tHIRD IMPORT
+// THIRD IMPORT
 import { Dispatch, SetStateAction } from "react";
-import { useFormik } from "formik";
 import { Grid, Button } from "@mui/material";
+import { useFormik } from "formik";
 
 // ICON IMPORT
 import SearchIcon from "@mui/icons-material/Search";
 import AddIcon from "@mui/icons-material/Add";
 
 // PROJECT IMPORT
+import { website, filter } from "features/website/websiteSlice";
 import { useDispatch, useSelector } from "app/store";
-import { userGroup, filter } from "features/userGroup/userGroupSlice";
 import TextFieldCustom from "components/Extended/TextFieldCustom";
 import StatusFilter from "components/Common/StatusFilter";
 import createNotification from "components/Extended/Notification";
+import WebsiteGroupSelect from "components/Common/WebsiteGroupSelect";
 
 // TYPES IMPORT
-import { FilterUserGroup, UserGroupType } from "types/userGroup";
+import { FilterWebsite, WebsiteType } from "types/website";
+
+interface Props {
+  setDataEdit: Dispatch<SetStateAction<WebsiteType>>;
+  setVisibleDrawer: Dispatch<SetStateAction<boolean>>;
+  setLoading: Dispatch<SetStateAction<boolean>>;
+}
 
 const PAGE_SIZE = Number(process.env.REACT_APP_PAGE_SIZE);
 
-type Props = {
-  setDataEdit: Dispatch<SetStateAction<UserGroupType>>;
-  setVisibleDrawer: Dispatch<SetStateAction<boolean>>;
-  setLoading: Dispatch<SetStateAction<boolean>>;
-};
-
 const SearchForm = ({ setDataEdit, setVisibleDrawer, setLoading }: Props) => {
   const dispatch = useDispatch();
-  const userGroupState = useSelector(userGroup);
+
+  const websiteState = useSelector(website);
 
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      name: userGroupState?.filter?.name || "",
-      status: userGroupState?.filter?.status || "",
+      name: websiteState?.filter?.name || "",
+      websiteGroupId: websiteState?.filter?.websiteGroupId || "",
+      status: websiteState?.filter?.status || "",
     },
     onSubmit: (values) => {
       handleSearch(values);
     },
   });
 
-  const handleSearch = (values: FilterUserGroup) => {
+  const handleSearch = (values: FilterWebsite) => {
     setLoading(true);
-    const queryName: FilterUserGroup = {
+    const queryName: FilterWebsite = {
       name: values?.name?.trim(),
+      websiteGroupId: values?.websiteGroupId,
       status: `${values?.status}`,
     };
     if (!values?.name?.trim()) {
@@ -52,17 +56,20 @@ const SearchForm = ({ setDataEdit, setVisibleDrawer, setLoading }: Props) => {
     if (values?.status === "") {
       delete queryName.status;
     }
+    if (values?.websiteGroupId === "") {
+      delete queryName.websiteGroupId;
+    }
 
     const query = {
       filter: JSON.stringify(queryName),
       range: JSON.stringify([0, PAGE_SIZE]),
       sort: JSON.stringify(["createdAt", "DESC"]),
-      attributes: "id,name,description,status,createdAt",
+      attributes: "id,name,description,logo,websiteGroupId,status,createdAt",
     };
 
     dispatch(filter(values));
     dispatch({
-      type: "userGroup/fetch",
+      type: "website/fetch",
       payload: query,
       callback: (res) => {
         setLoading(false);
@@ -77,10 +84,13 @@ const SearchForm = ({ setDataEdit, setVisibleDrawer, setLoading }: Props) => {
     <form onSubmit={formik.handleSubmit}>
       <Grid container spacing={2}>
         <Grid item xs={12} md={6} lg={3}>
-          <TextFieldCustom
-            name="name"
+          <TextFieldCustom name="name" formik={formik} label="Tên website" />
+        </Grid>
+        <Grid item xs={12} md={6} lg={3}>
+          <WebsiteGroupSelect
             formik={formik}
-            label="Tên nhóm tài khoản"
+            setFieldValue={formik.setFieldValue}
+            addOrEdit={false}
           />
         </Grid>
         <Grid item xs={12} md={6} lg={3}>
@@ -94,7 +104,7 @@ const SearchForm = ({ setDataEdit, setVisibleDrawer, setLoading }: Props) => {
           item
           xs={12}
           md={6}
-          lg={6}
+          lg={3}
           sx={{ display: "flex", justifyContent: "flex-end" }}
         >
           <Button variant="contained" endIcon={<SearchIcon />} type="submit">

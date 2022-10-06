@@ -1,11 +1,13 @@
 // THIRD IMPORT
-import React, { FC, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ReactSortable } from "react-sortablejs";
 import { Box } from "@mui/material";
 
 // PROJECT IMPORT
 import MainCard from "components/Cards/MainCard";
-import { useDispatch } from "app/store";
+import { useDispatch, useSelector } from "app/store";
+import { menuWebsite, filter } from "features/menuWebsite/menuWebsiteSlice";
+import createNotification from "components/Extended/Notification";
 
 const PAGE_SIZE = Number(process.env.REACT_APP_PAGE_SIZE);
 
@@ -18,6 +20,41 @@ interface ItemType {
 
 const Index = () => {
   const dispatch = useDispatch();
+
+  const menuState = useSelector(menuWebsite);
+  const menus = menuState.data.list;
+  const pagination = menuState.data.pagination;
+
+  const [loading, setLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    getList();
+  }, []);
+
+  const getList = () => {
+    setLoading(true);
+    const { query } = menuState;
+    const queryFilter = menuState.filter;
+
+    let params = {
+      filter: JSON.stringify({}),
+      range: JSON.stringify([0, PAGE_SIZE]),
+      sort: JSON.stringify(["createdAt", "DESC"]),
+      attributes: "id,name,droppable,position,websiteId,status,createdAt",
+    };
+
+    dispatch(filter(queryFilter));
+    dispatch({
+      type: "menuWebsite/fetch",
+      payload: params,
+      callback: (res: any) => {
+        setLoading(false);
+        if (res?.success === false) {
+          createNotification("error", res?.message);
+        }
+      },
+    });
+  };
 
   const [menu, setMenus] = useState<ItemType[]>([
     {

@@ -1,48 +1,49 @@
-// tHIRD IMPORT
-import { Dispatch, SetStateAction } from "react";
-import { useFormik } from "formik";
+// THIRD IMPORT
+import React, { Dispatch, SetStateAction } from "react";
 import { Grid, Button } from "@mui/material";
+import { useFormik } from "formik";
 
 // ICON IMPORT
 import SearchIcon from "@mui/icons-material/Search";
 import AddIcon from "@mui/icons-material/Add";
 
 // PROJECT IMPORT
+import { websiteGroup, filter } from "features/websiteGroup/websiteGroupSlice";
 import { useDispatch, useSelector } from "app/store";
-import { userGroup, filter } from "features/userGroup/userGroupSlice";
 import TextFieldCustom from "components/Extended/TextFieldCustom";
 import StatusFilter from "components/Common/StatusFilter";
 import createNotification from "components/Extended/Notification";
 
 // TYPES IMPORT
-import { FilterUserGroup, UserGroupType } from "types/userGroup";
+import { FilterWebsiteGroup, WebsiteGroupType } from "types/websiteGroup";
+
+interface Props {
+  setDataEdit: Dispatch<SetStateAction<WebsiteGroupType>>;
+  setVisibleDrawer: Dispatch<SetStateAction<boolean>>;
+  setLoading: Dispatch<SetStateAction<boolean>>;
+}
 
 const PAGE_SIZE = Number(process.env.REACT_APP_PAGE_SIZE);
 
-type Props = {
-  setDataEdit: Dispatch<SetStateAction<UserGroupType>>;
-  setVisibleDrawer: Dispatch<SetStateAction<boolean>>;
-  setLoading: Dispatch<SetStateAction<boolean>>;
-};
-
 const SearchForm = ({ setDataEdit, setVisibleDrawer, setLoading }: Props) => {
   const dispatch = useDispatch();
-  const userGroupState = useSelector(userGroup);
+
+  const websiteGroupState = useSelector(websiteGroup);
 
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      name: userGroupState?.filter?.name || "",
-      status: userGroupState?.filter?.status || "",
+      name: websiteGroupState?.filter?.name || "",
+      status: websiteGroupState?.filter?.status || "",
     },
     onSubmit: (values) => {
       handleSearch(values);
     },
   });
 
-  const handleSearch = (values: FilterUserGroup) => {
+  const handleSearch = (values: FilterWebsiteGroup) => {
     setLoading(true);
-    const queryName: FilterUserGroup = {
+    const queryName: FilterWebsiteGroup = {
       name: values?.name?.trim(),
       status: `${values?.status}`,
     };
@@ -62,7 +63,7 @@ const SearchForm = ({ setDataEdit, setVisibleDrawer, setLoading }: Props) => {
 
     dispatch(filter(values));
     dispatch({
-      type: "userGroup/fetch",
+      type: "websiteGroup/fetch",
       payload: query,
       callback: (res) => {
         setLoading(false);
@@ -80,7 +81,7 @@ const SearchForm = ({ setDataEdit, setVisibleDrawer, setLoading }: Props) => {
           <TextFieldCustom
             name="name"
             formik={formik}
-            label="Tên nhóm tài khoản"
+            label="Tên nhóm website"
           />
         </Grid>
         <Grid item xs={12} md={6} lg={3}>
