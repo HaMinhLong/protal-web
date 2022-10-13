@@ -1,25 +1,38 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 // THIRD IMPORT
-import React, { Dispatch, SetStateAction, useMemo } from "react";
-import { Typography } from "@mui/material";
+import React, { useState, Dispatch, SetStateAction, useMemo } from "react";
+import { Box, Button, Typography } from "@mui/material";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { NodeModel, useDragOver } from "@minoru/react-dnd-treeview";
 import DescriptionIcon from "@mui/icons-material/Description";
 
+// ICONS IMPORT
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+
 // PROJECT IMPORT
-import { CustomData } from "types/menuWebsite";
 import TypeIcon from "pages/Menu/treeNode/TypeIcon";
 import styles from "pages/Menu/css/CustomNode.module.css";
+import Chip from "components/Extended/Chip";
+import { useDispatch } from "app/store";
+
+// TYPES IMPORT
+import { MenuType } from "types/menuWebsite";
+import createNotification from "components/Extended/Notification";
+import AlertDelete from "components/Extended/AlertDelete";
 
 type Props = {
-  node: NodeModel<CustomData>;
+  node: any;
   depth: number;
   isOpen: boolean;
   onToggle: (id: NodeModel["id"]) => void;
   selectedCategory: string | number;
   setSelectedCategory: Dispatch<SetStateAction<string | number>>;
-  setAddNew: Dispatch<SetStateAction<boolean>>;
+  setVisibleDrawer: Dispatch<SetStateAction<boolean>>;
+  setIsAddNew: Dispatch<SetStateAction<boolean>>;
   treeData: any;
+  getList: () => void;
 };
 
 const CustomNode = ({
@@ -29,11 +42,16 @@ const CustomNode = ({
   onToggle,
   selectedCategory,
   setSelectedCategory,
-  setAddNew,
+  setVisibleDrawer,
+  setIsAddNew,
   treeData,
+  getList,
 }: Props) => {
+  const dispatch = useDispatch();
   const { id, droppable, data } = node;
-  const indent = depth * 24;
+
+  const [confirmDelete, setConfirmDelete] = useState<boolean>(false);
+  const [dataEdit, setDataEdit] = useState<MenuType>({});
 
   const handleToggle = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -47,11 +65,37 @@ const CustomNode = ({
     return false;
   };
 
+  const styleCell = {
+    display: "inline-block",
+    p: "4px 16px",
+  };
+
+  const handleRemove = (confirmDelete: boolean) => {
+    setConfirmDelete(false);
+    if (confirmDelete) {
+      dispatch({
+        type: "menuWebsite/delete",
+        payload: {
+          id: selectedCategory,
+        },
+        callback: (res) => {
+          if (res?.success === true) {
+            createNotification("success", res?.message);
+            setSelectedCategory("");
+            getList();
+          } else if (res?.success === false) {
+            createNotification("error", res?.message);
+          }
+        },
+      });
+    }
+  };
+
   const customNode = useMemo(
     () => (
-      <div
+      <Box
         className={`tree-node ${styles.root}`}
-        style={{ paddingInlineStart: indent }}
+        sx={{ mb: "10px" }}
         {...dragOverProps}
       >
         <div
@@ -73,31 +117,80 @@ const CustomNode = ({
           {findChild(node?.id) ? (
             <TypeIcon droppable={droppable} fileType={data?.fileType} />
           ) : (
-            <DescriptionIcon />
+            <DescriptionIcon color="primary" />
           )}
         </div>
-        <div className={styles.labelGridItem}>
-          <Typography
-            variant="body2"
-            onClick={() => {
-              setSelectedCategory(id);
-              setAddNew(false);
-            }}
-            sx={{
-              background: `${selectedCategory === id ? "#2196f3" : "#fff"}`,
-              p: "2px 10px",
-              display: "inline-block",
-              borderRadius: "8px",
-              color: `${selectedCategory === id ? "#fff" : "#616161"}`,
-              cursor: "pointer",
-            }}
-          >
-            {node?.text}
-          </Typography>
-        </div>
-      </div>
+        <Box
+          className={styles.labelGridItem}
+          onClick={() => {
+            setSelectedCategory(id);
+          }}
+          display="flex"
+          alignItems="center"
+          justifyContent="space-between"
+          sx={{
+            borderBottom: `1.5px solid ${
+              selectedCategory === id ? "#2196f3" : "#fff"
+            }`,
+            p: "2px 10px 0px",
+            cursor: "pointer",
+          }}
+        >
+          <Box>
+            <Typography sx={{ ...styleCell }} color="primary">
+              {node?.text}
+            </Typography>
+            <Typography sx={styleCell}>{node?.url}</Typography>
+            <Typography sx={styleCell}>{node?.icon}</Typography>
+            <Typography sx={styleCell}>{node?.website?.name}</Typography>
+            <Typography sx={styleCell}>
+              {node?.status ? (
+                <Chip label="Active" size="small" chipColor="success" />
+              ) : (
+                <Chip label="Inactive" size="small" chipColor="error" />
+              )}
+            </Typography>
+          </Box>
+          <Box sx={{ ...styleCell, width: "200px" }}>
+            <Button
+              variant="outlined"
+              endIcon={<EditIcon />}
+              size="small"
+              onClick={() => {
+                console.log("hh");
+                setVisibleDrawer(true);
+                setSelectedCategory(node?.id);
+                setIsAddNew(false);
+              }}
+            >
+              Sửa
+            </Button>
+            <Button
+              variant="outlined"
+              color="error"
+              endIcon={<DeleteIcon />}
+              sx={{ ml: 1 }}
+              size="small"
+              onClick={() => {
+                setConfirmDelete(true);
+                setSelectedCategory(node?.id);
+                setDataEdit(node);
+              }}
+            >
+              Xóa
+            </Button>
+          </Box>
+        </Box>
+        {confirmDelete && (
+          <AlertDelete
+            name={dataEdit?.text}
+            open={confirmDelete}
+            handleClose={handleRemove}
+          />
+        )}
+      </Box>
     ),
-    [node, depth, isOpen, selectedCategory, treeData]
+    [node, depth, isOpen, selectedCategory, dataEdit, confirmDelete, treeData]
   );
 
   return customNode;

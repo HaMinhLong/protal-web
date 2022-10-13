@@ -147,7 +147,7 @@ const UserDrawer = ({ visible, closeDrawer, dataEdit, getList }: Props) => {
         },
         callback: (res) => {
           if (res?.success) {
-            createNotification("success", "Thêm mới tài khoản thành công!");
+            createNotification("success", res?.message);
             getList();
             changeDrawer();
           } else {
@@ -164,7 +164,7 @@ const UserDrawer = ({ visible, closeDrawer, dataEdit, getList }: Props) => {
         callback: (res) => {
           setLoading(false);
           if (res?.success) {
-            createNotification("success", "Thêm mới tài khoản thành công!");
+            createNotification("success", res?.message);
             getList();
             changeDrawer();
           } else {
@@ -324,6 +324,7 @@ const UserDrawer = ({ visible, closeDrawer, dataEdit, getList }: Props) => {
               }}
             >
               <LoadingButton
+                size="small"
                 loading={loading}
                 variant="contained"
                 type="submit"

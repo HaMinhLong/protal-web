@@ -60,7 +60,7 @@ const UserTable = ({
   const userGroups = userState.data.list;
   const pagination = userState.data.pagination;
 
-  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState<boolean>(false);
 
   const handleTableChange = (e: ChangeEvent<unknown>, page: number) => {
     setLoading(true);
@@ -116,7 +116,7 @@ const UserTable = ({
       },
       callback: (res) => {
         if (res?.success === true) {
-          createNotification("success", "Cập nhật trạng thái thành công!");
+          createNotification("success", res?.message);
         } else {
           createNotification("error", res?.message);
         }
@@ -134,7 +134,7 @@ const UserTable = ({
         },
         callback: (res) => {
           if (res?.success === true) {
-            createNotification("success", "Xóa bản ghi thành công!");
+            createNotification("success", res?.message);
             getList();
           } else if (res?.success === false) {
             createNotification("error", res?.message);
@@ -156,12 +156,8 @@ const UserTable = ({
         <TableCell sx={styleCell}>Email</TableCell>
         <TableCell sx={styleCell}>Số điện thoại</TableCell>
         <TableCell sx={styleCell}>Nhóm tài khoản</TableCell>
-        <TableCell align="right" sx={{ fontWeight: "bold" }}>
-          Ngày tạo
-        </TableCell>
-        <TableCell align="right" sx={styleCell}>
-          Trạng thái
-        </TableCell>
+        <TableCell sx={styleCell}>Ngày tạo</TableCell>
+        <TableCell sx={styleCell}>Trạng thái</TableCell>
         <TableCell align="right" sx={styleCell}>
           Hành động
         </TableCell>
@@ -188,10 +184,10 @@ const UserTable = ({
         <TableCell>{item?.email}</TableCell>
         <TableCell>{item?.mobile}</TableCell>
         <TableCell>{item?.userGroup?.name}</TableCell>
-        <TableCell align="right">
+        <TableCell>
           {moment(item?.createdAt).format("DD/MM/YYYY HH:mm")}
         </TableCell>
-        <TableCell align="right">{renderStatus(item)}</TableCell>
+        <TableCell>{renderStatus(item)}</TableCell>
         <TableCell align="right">{renderMenuButton(item)}</TableCell>
       </TableRow>
     );
@@ -210,6 +206,7 @@ const UserTable = ({
   const renderMenuButton = (item: UserType) => (
     <>
       <Button
+        size="small"
         variant="outlined"
         endIcon={<EditIcon />}
         onClick={() => {
@@ -220,6 +217,7 @@ const UserTable = ({
         Sửa
       </Button>
       <Button
+        size="small"
         variant="outlined"
         color="error"
         sx={{ ml: 1 }}

@@ -116,7 +116,7 @@ const WebsiteTable = ({
       },
       callback: (res) => {
         if (res?.success === true) {
-          createNotification("success", "Cập nhật trạng thái thành công!");
+          createNotification("success", res?.message);
         } else {
           createNotification("error", res?.message);
         }
@@ -134,7 +134,7 @@ const WebsiteTable = ({
         },
         callback: (res) => {
           if (res?.success === true) {
-            createNotification("success", "Xóa bản ghi thành công!");
+            createNotification("success", res?.message);
             getList();
           } else if (res?.success === false) {
             createNotification("error", res && res.message);
@@ -153,15 +153,9 @@ const WebsiteTable = ({
         </TableCell>
         <TableCell sx={styleCell}>Tên website</TableCell>
         <TableCell sx={styleCell}>Mô tả</TableCell>
-        <TableCell align="right" sx={styleCell}>
-          Nhóm website
-        </TableCell>
-        <TableCell align="right" sx={{ fontWeight: "bold" }}>
-          Ngày tạo
-        </TableCell>
-        <TableCell align="right" sx={styleCell}>
-          Trạng thái
-        </TableCell>
+        <TableCell sx={styleCell}>Nhóm website</TableCell>
+        <TableCell sx={styleCell}>Ngày tạo</TableCell>
+        <TableCell sx={styleCell}>Trạng thái</TableCell>
         <TableCell align="right" sx={styleCell}>
           Hành động
         </TableCell>
@@ -188,16 +182,17 @@ const WebsiteTable = ({
           sx={{
             overflow: "hidden",
             textOverflow: "ellipsis",
-            maxWidth: "624px",
+            minWidth: "300px",
+            maxWidth: "500px",
           }}
         >
           {item?.description}
         </TableCell>
-        <TableCell align="right">{item?.websiteGroup?.name}</TableCell>
-        <TableCell align="right">
+        <TableCell>{item?.websiteGroup?.name}</TableCell>
+        <TableCell>
           {moment(item?.createdAt).format("DD/MM/YYYY HH:mm")}
         </TableCell>
-        <TableCell align="right">{renderStatus(item)}</TableCell>
+        <TableCell>{renderStatus(item)}</TableCell>
         <TableCell align="right">{renderMenuButton(item)}</TableCell>
       </TableRow>
     );
@@ -216,6 +211,7 @@ const WebsiteTable = ({
   const renderMenuButton = (item: WebsiteType) => (
     <>
       <Button
+        size="small"
         variant="outlined"
         endIcon={<EditIcon />}
         onClick={() => {
@@ -226,6 +222,7 @@ const WebsiteTable = ({
         Sửa
       </Button>
       <Button
+        size="small"
         variant="outlined"
         color="error"
         sx={{ ml: 1 }}

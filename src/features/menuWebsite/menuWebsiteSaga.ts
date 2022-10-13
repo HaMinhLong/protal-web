@@ -15,7 +15,6 @@ import {
 } from "api/menu";
 
 function* getList({ payload, callback }) {
-  console.log("getList");
   try {
     const { data } = yield call(getListMenuWebsite, payload);
 

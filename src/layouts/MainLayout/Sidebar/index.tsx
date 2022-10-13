@@ -47,7 +47,7 @@ const Sidebar = ({ window }: SidebarProps) => {
           <Chip
             label={process.env.REACT_APP_VERSION}
             disabled
-            chipcolor="secondary"
+            chipColor="secondary"
             size="small"
             sx={{ cursor: "pointer" }}
           />

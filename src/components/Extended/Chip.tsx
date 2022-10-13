@@ -3,7 +3,7 @@ import { useTheme } from "@mui/material/styles";
 import MuiChip, { ChipProps } from "@mui/material/Chip";
 
 interface chipProps extends ChipProps {
-  chipcolor?: string;
+  chipColor?: string;
   sx?: {};
   disabled?: boolean;
   label?: string;
@@ -13,7 +13,7 @@ interface chipProps extends ChipProps {
 }
 
 const Chip = ({
-  chipcolor,
+  chipColor,
   disabled,
   sx = {},
   variant,
@@ -56,7 +56,7 @@ const Chip = ({
     },
   };
 
-  switch (chipcolor) {
+  switch (chipColor) {
     case "secondary":
       variant === "outlined"
         ? (outlineSX = {

@@ -1,26 +1,30 @@
 import { WebsiteType } from "types/website";
 
 export interface MenuType {
-  id?: number;
-  name?: string;
+  id?: number | string;
+  text?: string;
   url?: string;
   orderBy?: number;
   position?: number;
-  parentId?: string;
+  location?: number;
+  parent?: string;
+  icon?: string;
   websiteId?: string;
   website?: WebsiteType;
   createdAt?: string | Date;
   status?: number;
   children?: MenuType[];
+  droppable?: boolean;
 }
 export interface FilterMenu {
-  name?: string;
+  text?: string;
   websiteId?: string | number;
+  location?: string | number;
   status?: string | number;
 }
 
 export interface ResponseError {
-  name?: string;
+  text?: string;
   websiteId?: string;
   orderBy?: string;
   position?: string;
@@ -31,4 +35,5 @@ export interface ResponseError {
 export type CustomData = {
   fileType: string;
   fileSize: string;
+  website: any;
 };

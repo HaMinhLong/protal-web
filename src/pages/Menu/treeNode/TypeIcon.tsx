@@ -1,10 +1,10 @@
 // THIRD IMPORT
 
 // ICONS IMPORT
-import FolderIcon from '@mui/icons-material/Folder';
-import ImageIcon from '@mui/icons-material/Image';
-import ListAltIcon from '@mui/icons-material/ListAlt';
-import DescriptionIcon from '@mui/icons-material/Description';
+import FolderIcon from "@mui/icons-material/Folder";
+import ImageIcon from "@mui/icons-material/Image";
+import ListAltIcon from "@mui/icons-material/ListAlt";
+import DescriptionIcon from "@mui/icons-material/Description";
 
 type Props = {
   droppable?: boolean;
@@ -13,15 +13,15 @@ type Props = {
 
 const TypeIcon = ({ droppable, fileType }: Props) => {
   if (droppable) {
-    return <FolderIcon />;
+    return <FolderIcon color="primary" />;
   }
 
   switch (fileType) {
-    case 'image':
+    case "image":
       return <ImageIcon />;
-    case 'csv':
+    case "csv":
       return <ListAltIcon />;
-    case 'text':
+    case "text":
       return <DescriptionIcon />;
     default:
       return null;

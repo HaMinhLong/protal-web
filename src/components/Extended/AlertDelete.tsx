@@ -3,7 +3,7 @@ import { Button, Dialog, DialogActions, DialogTitle } from "@mui/material";
 
 // PROJECT IMPORTS
 interface Props {
-  name: string | undefined;
+  name?: string | number;
   open: boolean;
   handleClose: (status: boolean) => void;
 }
@@ -24,13 +24,18 @@ export default function AlertDelete({ name, open, handleClose }: Props) {
             <p>{name} - Bạn có chắc chắn muốn xóa không?</p>
           </DialogTitle>{" "}
           <DialogActions sx={{ mr: 2 }}>
-            <Button onClick={() => handleClose(false)} variant="outlined">
+            <Button
+              size="small"
+              onClick={() => handleClose(false)}
+              variant="outlined"
+            >
               Hủy
             </Button>
             <Button
               variant="contained"
               onClick={() => handleClose(true)}
               autoFocus
+              size="small"
             >
               Xóa
             </Button>

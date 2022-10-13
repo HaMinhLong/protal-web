@@ -89,7 +89,7 @@ const WebsiteDrawer = ({ visible, closeDrawer, dataEdit, getList }: Props) => {
         },
         callback: (res) => {
           if (res?.success) {
-            createNotification("success", "Thêm mới website thành công!");
+            createNotification("success", res?.message);
             getList();
             changeDrawer();
           } else {
@@ -106,7 +106,7 @@ const WebsiteDrawer = ({ visible, closeDrawer, dataEdit, getList }: Props) => {
         callback: (res) => {
           setLoading(false);
           if (res?.success) {
-            createNotification("success", "Cập nhật website thành công!");
+            createNotification("success", res?.message);
             getList();
             changeDrawer();
           } else {
@@ -198,6 +198,7 @@ const WebsiteDrawer = ({ visible, closeDrawer, dataEdit, getList }: Props) => {
               }}
             >
               <LoadingButton
+                size="small"
                 loading={loading}
                 variant="contained"
                 type="submit"

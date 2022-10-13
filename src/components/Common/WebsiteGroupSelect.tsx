@@ -40,12 +40,6 @@ const WebsiteGroupSelect = ({ formik, setFieldValue, addOrEdit }: Props) => {
     });
   };
 
-  const styleLabel: any = {
-    fontSize: "14px",
-    position: "relative",
-    top: "-3px",
-  };
-
   return (
     <>
       <Autocomplete

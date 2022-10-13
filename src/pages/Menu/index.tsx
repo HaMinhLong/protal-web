@@ -1,6 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 // THIRD IMPORT
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import { Box } from "@mui/material";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { Box, Typography } from "@mui/material";
 import { DndProvider } from "react-dnd";
 import {
   Tree,
@@ -15,11 +16,16 @@ import MainCard from "components/Cards/MainCard";
 import { useDispatch, useSelector } from "app/store";
 import { menuWebsite, filter } from "features/menuWebsite/menuWebsiteSlice";
 import createNotification from "components/Extended/Notification";
-import { CustomData } from "types/menuWebsite";
 import CustomNode from "pages/Menu/treeNode/CustomNode";
 import CustomDragPreview from "pages/Menu/treeNode/CustomDragPreview";
 import Placeholder from "pages/Menu/treeNode/Placeholder";
 import styles from "pages/Menu/css/App.module.css";
+import SearchForm from "pages/Menu/SearchForm";
+import MenuDrawer from "components/DrawerPage/MenuDrawer";
+import Loading from "components/Extended/Loading";
+
+// TYPES IMPORT
+import { CustomData, MenuType } from "types/menuWebsite";
 
 const PAGE_SIZE = 1000;
 
@@ -28,15 +34,16 @@ const Index = () => {
 
   const menuState = useSelector(menuWebsite);
   const menus = menuState.data.list;
-  const pagination = menuState.data.pagination;
 
-  const [loading, setLoading] = useState<boolean>(false);
+  const [treeData, setTreeData] = useState<any>([]);
   const [selectedCategory, setSelectedCategory] = useState<string | number>("");
-  const [addNew, setAddNew] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [visibleDrawer, setVisibleDrawer] = useState<boolean>(false);
+  const [isAddNew, setIsAddNew] = useState<boolean>(false);
 
   useEffect(() => {
-    getList();
-  }, []);
+    setTreeData(menus);
+  }, [menus]);
 
   const getList = () => {
     setLoading(true);
@@ -47,7 +54,7 @@ const Index = () => {
       filter: JSON.stringify({}),
       range: JSON.stringify([0, PAGE_SIZE]),
       attributes:
-        "id,text,droppable,parent,position,websiteId,status,createdAt",
+        "id,text,droppable,parent,icon,url,position,websiteId,status,createdAt",
     };
     if (query?.filter) {
       params = {
@@ -61,8 +68,6 @@ const Index = () => {
         range: query?.range,
       };
     }
-
-    console.log("params", params);
 
     dispatch(filter(queryFilter));
     dispatch({
@@ -78,8 +83,6 @@ const Index = () => {
   };
 
   const ref: any = useRef(null);
-  const handleOpenAll = () => ref?.current?.openAll();
-  const handleCloseAll = () => ref?.current?.closeAll();
 
   const handleDrop = (newTree: any, options: any) => {
     const { dragSourceId, dropTargetId } = options;
@@ -97,6 +100,30 @@ const Index = () => {
         }
       }
     }
+
+    updatePosition(updateItem);
+    setTreeData(newTree);
+  };
+
+  const updatePosition = (updateItem: MenuType) => {
+    dispatch({
+      type: "menuWebsite/update",
+      payload: {
+        id: updateItem?.id,
+        params: {
+          ...updateItem,
+          textOld: updateItem?.text,
+        },
+      },
+      callback: (res) => {
+        if (res?.success) {
+          getList();
+        } else {
+          createNotification("error", res.message);
+        }
+        setLoading(false);
+      },
+    });
   };
 
   const treeView = useMemo(
@@ -104,9 +131,9 @@ const Index = () => {
       <div className={styles.app}>
         <DndProvider backend={MultiBackend} options={getBackendOptions()}>
           <Tree
-            tree={menus}
+            tree={treeData}
             ref={ref}
-            rootId={0}
+            rootId={"0"}
             sort={false}
             insertDroppableFirst={false}
             initialOpen
@@ -115,14 +142,16 @@ const Index = () => {
               { depth, isOpen, onToggle }
             ) => (
               <CustomNode
-                treeData={menus}
+                treeData={treeData}
                 node={node}
                 depth={depth}
                 isOpen={isOpen}
                 onToggle={onToggle}
                 selectedCategory={selectedCategory}
                 setSelectedCategory={setSelectedCategory}
-                setAddNew={setAddNew}
+                setVisibleDrawer={setVisibleDrawer}
+                setIsAddNew={setIsAddNew}
+                getList={getList}
               />
             )}
             dragPreviewRender={(
@@ -149,14 +178,39 @@ const Index = () => {
         </DndProvider>
       </div>
     ),
-    [menus, selectedCategory, ref?.current]
+    [treeData, selectedCategory, ref?.current]
   );
 
-  console.log("menus", menus);
-
   return (
-    <MainCard title="Tìm kiếm" content={false}>
-      <Box sx={{ padding: 2 }}>{treeView}</Box>
+    <MainCard
+      title={
+        <SearchForm
+          setIsAddNew={setIsAddNew}
+          selectedCategory={selectedCategory}
+          setSelectedCategory={setSelectedCategory}
+          setVisibleDrawer={setVisibleDrawer}
+          setLoading={setLoading}
+        />
+      }
+      content={false}
+    >
+      <Box sx={{ padding: 2, position: "relative" }}>
+        {!treeData?.length ? (
+          <Typography textAlign="center">
+            Vui lòng chọn website và vị trí website
+          </Typography>
+        ) : (
+          treeView
+        )}
+        {loading && <Loading />}
+      </Box>
+      <MenuDrawer
+        isAddNew={isAddNew}
+        visible={visibleDrawer}
+        closeDrawer={() => setVisibleDrawer(false)}
+        dataEdit={{ id: selectedCategory }}
+        getList={getList}
+      />
     </MainCard>
   );
 };

@@ -86,10 +86,7 @@ const UserGroupDrawer = ({
         },
         callback: (res) => {
           if (res?.success) {
-            createNotification(
-              "success",
-              "Thêm mới nhóm tài khoản thành công!"
-            );
+            createNotification("success", res?.message);
             getList();
             changeDrawer();
           } else {
@@ -106,10 +103,7 @@ const UserGroupDrawer = ({
         callback: (res) => {
           setLoading(false);
           if (res?.success) {
-            createNotification(
-              "success",
-              "Thêm mới nhóm tài khoản thành công!"
-            );
+            createNotification("success", res?.message);
             getList();
             changeDrawer();
           } else {
@@ -182,6 +176,7 @@ const UserGroupDrawer = ({
               }}
             >
               <LoadingButton
+                size="small"
                 loading={loading}
                 variant="contained"
                 type="submit"

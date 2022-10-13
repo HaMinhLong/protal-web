@@ -14,7 +14,7 @@ interface Props {
   addOrEdit: boolean;
 }
 
-const UserGroupSelect = ({ formik, setFieldValue, addOrEdit }: Props) => {
+const WebsiteSelect = ({ formik, setFieldValue, addOrEdit }: Props) => {
   const dispatch = useDispatch();
 
   const [lists, setLists] = useState<any>([]);
@@ -25,7 +25,7 @@ const UserGroupSelect = ({ formik, setFieldValue, addOrEdit }: Props) => {
 
   const getList = () => {
     dispatch({
-      type: "userGroup/fetchLazyLoading",
+      type: "website/fetchLazyLoading",
       payload: { filter: JSON.stringify({ status: 1 }) },
       callback: (res) => {
         const { list } = res?.results;
@@ -50,7 +50,7 @@ const UserGroupSelect = ({ formik, setFieldValue, addOrEdit }: Props) => {
         value={
           lists?.length > 0
             ? lists?.filter(
-                (item) => item.value === formik?.values?.userGroupId
+                (item) => item.value === formik?.values?.websiteId
               )[0]
             : { value: "", label: "" }
         }
@@ -59,34 +59,34 @@ const UserGroupSelect = ({ formik, setFieldValue, addOrEdit }: Props) => {
         renderInput={(params) => (
           <TextField
             {...params}
-            name="userGroupId"
+            name="websiteId"
             label={
               addOrEdit ? (
                 <span className="input-label">
-                  Nhóm tài khoản <span> *</span>
+                  Website <span> *</span>
                 </span>
               ) : (
-                "Nhóm tài khoản"
+                "Website"
               )
             }
             error={
-              formik.touched.userGroupId && Boolean(formik.errors?.userGroupId)
+              formik.touched.websiteId && Boolean(formik.errors?.websiteId)
             }
           />
         )}
-        onChange={(e, data) => setFieldValue("userGroupId", data?.value)}
+        onChange={(e, data) => setFieldValue("websiteId", data?.value)}
       />
-      {formik.touched.userGroupId && formik.errors.userGroupId && (
+      {formik.touched.websiteId && formik.errors.websiteId && (
         <FormHelperText error className="error-custom">
           <ErrorIcon
             fontSize="small"
             sx={{ mr: 0.5, width: "18px", height: "18px" }}
           />
-          {formik.errors.userGroupId}
+          {formik.errors.websiteId}
         </FormHelperText>
       )}
     </>
   );
 };
 
-export default UserGroupSelect;
+export default WebsiteSelect;

@@ -19,8 +19,8 @@ export const menuWebsiteSlice = createSlice({
       return {
         ...state,
         data: {
-          list: action.payload.list,
-          pagination: action.payload.pagination,
+          list: action.payload.list || [],
+          pagination: action.payload.pagination || [],
         },
         info: {},
       };
