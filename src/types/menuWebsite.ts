@@ -27,3 +27,8 @@ export interface ResponseError {
   url?: string;
   status?: string;
 }
+
+export type CustomData = {
+  fileType: string;
+  fileSize: string;
+};

@@ -15,6 +15,7 @@ import {
 } from "api/menu";
 
 function* getList({ payload, callback }) {
+  console.log("getList");
   try {
     const { data } = yield call(getListMenuWebsite, payload);
 
@@ -63,7 +64,6 @@ function* updateRecord({ payload: { id, params }, callback }) {
     const { data } = yield call(updateMenuWebsite, id, params);
     if (callback) callback(data);
   } catch (error: any) {
-    console.log("error", error);
     if (callback) callback(error);
   }
 }
