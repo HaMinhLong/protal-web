@@ -12,6 +12,7 @@ const UserGroup = Loadable(lazy(() => import("pages/UserGroup")));
 const User = Loadable(lazy(() => import("pages/User")));
 const WebsiteGroup = Loadable(lazy(() => import("pages/WebsiteGroup")));
 const Website = Loadable(lazy(() => import("pages/Website")));
+const CategoryGroup = Loadable(lazy(() => import("pages/CategoryGroup")));
 const Category = Loadable(lazy(() => import("pages/Category")));
 const Article = Loadable(lazy(() => import("pages/Article")));
 const Product = Loadable(lazy(() => import("pages/Product")));
@@ -49,6 +50,11 @@ const MainRoutes = {
       path: "/website",
       role: [ADMIN_TYPE],
       element: <Website />,
+    },
+    {
+      path: "/category-group",
+      role: [ADMIN_TYPE],
+      element: <CategoryGroup />,
     },
     {
       path: "/category",

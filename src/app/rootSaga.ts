@@ -5,6 +5,7 @@ import { userGroupSaga } from "features/userGroup/userGroupSaga";
 import { websiteGroupSaga } from "features/websiteGroup/websiteGroupSaga";
 import { websiteSaga } from "features/website/websiteSaga";
 import { menuWebsiteSaga } from "features/menuWebsite/menuWebsiteSaga";
+import { categoryGroupSaga } from "features/categoryGroup/categoryGroupSaga";
 
 export default function* rootSaga() {
   yield all([
@@ -13,5 +14,6 @@ export default function* rootSaga() {
     websiteGroupSaga(),
     websiteSaga(),
     menuWebsiteSaga(),
+    categoryGroupSaga(),
   ]);
 }
