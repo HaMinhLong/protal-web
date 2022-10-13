@@ -40,7 +40,8 @@ const Index = () => {
       filter: JSON.stringify({}),
       range: JSON.stringify([0, PAGE_SIZE]),
       sort: JSON.stringify(["createdAt", "DESC"]),
-      attributes: "id,name,droppable,position,websiteId,status,createdAt",
+      attributes:
+        "id,text,droppable,parent,position,websiteId,status,createdAt",
     };
 
     dispatch(filter(queryFilter));
