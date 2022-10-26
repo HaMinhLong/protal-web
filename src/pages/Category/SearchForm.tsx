@@ -8,19 +8,15 @@ import SearchIcon from "@mui/icons-material/Search";
 import AddIcon from "@mui/icons-material/Add";
 
 // PROJECT IMPORT
-import {
-  menuWebsite,
-  filter,
-  save,
-} from "features/menuWebsite/menuWebsiteSlice";
+import { category, filter, save } from "features/category/categorySlice";
 import { useDispatch, useSelector } from "app/store";
 import StatusFilter from "components/Common/StatusFilter";
-import LocationSelect from "components/Common/LocationSelect";
 import createNotification from "components/Extended/Notification";
 import WebsiteSelect from "components/Common/WebsiteSelect";
+import CategoryGroupSelect from "components/Common/CategoryGroupSelect";
 
 // TYPES IMPORT
-import { FilterMenu } from "types/menuWebsite";
+import { FilterCategory } from "types/category";
 
 interface Props {
   selectedCategory: string | number;
@@ -41,30 +37,31 @@ const SearchForm = ({
 }: Props) => {
   const dispatch = useDispatch();
 
-  const menuWebsiteState = useSelector(menuWebsite);
+  const categoryState = useSelector(category);
 
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      websiteId: menuWebsiteState?.filter?.websiteId || "",
-      location: menuWebsiteState?.filter?.location || "",
-      status: menuWebsiteState?.filter?.status || "",
+      websiteId: categoryState?.filter?.websiteId || "",
+      categoryGroupId: categoryState?.filter?.categoryGroupId || "",
+      status: categoryState?.filter?.status || "",
     },
     onSubmit: (values) => {
+      console.log("values", values);
       handleSearch(values);
     },
   });
 
-  const handleSearch = (values: FilterMenu) => {
+  const handleSearch = (values: FilterCategory) => {
     setLoading(true);
-    if (!values?.websiteId || !values?.location) {
+    if (!values?.websiteId) {
       dispatch(save({}));
       setLoading(false);
       return;
     }
-    const queryName: FilterMenu = {
+    const queryName: FilterCategory = {
       websiteId: values?.websiteId,
-      location: values?.location,
+      categoryGroupId: values?.categoryGroupId,
       status: `${values?.status}`,
     };
 
@@ -72,24 +69,26 @@ const SearchForm = ({
       delete queryName.status;
     }
 
-    if (values?.websiteId === "") {
-      delete queryName.websiteId;
+    if (values?.categoryGroupId === "") {
+      delete queryName.categoryGroupId;
     }
 
-    if (values?.location === "") {
-      delete queryName.location;
+    if (values?.websiteId === "") {
+      delete queryName.websiteId;
     }
 
     const query = {
       filter: JSON.stringify(queryName),
       range: JSON.stringify([0, PAGE_SIZE]),
       attributes:
-        "id,text,droppable,parent,icon,url,position,websiteId,status,createdAt",
+        "id,text,droppable,parent,url,position,websiteId,categoryGroupId,isHome,status,createdAt",
     };
+
+    console.log("query", query);
 
     dispatch(filter(values));
     dispatch({
-      type: "menuWebsite/fetch",
+      type: "category/fetch",
       payload: query,
       callback: (res) => {
         setLoading(false);
@@ -114,7 +113,7 @@ const SearchForm = ({
             </Grid>
 
             <Grid item xs={12} md={6} lg={4}>
-              <LocationSelect
+              <CategoryGroupSelect
                 formik={formik}
                 setFieldValue={formik.setFieldValue}
                 addOrEdit={false}

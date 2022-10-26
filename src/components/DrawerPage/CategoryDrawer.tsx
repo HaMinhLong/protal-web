@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 // THIRD IMPORT
 import { useEffect, useState } from "react";
 import {
@@ -23,21 +22,23 @@ import TextFieldCustom from "components/Extended/TextFieldCustom";
 import StatusFilter from "components/Common/StatusFilter";
 import { useDispatch } from "app/store";
 import createNotification from "components/Extended/Notification";
-import LocationSelect from "components/Common/LocationSelect";
 import WebsiteSelect from "components/Common/WebsiteSelect";
+import CategoryGroupSelect from "components/Common/CategoryGroupSelect";
+import UploadImage from "components/Extended/UploadImage";
 
 // TYPES IMPORT
-import { MenuType, ResponseError } from "types/menuWebsite";
+import { CategoryType, ResponseError } from "types/category";
+import VisibleHomeSelect from "components/Common/VisibleHomeSelect";
 
 interface Props {
   visible: boolean;
-  dataEdit: MenuType;
+  dataEdit: CategoryType;
   closeDrawer: () => void;
-  isAddNew: boolean;
   getList: () => void;
+  isAddNew: boolean;
 }
 
-const WebsiteGroupDrawer = ({
+const CategoryDrawer = ({
   visible,
   closeDrawer,
   dataEdit,
@@ -50,16 +51,16 @@ const WebsiteGroupDrawer = ({
 
   const [loading, setLoading] = useState<boolean>(false);
   const [errors, setErrors] = useState<ResponseError>({});
-  const [dataMenu, setDataMenu] = useState<MenuType>({});
+  const [dataCategory, setDataCategory] = useState<CategoryType>({});
 
   useEffect(() => {
     if (!visible) return;
     if (!dataEdit?.id) {
-      setDataMenu({});
+      setDataCategory({});
     } else {
       setLoading(true);
       dispatch({
-        type: "menuWebsite/getOne",
+        type: "category/getOne",
         payload: {
           id: dataEdit?.id,
         },
@@ -69,7 +70,7 @@ const WebsiteGroupDrawer = ({
             const {
               results: { list },
             } = res;
-            setDataMenu(list);
+            setDataCategory(list);
           } else if (res?.success === false) {
             createNotification("error", res?.message);
           }
@@ -79,26 +80,32 @@ const WebsiteGroupDrawer = ({
   }, [visible]);
 
   const validationSchema = yup.object().shape({
-    text: yup.string().trim().max(50).required("Vui lòng nhập tên menu"),
+    text: yup.string().trim().max(50).required("Vui lòng nhập tên chuyên mục"),
     url: yup.string().trim().max(50).required("Vui lòng nhập URL"),
-    icon: yup.string().trim().max(50).required("Vui lòng nhập icon"),
-    location: yup.string().required("Vui lòng chọn vị trí menu"),
-    status: yup.string().trim().required("Vui lòng nhập trạng thái"),
+    description: yup.string().trim().max(255),
     websiteId: yup.string().required("Vui lòng chọn website"),
+    categoryGroupId: yup.string().required("Vui lòng chọn nhóm chuyên mục"),
   });
 
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      text: !isAddNew && dataMenu?.text ? dataMenu?.text : "",
-      url: !isAddNew && dataMenu?.url ? dataMenu?.url : "",
-      icon: !isAddNew && dataMenu?.icon ? dataMenu?.icon : "",
-      position: isAddNew ? 1 : dataMenu?.position,
-      location: isAddNew ? 1 : dataMenu?.location,
-      websiteId: !isAddNew && dataMenu?.websiteId ? dataMenu?.websiteId : "",
-      parent: isAddNew ? dataEdit?.id || 0 : dataMenu?.parent,
+      text: !isAddNew && dataCategory?.text ? dataCategory?.text : "",
+      description:
+        !isAddNew && dataCategory?.description ? dataCategory?.description : "",
+      url: !isAddNew && dataCategory?.url ? dataCategory?.url : "",
+      position: isAddNew ? 1 : dataCategory?.position,
+      parent: isAddNew ? dataEdit?.id || 0 : dataCategory?.parent,
+      isHome: isAddNew ? false : dataCategory?.isHome,
+      images: !isAddNew && dataCategory?.images ? dataCategory?.images : "",
+      websiteId:
+        !isAddNew && dataCategory?.websiteId ? dataCategory?.websiteId : "",
+      categoryGroupId:
+        !isAddNew && dataCategory?.categoryGroupId
+          ? dataCategory?.categoryGroupId
+          : "",
       droppable: true,
-      status: dataMenu?.status === 0 ? 0 : 1,
+      status: dataCategory?.status === 0 ? 0 : 1,
     },
     validationSchema,
     onSubmit: (values) => {
@@ -111,19 +118,15 @@ const WebsiteGroupDrawer = ({
     const addItem = {
       ...values,
       text: values?.text?.trim(),
-      textOld: dataMenu?.text?.trim(),
-      url: values?.url?.trim(),
-      icon: values?.icon?.trim(),
+      textOld: dataCategory?.text?.trim(),
     };
 
-    if (dataMenu?.id && !isAddNew) {
+    if (dataCategory?.id) {
       dispatch({
-        type: "menuWebsite/update",
+        type: "category/update",
         payload: {
-          id: dataMenu?.id,
-          params: {
-            ...addItem,
-          },
+          id: dataCategory?.id,
+          params: addItem,
         },
         callback: (res) => {
           if (res?.success) {
@@ -139,7 +142,7 @@ const WebsiteGroupDrawer = ({
       });
     } else {
       dispatch({
-        type: "menuWebsite/add",
+        type: "category/add",
         payload: addItem,
         callback: (res) => {
           setLoading(false);
@@ -173,19 +176,25 @@ const WebsiteGroupDrawer = ({
           }}
         >
           <Typography variant="h4" sx={{ mb: 3 }}>
-            {dataMenu?.id && !isAddNew
-              ? `Cập nhật thông tin ${dataMenu?.text}`
-              : "Thêm mới menu website"}
+            {dataCategory?.id
+              ? `Cập nhật thông tin ${dataCategory?.text}`
+              : "Thêm mới chuyên mục"}
             <Divider sx={{ mt: 1 }} />
           </Typography>
           <form onSubmit={formik.handleSubmit}>
+            <UploadImage
+              image={formik.values.images}
+              setFieldValue={formik.setFieldValue}
+              field="images"
+              multiple
+            />
             <Grid container spacing={3}>
               <Grid item xs={12}>
                 <TextFieldCustom
                   name="text"
                   formik={formik}
                   errors={errors}
-                  label="Tên menu"
+                  label="Tên chuyên mục"
                   required
                 />
               </Grid>
@@ -201,28 +210,36 @@ const WebsiteGroupDrawer = ({
               </Grid>
 
               <Grid item xs={12}>
-                <TextFieldCustom
-                  name="icon"
-                  formik={formik}
-                  errors={errors}
-                  label="Icon"
-                  required
-                />
-              </Grid>
-
-              <Grid item xs={12}>
                 <WebsiteSelect
                   formik={formik}
                   setFieldValue={formik.setFieldValue}
-                  addOrEdit={false}
+                  addOrEdit={true}
                 />
               </Grid>
 
               <Grid item xs={12}>
-                <LocationSelect
+                <CategoryGroupSelect
                   formik={formik}
                   setFieldValue={formik.setFieldValue}
-                  addOrEdit={false}
+                  addOrEdit={true}
+                />
+              </Grid>
+
+              <Grid item xs={12}>
+                <VisibleHomeSelect
+                  formik={formik}
+                  setFieldValue={formik.setFieldValue}
+                />
+              </Grid>
+
+              <Grid item xs={12}>
+                <TextFieldCustom
+                  name="description"
+                  formik={formik}
+                  errors={errors}
+                  label="Mô tả"
+                  multiline
+                  rows={3}
                 />
               </Grid>
 
@@ -261,4 +278,4 @@ const WebsiteGroupDrawer = ({
   );
 };
 
-export default WebsiteGroupDrawer;
+export default CategoryDrawer;

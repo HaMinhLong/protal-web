@@ -19,6 +19,7 @@ import { useDispatch } from "app/store";
 
 // TYPES IMPORT
 import { MenuType } from "types/menuWebsite";
+import { CategoryType } from "types/category";
 import createNotification from "components/Extended/Notification";
 import AlertDelete from "components/Extended/AlertDelete";
 
@@ -33,6 +34,7 @@ type Props = {
   setIsAddNew: Dispatch<SetStateAction<boolean>>;
   treeData: any;
   getList: () => void;
+  isMenu?: boolean;
 };
 
 const CustomNode = ({
@@ -46,12 +48,13 @@ const CustomNode = ({
   setIsAddNew,
   treeData,
   getList,
+  isMenu,
 }: Props) => {
   const dispatch = useDispatch();
   const { id, droppable, data } = node;
 
   const [confirmDelete, setConfirmDelete] = useState<boolean>(false);
-  const [dataEdit, setDataEdit] = useState<MenuType>({});
+  const [dataEdit, setDataEdit] = useState<MenuType | CategoryType>({});
 
   const handleToggle = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -61,7 +64,7 @@ const CustomNode = ({
   const dragOverProps = useDragOver(id, isOpen, onToggle);
 
   const findChild = (idNode: number | string) => {
-    if (treeData.find((item: any) => item.parent === idNode)) return true;
+    if (treeData.find((item: any) => item?.parent === idNode)) return true;
     return false;
   };
 
@@ -74,7 +77,7 @@ const CustomNode = ({
     setConfirmDelete(false);
     if (confirmDelete) {
       dispatch({
-        type: "menuWebsite/delete",
+        type: isMenu ? "menuWebsite/delete" : "category/delete",
         payload: {
           id: selectedCategory,
         },
@@ -95,8 +98,17 @@ const CustomNode = ({
     () => (
       <Box
         className={`tree-node ${styles.root}`}
-        sx={{ mb: "10px" }}
         {...dragOverProps}
+        onClick={() => {
+          setSelectedCategory(id);
+        }}
+        sx={{
+          borderBottom: `1.5px solid ${
+            selectedCategory === id ? "#2196f3" : "#a0a0a0"
+          }`,
+          p: "2px 10px 0px",
+          cursor: "pointer",
+        }}
       >
         <div
           className={`${styles.expandIconWrapper} ${
@@ -122,26 +134,15 @@ const CustomNode = ({
         </div>
         <Box
           className={styles.labelGridItem}
-          onClick={() => {
-            setSelectedCategory(id);
-          }}
           display="flex"
           alignItems="center"
           justifyContent="space-between"
-          sx={{
-            borderBottom: `1.5px solid ${
-              selectedCategory === id ? "#2196f3" : "#fff"
-            }`,
-            p: "2px 10px 0px",
-            cursor: "pointer",
-          }}
         >
           <Box>
             <Typography sx={{ ...styleCell }} color="primary">
               {node?.text}
             </Typography>
             <Typography sx={styleCell}>{node?.url}</Typography>
-            <Typography sx={styleCell}>{node?.icon}</Typography>
             <Typography sx={styleCell}>{node?.website?.name}</Typography>
             <Typography sx={styleCell}>
               {node?.status ? (
@@ -157,7 +158,6 @@ const CustomNode = ({
               endIcon={<EditIcon />}
               size="small"
               onClick={() => {
-                console.log("hh");
                 setVisibleDrawer(true);
                 setSelectedCategory(node?.id);
                 setIsAddNew(false);

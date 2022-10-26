@@ -34,7 +34,7 @@ const LocationSelect = ({ formik, setFieldValue, addOrEdit }: Props) => {
         id="combo-box-demo"
         value={
           LocationAll?.filter(
-            (item) => item.value === formik?.values?.status
+            (item) => item.value === formik?.values?.location
           )[0]
         }
         options={

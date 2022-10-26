@@ -71,7 +71,7 @@ const CategoryGroupSelect = ({ formik, setFieldValue, addOrEdit }: Props) => {
             }
             error={
               formik.touched.categoryGroupId &&
-              Boolean(formik.errors?.categoryGroupId)
+              Boolean(formik.errors?.cateagoryGroupId)
             }
           />
         )}

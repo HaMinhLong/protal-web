@@ -1,4 +1,4 @@
 export type Status = {
-  value: number | string;
+  value: number | string | boolean;
   label: string;
 };

@@ -156,7 +156,7 @@ const WebsiteDrawer = ({ visible, closeDrawer, dataEdit, getList }: Props) => {
                   name="name"
                   formik={formik}
                   errors={errors}
-                  label="Tên nhóm website"
+                  label="Tên website"
                   required
                 />
               </Grid>

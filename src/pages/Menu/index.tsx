@@ -133,7 +133,7 @@ const Index = () => {
           <Tree
             tree={treeData}
             ref={ref}
-            rootId={"0"}
+            rootId={0}
             sort={false}
             insertDroppableFirst={false}
             initialOpen
@@ -152,6 +152,7 @@ const Index = () => {
                 setVisibleDrawer={setVisibleDrawer}
                 setIsAddNew={setIsAddNew}
                 getList={getList}
+                isMenu
               />
             )}
             dragPreviewRender={(

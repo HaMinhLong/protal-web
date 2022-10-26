@@ -145,6 +145,7 @@ const WebsiteGroupDrawer = ({
                   formik={formik}
                   errors={errors}
                   label="Tên nhóm website"
+                  required
                 />
               </Grid>
 
