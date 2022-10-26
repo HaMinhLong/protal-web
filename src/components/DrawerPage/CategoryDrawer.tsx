@@ -121,7 +121,7 @@ const CategoryDrawer = ({
       textOld: dataCategory?.text?.trim(),
     };
 
-    if (dataCategory?.id) {
+    if (dataCategory?.id && !isAddNew) {
       dispatch({
         type: "category/update",
         payload: {

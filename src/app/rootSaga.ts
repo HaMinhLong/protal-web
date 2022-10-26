@@ -7,6 +7,7 @@ import { websiteSaga } from "features/website/websiteSaga";
 import { menuWebsiteSaga } from "features/menuWebsite/menuWebsiteSaga";
 import { categoryGroupSaga } from "features/categoryGroup/categoryGroupSaga";
 import { categorySaga } from "features/category/categorySaga";
+import { articleSaga } from "features/article/articleSaga";
 
 export default function* rootSaga() {
   yield all([
@@ -17,5 +18,6 @@ export default function* rootSaga() {
     menuWebsiteSaga(),
     categoryGroupSaga(),
     categorySaga(),
+    articleSaga(),
   ]);
 }

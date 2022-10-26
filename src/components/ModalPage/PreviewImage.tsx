@@ -3,10 +3,11 @@
 import { useEffect, useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import SaveIcon from "@mui/icons-material/Save";
+import ClearIcon from "@mui/icons-material/Clear";
 
 // PROJECT IMPORT
 import DialogPopUp from "components/Extended/DialogPopUp";
-import { Box, Button } from "@mui/material";
+import { Box, Button, IconButton } from "@mui/material";
 
 interface Props {
   open: boolean;
@@ -162,20 +163,47 @@ const PreviewImage = ({ open, images, handleChangeImage }: Props) => {
                         >
                           <Box
                             sx={{
+                              position: "relative",
                               height: "100%",
                               width: "150px",
                               cursor: "pointer",
                               mr: "10px",
-                              border: "3px solid #d6d6d6",
+                              border: `3px solid ${
+                                image === imagePreview ? "#2196f3" : "#d6d6d6"
+                              }`,
                             }}
-                            onClick={() => setImagePreview(image)}
                           >
                             <img
+                              onClick={() => setImagePreview(image)}
                               height="100%"
-                              width="150px"
+                              width="100%"
                               src={`${END_POINT_IMAGE}${image}`}
                               alt={image}
                             />
+                            <IconButton
+                              onClick={(e) => {
+                                e.preventDefault();
+
+                                setImagesState((currentImage) =>
+                                  currentImage.filter(
+                                    (item) => item.image !== image
+                                  )
+                                );
+                              }}
+                              size="small"
+                              sx={{
+                                position: "absolute",
+                                top: "-5px",
+                                right: "-5px",
+                                zIndex: 10,
+                              }}
+                            >
+                              <ClearIcon
+                                fontSize="small"
+                                color="error"
+                                sx={{ width: "20px", height: "20px" }}
+                              />
+                            </IconButton>
                           </Box>
                         </div>
                       )}

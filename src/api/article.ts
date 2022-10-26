@@ -1,5 +1,26 @@
 import axiosServices from "utils/axios";
+import { stringify } from "qs";
 
-const createArticle = (params: any) => axiosServices.post(`article`, params);
+const getListArticle = (params) =>
+  axiosServices.get(`article?${stringify(params)}`);
 
-export { createArticle };
+const getOneArticle = (id) => axiosServices.get(`article/${id}`);
+
+const createArticle = (params) => axiosServices.post(`article`, params);
+
+const updateArticle = (id, params) =>
+  axiosServices.put(`article/${id}`, params);
+
+const updateStatusArticle = (id, params) =>
+  axiosServices.put(`article/updateStatus/${id}`, params);
+
+const deleteArticle = (id) => axiosServices.delete(`article/${id}`);
+
+export {
+  getListArticle,
+  getOneArticle,
+  createArticle,
+  updateArticle,
+  updateStatusArticle,
+  deleteArticle,
+};

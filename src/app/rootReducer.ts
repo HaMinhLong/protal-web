@@ -10,6 +10,7 @@ import websiteReducer from "features/website/websiteSlice";
 import menuWebsiteReducer from "features/menuWebsite/menuWebsiteSlice";
 import categoryGroupReducer from "features/categoryGroup/categoryGroupSlice";
 import categoryReducer from "features/category/categorySlice";
+import articleReducer from "features/article/articleSlice";
 
 const rootReducer = combineReducers({
   customization: customizationReducer,
@@ -22,6 +23,7 @@ const rootReducer = combineReducers({
   menuWebsite: menuWebsiteReducer,
   categoryGroup: categoryGroupReducer,
   category: categoryReducer,
+  article: articleReducer,
 });
 
 export default rootReducer;
