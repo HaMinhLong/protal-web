@@ -14,6 +14,7 @@ type Props = TextFieldProps & {
   maxLength?: number;
   type?: string;
   bgColor?: string;
+  handleChange?: (value: string) => void;
 };
 
 const TextFieldCustom = ({
@@ -26,6 +27,7 @@ const TextFieldCustom = ({
   maxLength,
   type,
   bgColor,
+  handleChange,
   ...props
 }: Props) => {
   const textFieldCustom = useMemo(
@@ -62,6 +64,9 @@ const TextFieldCustom = ({
             }
             formik?.setFieldTouched(name, true);
             formik?.handleChange(e);
+            if (handleChange) {
+              handleChange(e.target.value);
+            }
           }}
           error={
             (formik?.touched?.[name] && Boolean(formik?.errors?.[name])) ||

@@ -1,7 +1,6 @@
 // THIRD-PARTY
 import React, { createContext, useEffect, useReducer } from "react";
 import jwtDecode from "jwt-decode";
-import { NotificationContainer } from "react-notifications";
 
 // PROJECT IMPORTS
 import { loginUser, currentUser } from "api/auth";
@@ -142,7 +141,6 @@ export const JWTProvider = ({ children }: { children: React.ReactElement }) => {
 
   return (
     <JWTContext.Provider value={{ ...state, login, logout }}>
-      <NotificationContainer />
       {children}
     </JWTContext.Provider>
   );

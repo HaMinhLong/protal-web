@@ -47,7 +47,7 @@ const SearchForm = ({
     enableReinitialize: true,
     initialValues: {
       websiteId: menuWebsiteState?.filter?.websiteId || "",
-      location: menuWebsiteState?.filter?.location || "",
+      location: menuWebsiteState?.filter?.location || 1,
       status: menuWebsiteState?.filter?.status || "",
     },
     onSubmit: (values) => {

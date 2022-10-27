@@ -1,6 +1,5 @@
 // THIRD IMPORT
 import { useState, useEffect } from "react";
-import { NotificationContainer } from "react-notifications";
 
 // ICON IMPORT
 
@@ -9,7 +8,7 @@ import MainCard from "components/Cards/MainCard";
 import { useDispatch, useSelector } from "app/store";
 import { article, filter } from "features/article/articleSlice";
 import createNotification from "components/Extended/Notification";
-import CategoryGroupDrawer from "components/DrawerPage/CategoryGroupDrawer";
+import ArticleModal from "components/ModalPage/ArticleModal";
 import SearchForm from "pages/Article/SearchForm";
 import ArticleTable from "pages/Article/ArticleTable";
 
@@ -99,6 +98,13 @@ const Index = () => {
         setVisibleDrawer={setVisibleDrawer}
         loading={loading}
         setLoading={setLoading}
+      />
+
+      <ArticleModal
+        open={visibleDrawer}
+        dataEdit={dataEdit}
+        handleClose={() => setVisibleDrawer(false)}
+        getList={getList}
       />
     </MainCard>
   );

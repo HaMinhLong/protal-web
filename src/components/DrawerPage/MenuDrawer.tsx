@@ -8,11 +8,10 @@ import {
   Grid,
   Typography,
   Divider,
+  Button,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { useFormik } from "formik";
-import { NotificationContainer } from "react-notifications";
-import LoadingButton from "@mui/lab/LoadingButton";
 import * as yup from "yup";
 
 // ICONS IMPORT
@@ -25,6 +24,7 @@ import { useDispatch } from "app/store";
 import createNotification from "components/Extended/Notification";
 import LocationSelect from "components/Common/LocationSelect";
 import WebsiteSelect from "components/Common/WebsiteSelect";
+import Loading from "components/Extended/Loading";
 
 // TYPES IMPORT
 import { MenuType, ResponseError } from "types/menuWebsite";
@@ -214,7 +214,7 @@ const WebsiteGroupDrawer = ({
                 <WebsiteSelect
                   formik={formik}
                   setFieldValue={formik.setFieldValue}
-                  addOrEdit={false}
+                  addOrEdit={true}
                 />
               </Grid>
 
@@ -222,7 +222,7 @@ const WebsiteGroupDrawer = ({
                 <LocationSelect
                   formik={formik}
                   setFieldValue={formik.setFieldValue}
-                  addOrEdit={false}
+                  addOrEdit={true}
                 />
               </Grid>
 
@@ -243,20 +243,19 @@ const WebsiteGroupDrawer = ({
                 justifyContent: "flex-end",
               }}
             >
-              <LoadingButton
+              <Button
                 size="small"
-                loading={loading}
                 variant="contained"
                 type="submit"
                 endIcon={<SaveIcon />}
               >
                 Lưu lại
-              </LoadingButton>
+              </Button>
             </Grid>
           </form>
         </Box>
+        {loading && <Loading />}
       </Drawer>
-      <NotificationContainer />
     </>
   );
 };

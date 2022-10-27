@@ -9,11 +9,10 @@ import {
   InputAdornment,
   IconButton,
   Divider,
+  Button,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { useFormik } from "formik";
-import { NotificationContainer } from "react-notifications";
-import LoadingButton from "@mui/lab/LoadingButton";
 import * as yup from "yup";
 
 // ICONS IMPORT
@@ -34,6 +33,7 @@ import {
   passwordRegEx,
 } from "utils/regexHelper";
 import UserGroupSelect from "components/Common/UserGroupSelect";
+import Loading from "components/Extended/Loading";
 
 // TYPES IMPORT
 import { UserType, ResponseError } from "types/user";
@@ -323,20 +323,19 @@ const UserDrawer = ({ visible, closeDrawer, dataEdit, getList }: Props) => {
                 justifyContent: "flex-end",
               }}
             >
-              <LoadingButton
+              <Button
                 size="small"
-                loading={loading}
                 variant="contained"
                 type="submit"
                 endIcon={<SaveIcon />}
               >
                 Lưu lại
-              </LoadingButton>
+              </Button>
             </Grid>
           </form>
         </Box>
+        {loading && <Loading />}
       </Drawer>
-      <NotificationContainer />
     </>
   );
 };

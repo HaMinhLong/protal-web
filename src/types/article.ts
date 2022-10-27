@@ -4,12 +4,13 @@ export interface ArticleType {
   description?: string;
   content?: string;
   url?: string;
-  author?: number;
-  source?: number;
-  label?: boolean;
+  author?: string;
+  source?: string;
+  label?: string;
   images?: string;
-  websiteId?: number;
-  categoryId?: number;
+  websiteId?: number | string;
+  categoryId?: number | string;
+  categoryName?: string;
   website?: { id: number; name: string };
   category?: { id: number; text: string };
   createdAt?: string | Date;
@@ -20,6 +21,7 @@ export interface FilterArticle {
   title?: string;
   websiteId?: number | string;
   categoryId?: number | string;
+  categoryName?: string;
   status?: string | number;
 }
 

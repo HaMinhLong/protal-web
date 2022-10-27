@@ -7,11 +7,10 @@ import {
   Grid,
   Typography,
   Divider,
+  Button,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { useFormik } from "formik";
-import { NotificationContainer } from "react-notifications";
-import LoadingButton from "@mui/lab/LoadingButton";
 import * as yup from "yup";
 
 // ICONS IMPORT
@@ -22,6 +21,7 @@ import TextFieldCustom from "components/Extended/TextFieldCustom";
 import StatusFilter from "components/Common/StatusFilter";
 import { useDispatch } from "app/store";
 import createNotification from "components/Extended/Notification";
+import Loading from "components/Extended/Loading";
 
 // TYPES IMPORT
 import { CategoryGroupType, ResponseError } from "types/categoryGroup";
@@ -176,20 +176,19 @@ const CategoryGroupDrawer = ({
                 justifyContent: "flex-end",
               }}
             >
-              <LoadingButton
+              <Button
                 size="small"
-                loading={loading}
                 variant="contained"
                 type="submit"
                 endIcon={<SaveIcon />}
               >
                 Lưu lại
-              </LoadingButton>
+              </Button>
             </Grid>
           </form>
         </Box>
+        {loading && <Loading />}
       </Drawer>
-      <NotificationContainer />
     </>
   );
 };

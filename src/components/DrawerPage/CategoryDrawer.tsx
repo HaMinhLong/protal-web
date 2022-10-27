@@ -7,11 +7,10 @@ import {
   Grid,
   Typography,
   Divider,
+  Button,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { useFormik } from "formik";
-import { NotificationContainer } from "react-notifications";
-import LoadingButton from "@mui/lab/LoadingButton";
 import * as yup from "yup";
 
 // ICONS IMPORT
@@ -25,6 +24,7 @@ import createNotification from "components/Extended/Notification";
 import WebsiteSelect from "components/Common/WebsiteSelect";
 import CategoryGroupSelect from "components/Common/CategoryGroupSelect";
 import UploadImage from "components/Extended/UploadImage";
+import Loading from "components/Extended/Loading";
 
 // TYPES IMPORT
 import { CategoryType, ResponseError } from "types/category";
@@ -82,7 +82,7 @@ const CategoryDrawer = ({
   const validationSchema = yup.object().shape({
     text: yup.string().trim().max(50).required("Vui lòng nhập tên chuyên mục"),
     url: yup.string().trim().max(50).required("Vui lòng nhập URL"),
-    description: yup.string().trim().max(255),
+    description: yup.string().trim().max(1000),
     websiteId: yup.string().required("Vui lòng chọn website"),
     categoryGroupId: yup.string().required("Vui lòng chọn nhóm chuyên mục"),
   });
@@ -260,20 +260,19 @@ const CategoryDrawer = ({
                 justifyContent: "flex-end",
               }}
             >
-              <LoadingButton
+              <Button
                 size="small"
-                loading={loading}
                 variant="contained"
                 type="submit"
                 endIcon={<SaveIcon />}
               >
                 Lưu lại
-              </LoadingButton>
+              </Button>
             </Grid>
           </form>
         </Box>
+        {loading && <Loading />}
       </Drawer>
-      <NotificationContainer />
     </>
   );
 };

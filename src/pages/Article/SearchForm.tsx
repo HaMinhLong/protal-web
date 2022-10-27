@@ -38,6 +38,7 @@ const SearchForm = ({ setDataEdit, setVisibleDrawer, setLoading }: Props) => {
       title: articleState?.filter?.title || "",
       websiteId: articleState?.filter?.websiteId || "",
       categoryId: articleState?.filter?.categoryId || "",
+      categoryName: articleState?.filter?.categoryName || "",
       status: articleState?.filter?.status || "",
     },
     onSubmit: (values) => {
@@ -61,6 +62,7 @@ const SearchForm = ({ setDataEdit, setVisibleDrawer, setLoading }: Props) => {
     }
     if (!values?.categoryId) {
       delete queryName.categoryId;
+      delete queryName.categoryName;
     }
     if (values?.status === "") {
       delete queryName.status;

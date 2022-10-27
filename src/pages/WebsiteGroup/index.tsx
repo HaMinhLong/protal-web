@@ -1,6 +1,5 @@
 // THIRD IMPORT
 import { useState, useEffect } from "react";
-import { NotificationContainer } from "react-notifications";
 
 // ICON IMPORT
 
@@ -101,7 +100,6 @@ const Index = () => {
           setLoading={setLoading}
         />
       </MainCard>
-      <NotificationContainer />
 
       <WebsiteGroupDrawer
         visible={visibleDrawer}

@@ -16,11 +16,7 @@ import {
 
 function* getList({ payload, callback }) {
   try {
-    const filter = JSON.parse(payload.filter);
-    const { data } = yield call(getListArticle, {
-      ...payload,
-      filter: JSON.stringify({ ...filter, categoryId: filter.categoryId.id }),
-    });
+    const { data } = yield call(getListArticle, payload);
 
     if (data && data.success) {
       yield put(save(data.results || {}));
