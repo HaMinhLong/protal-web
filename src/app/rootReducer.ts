@@ -11,6 +11,7 @@ import menuWebsiteReducer from "features/menuWebsite/menuWebsiteSlice";
 import categoryGroupReducer from "features/categoryGroup/categoryGroupSlice";
 import categoryReducer from "features/category/categorySlice";
 import articleReducer from "features/article/articleSlice";
+import messageReducer from "features/message/messageSlice";
 
 const rootReducer = combineReducers({
   customization: customizationReducer,
@@ -24,6 +25,7 @@ const rootReducer = combineReducers({
   categoryGroup: categoryGroupReducer,
   category: categoryReducer,
   article: articleReducer,
+  message: messageReducer,
 });
 
 export default rootReducer;

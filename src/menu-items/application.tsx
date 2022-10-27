@@ -6,6 +6,7 @@ import {
   IconDice,
   IconView360,
   IconShoppingCart,
+  IconBrandWhatsapp,
 } from "@tabler/icons";
 
 // PROJECT IMPORT
@@ -124,6 +125,15 @@ const application = {
       role: [ADMIN_TYPE, CUSTOMER_TYPE],
       breadcrumbs: true,
       icon: IconShoppingCart,
+    },
+    {
+      id: "Liên hệ",
+      title: "Liên hệ",
+      type: "item",
+      url: "/message",
+      role: [ADMIN_TYPE, CUSTOMER_TYPE],
+      breadcrumbs: true,
+      icon: IconBrandWhatsapp,
     },
   ],
 };
