@@ -9,6 +9,8 @@ import { categoryGroupSaga } from "features/categoryGroup/categoryGroupSaga";
 import { categorySaga } from "features/category/categorySaga";
 import { articleSaga } from "features/article/articleSaga";
 import { messageSaga } from "features/message/messageSaga";
+import { producerGroupSaga } from "features/producerGroup/producerGroupSaga";
+import { producerSaga } from "features/producer/producerSaga";
 
 export default function* rootSaga() {
   yield all([
@@ -21,5 +23,7 @@ export default function* rootSaga() {
     categorySaga(),
     articleSaga(),
     messageSaga(),
+    producerGroupSaga(),
+    producerSaga(),
   ]);
 }

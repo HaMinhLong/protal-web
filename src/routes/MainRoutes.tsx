@@ -18,6 +18,8 @@ const Article = Loadable(lazy(() => import("pages/Article")));
 const Product = Loadable(lazy(() => import("pages/Product")));
 const Menu = Loadable(lazy(() => import("pages/Menu")));
 const Message = Loadable(lazy(() => import("pages/Message")));
+const ProducerGroup = Loadable(lazy(() => import("pages/ProducerGroup")));
+const Producer = Loadable(lazy(() => import("pages/Producer")));
 
 const MainRoutes = {
   path: "/",
@@ -81,6 +83,16 @@ const MainRoutes = {
       path: "/message",
       role: [ADMIN_TYPE, CUSTOMER_TYPE],
       element: <Message />,
+    },
+    {
+      path: "/producerGroup",
+      role: [ADMIN_TYPE, CUSTOMER_TYPE],
+      element: <ProducerGroup />,
+    },
+    {
+      path: "/producer",
+      role: [ADMIN_TYPE, CUSTOMER_TYPE],
+      element: <Producer />,
     },
   ],
 };
