@@ -17,6 +17,7 @@ import producerReducer from "features/producer/producerSlice";
 import supplierGroupReducer from "features/supplierGroup/supplierGroupSlice";
 import supplierReducer from "features/supplier/supplierSlice";
 import productReducer from "features/product/productSlice";
+import paymentMethodReducer from "features/paymentMethod/paymentMethodSlice";
 
 const rootReducer = combineReducers({
   customization: customizationReducer,
@@ -36,6 +37,7 @@ const rootReducer = combineReducers({
   supplierGroup: supplierGroupReducer,
   supplier: supplierReducer,
   product: productReducer,
+  paymentMethod: paymentMethodReducer,
 });
 
 export default rootReducer;
