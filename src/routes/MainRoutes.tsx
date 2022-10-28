@@ -23,6 +23,7 @@ const Producer = Loadable(lazy(() => import("pages/Producer")));
 const SupplierGroup = Loadable(lazy(() => import("pages/SupplierGroup")));
 const Supplier = Loadable(lazy(() => import("pages/Supplier")));
 const PaymentMethod = Loadable(lazy(() => import("pages/PaymentMethod")));
+const Order = Loadable(lazy(() => import("pages/Order")));
 
 const MainRoutes = {
   path: "/",
@@ -111,6 +112,11 @@ const MainRoutes = {
       path: "/paymentMethod",
       role: [ADMIN_TYPE, CUSTOMER_TYPE],
       element: <PaymentMethod />,
+    },
+    {
+      path: "/order",
+      role: [ADMIN_TYPE, CUSTOMER_TYPE],
+      element: <Order />,
     },
   ],
 };

@@ -12,9 +12,17 @@ interface Props {
   formik: any;
   setFieldValue: any;
   addOrEdit: boolean;
+  handleChange?: (value: any) => void;
+  websiteId?: number | string;
 }
 
-const ProductSelect = ({ formik, setFieldValue, addOrEdit }: Props) => {
+const ProductSelect = ({
+  formik,
+  setFieldValue,
+  addOrEdit,
+  handleChange,
+  websiteId,
+}: Props) => {
   const dispatch = useDispatch();
 
   const [lists, setLists] = useState<any>([]);
@@ -27,13 +35,15 @@ const ProductSelect = ({ formik, setFieldValue, addOrEdit }: Props) => {
     dispatch({
       type: "product/fetchLazyLoading",
       payload: {
-        filter: JSON.stringify({ status: 1 }),
+        filter: JSON.stringify({ status: 1, websiteId: websiteId }),
         range: JSON.stringify([0, 50]),
       },
       callback: (res) => {
         const { list } = res?.results;
         const dataSelect = list?.map((item) => {
           return {
+            price: item.price,
+            negotiablePrice: item.negotiablePrice,
             value: item.id,
             label: item.name,
           };
@@ -77,7 +87,10 @@ const ProductSelect = ({ formik, setFieldValue, addOrEdit }: Props) => {
             }
           />
         )}
-        onChange={(e, data) => setFieldValue("productId", data?.value)}
+        onChange={(e, data) => {
+          if (handleChange) handleChange(data);
+          setFieldValue("productId", data?.value);
+        }}
       />
       {formik.touched.productId && formik.errors.productId && (
         <FormHelperText error className="error-custom">

@@ -36,11 +36,18 @@ function a11yProps(index: number) {
   };
 }
 
-const TabWrapper = ({ tabWrapper }) => {
+interface Props {
+  tabWrapper: any;
+  noContent?: boolean;
+  handleChangeValue?: (value: number) => void;
+}
+
+const TabWrapper = ({ tabWrapper, noContent, handleChangeValue }: Props) => {
   const [value, setValue] = useState<number>(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
+    if (handleChangeValue) handleChangeValue(newValue);
   };
 
   return (
@@ -56,11 +63,13 @@ const TabWrapper = ({ tabWrapper }) => {
           ))}
         </Tabs>
       </Box>
-      {tabWrapper?.map((item) => (
-        <TabPanel value={value} index={item.value}>
-          {item.tab}
-        </TabPanel>
-      ))}
+
+      {!noContent &&
+        tabWrapper?.map((item) => (
+          <TabPanel value={value} index={item.value}>
+            {item?.tab}
+          </TabPanel>
+        ))}
     </Box>
   );
 };

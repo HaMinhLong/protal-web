@@ -61,7 +61,7 @@ const SearchForm = ({ setDataEdit, setVisibleDrawer, setLoading }: Props) => {
     if (values?.websiteId === "") {
       delete queryName.websiteId;
     }
-    if (values?.status === "") {
+    if (!values?.status) {
       delete queryName.status;
     }
 

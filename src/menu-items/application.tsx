@@ -6,6 +6,8 @@ import {
   IconDice,
   IconShoppingCart,
   IconBrandWhatsapp,
+  IconBuildingStore,
+  IconMessageCircle,
 } from "@tabler/icons";
 
 // PROJECT IMPORT
@@ -162,15 +164,6 @@ const application = {
       ],
     },
     {
-      id: "Sản phẩm",
-      title: "Sản phẩm",
-      type: "item",
-      url: "/product",
-      role: [ADMIN_TYPE, CUSTOMER_TYPE],
-      breadcrumbs: true,
-      icon: IconShoppingCart,
-    },
-    {
       id: "Tin túc",
       title: "Tin túc",
       type: "item",
@@ -178,6 +171,33 @@ const application = {
       role: [ADMIN_TYPE, CUSTOMER_TYPE],
       breadcrumbs: true,
       icon: IconNews,
+    },
+    {
+      id: "Sản phẩm",
+      title: "Sản phẩm",
+      type: "item",
+      url: "/product",
+      role: [ADMIN_TYPE, CUSTOMER_TYPE],
+      breadcrumbs: true,
+      icon: IconBuildingStore,
+    },
+    {
+      id: "Đơn hàng",
+      title: "Đơn hàng",
+      type: "item",
+      url: "/order",
+      role: [ADMIN_TYPE, CUSTOMER_TYPE],
+      breadcrumbs: true,
+      icon: IconShoppingCart,
+    },
+    {
+      id: "Bình luận sản phẩm",
+      title: "Bình luận sản phẩm",
+      type: "item",
+      url: "/comment",
+      role: [ADMIN_TYPE, CUSTOMER_TYPE],
+      breadcrumbs: true,
+      icon: IconMessageCircle,
     },
     {
       id: "Liên hệ",

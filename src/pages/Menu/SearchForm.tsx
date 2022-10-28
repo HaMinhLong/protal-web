@@ -68,7 +68,7 @@ const SearchForm = ({
       status: `${values?.status}`,
     };
 
-    if (values?.status === "") {
+    if (!values?.status) {
       delete queryName.status;
     }
 

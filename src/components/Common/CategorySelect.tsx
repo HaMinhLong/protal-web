@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 // THIRD IMPORT
 import React, { useState, useEffect } from "react";
 import {
@@ -103,8 +104,12 @@ const CategorySelect = ({ formik, setFieldValue, addOrEdit }: Props) => {
   const [lists, setLists] = useState<any>([]);
 
   useEffect(() => {
-    getList();
-  }, []);
+    if (!formik?.values?.websiteId) {
+      setLists([]);
+    } else {
+      getList();
+    }
+  }, [formik?.values?.websiteId]);
 
   const children = (p, c) => {
     if (p.hasOwnProperty("children")) {
@@ -119,7 +124,10 @@ const CategorySelect = ({ formik, setFieldValue, addOrEdit }: Props) => {
       type: "category/fetchLazyLoading",
 
       payload: {
-        filter: JSON.stringify({ status: 1 }),
+        filter: JSON.stringify({
+          status: 1,
+          websiteId: formik?.values?.websiteId,
+        }),
         range: JSON.stringify([0, PAGE_SIZE]),
       },
       callback: (res) => {

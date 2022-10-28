@@ -73,6 +73,8 @@ const ProductModal = ({ open, dataEdit, handleClose, getList }: Props) => {
     url: yup.string().trim().max(254).required("Vui lòng nhập url"),
     description: yup.string().trim().max(1000),
     author: yup.string().trim().max(254),
+    price: yup.number().min(1, "Vui lòng nhập giá tiền lớn hơn 0"),
+    negotiablePrice: yup.number().min(1, "Vui lòng nhập giá thỏa thuận hơn 0"),
     source: yup.string().trim().max(254),
     label: yup.string().trim().max(254),
     websiteId: yup.string().required("Vui lòng chọn website"),

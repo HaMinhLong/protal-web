@@ -15,6 +15,7 @@ type Props = TextFieldProps & {
   type?: string;
   bgColor?: string;
   handleChange?: (value: string) => void;
+  readOnly?: boolean;
 };
 
 const TextFieldCustom = ({
@@ -28,6 +29,7 @@ const TextFieldCustom = ({
   type,
   bgColor,
   handleChange,
+  readOnly,
   ...props
 }: Props) => {
   const textFieldCustom = useMemo(
@@ -64,14 +66,15 @@ const TextFieldCustom = ({
             }
             formik?.setFieldTouched(name, true);
             formik?.handleChange(e);
-            if (handleChange) {
-              handleChange(e.target.value);
-            }
+            if (handleChange) handleChange(e.target.value);
           }}
           error={
             (formik?.touched?.[name] && Boolean(formik?.errors?.[name])) ||
             Boolean(errors?.[name])
           }
+          InputProps={{
+            readOnly: readOnly,
+          }}
         />
         {((formik?.touched?.[name] && formik?.errors?.[name]) ||
           errors?.[name]) && (

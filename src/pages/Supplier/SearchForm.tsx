@@ -56,7 +56,7 @@ const SearchForm = ({ setDataEdit, setVisibleDrawer, setLoading }: Props) => {
     if (values?.supplierGroupId === "") {
       delete queryName.supplierGroupId;
     }
-    if (values?.status === "") {
+    if (!values?.status) {
       delete queryName.status;
     }
 

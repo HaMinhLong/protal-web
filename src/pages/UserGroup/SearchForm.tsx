@@ -49,7 +49,7 @@ const SearchForm = ({ setDataEdit, setVisibleDrawer, setLoading }: Props) => {
     if (!values?.name?.trim()) {
       delete queryName.name;
     }
-    if (values?.status === "") {
+    if (!values?.status) {
       delete queryName.status;
     }
 
