@@ -21,33 +21,35 @@ import CategorySelect from "components/Common/CategorySelect";
 import CkEditor from "components/Extended/CkEditor";
 import { removeVietnameseTones } from "utils/utils";
 import TabWrapper from "components/Extended/TabWrapper";
+import ProducerSelect from "components/Common/ProducerSelect";
+import SupplierSelect from "components/Common/SupplierSelect";
 
 // TYPES IMPORT
-import { ArticleType, ResponseError } from "types/article";
+import { ProductType, ResponseError } from "types/product";
 import UploadImage from "components/Extended/UploadImage";
 
 interface Props {
   open: boolean;
-  dataEdit: ArticleType;
+  dataEdit: ProductType;
   handleClose: () => void;
   getList: () => void;
 }
 
-const ArticleModal = ({ open, dataEdit, handleClose, getList }: Props) => {
+const ProductModal = ({ open, dataEdit, handleClose, getList }: Props) => {
   const dispatch = useDispatch();
 
-  const [dataArticle, setArticle] = useState<ArticleType>({});
+  const [dataProduct, setDataProduct] = useState<ProductType>({});
   const [loading, setLoading] = useState<boolean>(false);
   const [errors, setErrors] = useState<ResponseError>({});
 
   useEffect(() => {
     if (!open) return;
     if (!dataEdit?.id) {
-      setArticle({});
+      setDataProduct({});
     } else {
       setLoading(true);
       dispatch({
-        type: "article/getOne",
+        type: "product/getOne",
         payload: {
           id: dataEdit?.id,
         },
@@ -57,7 +59,7 @@ const ArticleModal = ({ open, dataEdit, handleClose, getList }: Props) => {
             const {
               results: { list },
             } = res;
-            setArticle(list);
+            setDataProduct(list);
           } else if (res?.success === false) {
             createNotification("error", res?.message);
           }
@@ -67,11 +69,7 @@ const ArticleModal = ({ open, dataEdit, handleClose, getList }: Props) => {
   }, [open]);
 
   const validationSchema = yup.object().shape({
-    title: yup
-      .string()
-      .trim()
-      .max(254)
-      .required("Vui lòng nhập tiêu đề tin tức"),
+    name: yup.string().trim().max(254).required("Vui lòng nhập tên sản phẩm"),
     url: yup.string().trim().max(254).required("Vui lòng nhập url"),
     description: yup.string().trim().max(1000),
     author: yup.string().trim().max(254),
@@ -84,18 +82,19 @@ const ArticleModal = ({ open, dataEdit, handleClose, getList }: Props) => {
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      title: dataArticle?.title || "",
-      description: dataArticle?.description || "",
-      content: dataArticle?.content || "",
-      url: dataArticle?.url || "",
-      author: dataArticle?.author || "",
-      source: dataArticle?.source || "",
-      label: dataArticle?.label || "",
-      images: dataArticle?.images || "",
-      websiteId: dataArticle?.websiteId || "",
-      categoryId: dataArticle?.categoryId || "",
-      categoryName: dataArticle?.category?.text || "",
-      status: dataArticle?.status === 0 ? 0 : 1,
+      name: dataProduct?.name || "",
+      url: dataProduct?.url || "",
+      price: dataProduct?.price || 0,
+      negotiablePrice: dataProduct?.negotiablePrice || 0,
+      description: dataProduct?.description || "",
+      content: dataProduct?.content || "",
+      images: dataProduct?.images || "",
+      websiteId: dataProduct?.websiteId || "",
+      categoryId: dataProduct?.categoryId || "",
+      producerId: dataProduct?.producerId || "",
+      supplierId: dataProduct?.supplierId || "",
+      categoryName: dataProduct?.category?.text || "",
+      status: dataProduct?.status === 0 ? 0 : 1,
     },
     validationSchema,
     onSubmit: (values) => {
@@ -103,19 +102,19 @@ const ArticleModal = ({ open, dataEdit, handleClose, getList }: Props) => {
     },
   });
 
-  const handleSubmit = (values: ArticleType) => {
+  const handleSubmit = (values: ProductType) => {
     setLoading(true);
     const addItem = {
       ...values,
-      title: values?.title?.trim(),
-      titleOld: dataArticle?.title?.trim(),
+      name: values?.name?.trim(),
+      nameOld: dataProduct?.name?.trim(),
     };
 
-    if (dataArticle?.id) {
+    if (dataProduct?.id) {
       dispatch({
-        type: "article/update",
+        type: "product/update",
         payload: {
-          id: dataArticle?.id,
+          id: dataProduct?.id,
           params: addItem,
         },
         callback: (res) => {
@@ -132,7 +131,7 @@ const ArticleModal = ({ open, dataEdit, handleClose, getList }: Props) => {
       });
     } else {
       dispatch({
-        type: "article/add",
+        type: "product/add",
         payload: addItem,
         callback: (res) => {
           setLoading(false);
@@ -168,18 +167,19 @@ const ArticleModal = ({ open, dataEdit, handleClose, getList }: Props) => {
       label: "Thông tin cơ bản",
       tab: (
         <Grid container spacing={3}>
-          <Grid item xs={12} md={6} lg={8}>
+          <Grid item xs={12} md={6} lg={4}>
             <TextFieldCustom
-              name="title"
+              name="name"
               formik={formik}
               errors={errors}
               required
-              label="Tên tin tức"
+              label="Tên sản phẩm"
               handleChange={(value) => {
                 convertTitleToUrl(value);
               }}
             />
           </Grid>
+
           <Grid item xs={12} md={6} lg={4}>
             <TextFieldCustom
               name="url"
@@ -189,30 +189,12 @@ const ArticleModal = ({ open, dataEdit, handleClose, getList }: Props) => {
               label="Đường dẫn"
             />
           </Grid>
-          <Grid item xs={12} md={6} lg={4}>
-            <TextFieldCustom
-              name="author"
-              formik={formik}
-              errors={errors}
-              label="Tác giả"
-            />
-          </Grid>
 
           <Grid item xs={12} md={6} lg={4}>
-            <TextFieldCustom
-              name="source"
+            <ProducerSelect
               formik={formik}
-              errors={errors}
-              label="Nguôn"
-            />
-          </Grid>
-
-          <Grid item xs={12} md={6} lg={4}>
-            <TextFieldCustom
-              name="label"
-              formik={formik}
-              errors={errors}
-              label="Nhãn"
+              setFieldValue={formik.setFieldValue}
+              addOrEdit={true}
             />
           </Grid>
 
@@ -233,6 +215,34 @@ const ArticleModal = ({ open, dataEdit, handleClose, getList }: Props) => {
           </Grid>
 
           <Grid item xs={12} md={6} lg={4}>
+            <SupplierSelect
+              formik={formik}
+              setFieldValue={formik.setFieldValue}
+              addOrEdit={true}
+            />
+          </Grid>
+
+          <Grid item xs={12} md={6} lg={4}>
+            <TextFieldCustom
+              name="price"
+              formik={formik}
+              errors={errors}
+              label="Giá"
+              type="number"
+            />
+          </Grid>
+
+          <Grid item xs={12} md={6} lg={4}>
+            <TextFieldCustom
+              name="negotiablePrice"
+              formik={formik}
+              errors={errors}
+              label="Giá thỏa thuận"
+              type="number"
+            />
+          </Grid>
+
+          <Grid item xs={12} md={6} lg={4}>
             <StatusFilter
               addOrEdit={false}
               formik={formik}
@@ -240,7 +250,7 @@ const ArticleModal = ({ open, dataEdit, handleClose, getList }: Props) => {
             />
           </Grid>
 
-          <Grid item xs={12} md={6} lg={8}>
+          <Grid item xs={12} md={12} lg={8}>
             <TextFieldCustom
               name="description"
               formik={formik}
@@ -280,9 +290,9 @@ const ArticleModal = ({ open, dataEdit, handleClose, getList }: Props) => {
     <DialogPopUp
       open={open}
       title={
-        dataArticle?.id
-          ? `Cập nhật thông tin ${dataArticle?.title}`
-          : "Thêm mới tin tức"
+        dataProduct?.id
+          ? `Cập nhật thông tin ${dataProduct?.name}`
+          : "Thêm mới sản phẩm"
       }
       handleClose={() => {
         closePopUp();
@@ -327,4 +337,4 @@ const ArticleModal = ({ open, dataEdit, handleClose, getList }: Props) => {
   );
 };
 
-export default ArticleModal;
+export default ProductModal;

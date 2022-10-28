@@ -16,6 +16,7 @@ import producerGroupReducer from "features/producerGroup/producerGroupSlice";
 import producerReducer from "features/producer/producerSlice";
 import supplierGroupReducer from "features/supplierGroup/supplierGroupSlice";
 import supplierReducer from "features/supplier/supplierSlice";
+import productReducer from "features/product/productSlice";
 
 const rootReducer = combineReducers({
   customization: customizationReducer,
@@ -34,6 +35,7 @@ const rootReducer = combineReducers({
   producer: producerReducer,
   supplierGroup: supplierGroupReducer,
   supplier: supplierReducer,
+  product: productReducer,
 });
 
 export default rootReducer;

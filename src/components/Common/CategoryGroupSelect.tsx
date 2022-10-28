@@ -26,7 +26,10 @@ const CategoryGroupSelect = ({ formik, setFieldValue, addOrEdit }: Props) => {
   const getList = () => {
     dispatch({
       type: "categoryGroup/fetchLazyLoading",
-      payload: { filter: JSON.stringify({ status: 1 }) },
+      payload: {
+        filter: JSON.stringify({ status: 1 }),
+        range: JSON.stringify([0, 50]),
+      },
       callback: (res) => {
         const { list } = res?.results;
         const dataSelect = list?.map((item) => {

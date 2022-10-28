@@ -14,7 +14,7 @@ interface Props {
   addOrEdit: boolean;
 }
 
-const WebsiteSelect = ({ formik, setFieldValue, addOrEdit }: Props) => {
+const ProductSelect = ({ formik, setFieldValue, addOrEdit }: Props) => {
   const dispatch = useDispatch();
 
   const [lists, setLists] = useState<any>([]);
@@ -25,7 +25,7 @@ const WebsiteSelect = ({ formik, setFieldValue, addOrEdit }: Props) => {
 
   const getList = () => {
     dispatch({
-      type: "website/fetchLazyLoading",
+      type: "product/fetchLazyLoading",
       payload: {
         filter: JSON.stringify({ status: 1 }),
         range: JSON.stringify([0, 50]),
@@ -53,7 +53,7 @@ const WebsiteSelect = ({ formik, setFieldValue, addOrEdit }: Props) => {
         value={
           lists?.length > 0
             ? lists?.filter(
-                (item) => item.value === formik?.values?.websiteId
+                (item) => item.value === formik?.values?.productId
               )[0]
             : { value: "", label: "" }
         }
@@ -62,34 +62,34 @@ const WebsiteSelect = ({ formik, setFieldValue, addOrEdit }: Props) => {
         renderInput={(params) => (
           <TextField
             {...params}
-            name="websiteId"
+            name="productId"
             label={
               addOrEdit ? (
                 <span className="input-label">
-                  Website <span> *</span>
+                  Sản phẩm <span> *</span>
                 </span>
               ) : (
-                "Website"
+                "Sản phẩm"
               )
             }
             error={
-              formik.touched.websiteId && Boolean(formik.errors?.websiteId)
+              formik.touched.productId && Boolean(formik.errors?.productId)
             }
           />
         )}
-        onChange={(e, data) => setFieldValue("websiteId", data?.value)}
+        onChange={(e, data) => setFieldValue("productId", data?.value)}
       />
-      {formik.touched.websiteId && formik.errors.websiteId && (
+      {formik.touched.productId && formik.errors.productId && (
         <FormHelperText error className="error-custom">
           <ErrorIcon
             fontSize="small"
             sx={{ mr: 0.5, width: "18px", height: "18px" }}
           />
-          {formik.errors.websiteId}
+          {formik.errors.productId}
         </FormHelperText>
       )}
     </>
   );
 };
 
-export default WebsiteSelect;
+export default ProductSelect;
