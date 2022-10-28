@@ -14,6 +14,8 @@ import articleReducer from "features/article/articleSlice";
 import messageReducer from "features/message/messageSlice";
 import producerGroupReducer from "features/producerGroup/producerGroupSlice";
 import producerReducer from "features/producer/producerSlice";
+import supplierGroupReducer from "features/supplierGroup/supplierGroupSlice";
+import supplierReducer from "features/supplier/supplierSlice";
 
 const rootReducer = combineReducers({
   customization: customizationReducer,
@@ -30,6 +32,8 @@ const rootReducer = combineReducers({
   message: messageReducer,
   producerGroup: producerGroupReducer,
   producer: producerReducer,
+  supplierGroup: supplierGroupReducer,
+  supplier: supplierReducer,
 });
 
 export default rootReducer;
