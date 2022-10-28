@@ -145,6 +145,7 @@ const CategoryGroupDrawer = ({
                   formik={formik}
                   errors={errors}
                   label="Tên nhóm chuyên mục"
+                  required
                 />
               </Grid>
 

@@ -145,6 +145,7 @@ const SupplierGroupDrawer = ({
                   formik={formik}
                   errors={errors}
                   label="Tên nhóm nhà cung cấp"
+                  required
                 />
               </Grid>
 

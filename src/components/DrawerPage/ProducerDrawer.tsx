@@ -143,6 +143,7 @@ const ProducerDrawer = ({ visible, closeDrawer, dataEdit, getList }: Props) => {
                   formik={formik}
                   errors={errors}
                   label="Tên nhà sản xuất"
+                  required
                 />
               </Grid>
 

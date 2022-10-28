@@ -1,5 +1,5 @@
 // THIRD IMPORT
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Drawer,
   Box,
@@ -8,6 +8,7 @@ import {
   Typography,
   Divider,
   Button,
+  Rating,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { useFormik } from "formik";
@@ -22,19 +23,25 @@ import StatusFilter from "components/Common/StatusFilter";
 import { useDispatch } from "app/store";
 import createNotification from "components/Extended/Notification";
 import Loading from "components/Extended/Loading";
-import SupplierGroupSelect from "components/Common/SupplierGroupSelect";
+import WebsiteSelect from "components/Common/WebsiteSelect";
+import ProductSelect from "components/Common/ProductSelect";
 
 // TYPES IMPORT
-import { SupplierType, ResponseError } from "types/supplier";
+import { ProductCommentType, ResponseError } from "types/productComment";
 
 interface Props {
   visible: boolean;
-  dataEdit: SupplierType;
+  dataEdit: ProductCommentType;
   closeDrawer: () => void;
   getList: () => void;
 }
 
-const SupplierDrawer = ({ visible, closeDrawer, dataEdit, getList }: Props) => {
+const ProductCommentDrawer = ({
+  visible,
+  closeDrawer,
+  dataEdit,
+  getList,
+}: Props) => {
   const dispatch = useDispatch();
   const theme = useTheme();
   const matchDownSM = useMediaQuery(theme.breakpoints.down("md"));
@@ -43,21 +50,20 @@ const SupplierDrawer = ({ visible, closeDrawer, dataEdit, getList }: Props) => {
   const [errors, setErrors] = useState<ResponseError>({});
 
   const validationSchema = yup.object().shape({
-    name: yup
-      .string()
-      .trim()
-      .max(50)
-      .required("Vui lòng nhập tên nhà cung cấp"),
-    description: yup.string().trim().max(255),
-    supplierGroupId: yup.string().required("Vui lòng chọn nhóm nhà cung cấp"),
+    name: yup.string().trim().max(50).required("Vui lòng nhập họ tên"),
+    phone: yup.string().trim().max(20).required("Vui lòng nhập số điện thoại"),
+    comment: yup.string().trim().max(255).required("Vui lòng nhâp bình luận"),
   });
 
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
       name: dataEdit?.name || "",
-      description: dataEdit?.description || "",
-      supplierGroupId: dataEdit?.supplierGroupId || "",
+      phone: dataEdit?.phone || "",
+      websiteId: dataEdit?.websiteId || "",
+      productId: dataEdit?.productId || "",
+      comment: dataEdit?.comment || "",
+      rate: dataEdit?.rate || 5,
       status: dataEdit?.status === 0 ? 0 : 1,
     },
     validationSchema,
@@ -71,11 +77,10 @@ const SupplierDrawer = ({ visible, closeDrawer, dataEdit, getList }: Props) => {
     const addItem = {
       ...values,
       name: values?.name?.trim(),
-      nameOld: dataEdit?.name?.trim(),
     };
     if (dataEdit?.id) {
       dispatch({
-        type: "supplier/update",
+        type: "productComment/update",
         payload: {
           id: dataEdit?.id,
           params: {
@@ -96,7 +101,7 @@ const SupplierDrawer = ({ visible, closeDrawer, dataEdit, getList }: Props) => {
       });
     } else {
       dispatch({
-        type: "supplier/add",
+        type: "productComment/add",
         payload: addItem,
         callback: (res) => {
           setLoading(false);
@@ -132,23 +137,28 @@ const SupplierDrawer = ({ visible, closeDrawer, dataEdit, getList }: Props) => {
           <Typography variant="h4" sx={{ mb: 3 }}>
             {dataEdit?.id
               ? `Cập nhật thông tin ${dataEdit?.name}`
-              : "Thêm mới nhà cung cấp"}
+              : "Thêm mới bình luận"}
+            <br />
+            <Rating
+              value={formik?.values?.rate}
+              onChange={(event, newValue) => {
+                formik.setFieldValue("rate", newValue);
+              }}
+            />
             <Divider sx={{ mt: 1 }} />
           </Typography>
           <form onSubmit={formik.handleSubmit}>
             <Grid container spacing={3}>
               <Grid item xs={12}>
-                <TextFieldCustom
-                  name="name"
+                <WebsiteSelect
                   formik={formik}
-                  errors={errors}
-                  label="Tên nhà cung cấp"
-                  required
+                  setFieldValue={formik.setFieldValue}
+                  addOrEdit={true}
                 />
               </Grid>
 
               <Grid item xs={12}>
-                <SupplierGroupSelect
+                <ProductSelect
                   formik={formik}
                   setFieldValue={formik.setFieldValue}
                   addOrEdit={true}
@@ -157,10 +167,30 @@ const SupplierDrawer = ({ visible, closeDrawer, dataEdit, getList }: Props) => {
 
               <Grid item xs={12}>
                 <TextFieldCustom
-                  name="description"
+                  name="name"
                   formik={formik}
                   errors={errors}
-                  label="Mô tả"
+                  label="Họ tên"
+                  required
+                />
+              </Grid>
+
+              <Grid item xs={12}>
+                <TextFieldCustom
+                  name="phone"
+                  formik={formik}
+                  errors={errors}
+                  label="Số điện thoại"
+                  required
+                />
+              </Grid>
+
+              <Grid item xs={12}>
+                <TextFieldCustom
+                  name="comment"
+                  formik={formik}
+                  errors={errors}
+                  label="Bình luận"
                   multiline
                   rows={3}
                 />
@@ -200,4 +230,4 @@ const SupplierDrawer = ({ visible, closeDrawer, dataEdit, getList }: Props) => {
   );
 };
 
-export default SupplierDrawer;
+export default ProductCommentDrawer;

@@ -145,6 +145,7 @@ const ProducerGroupDrawer = ({
                   formik={formik}
                   errors={errors}
                   label="Tên nhóm nhà sản xuất"
+                  required
                 />
               </Grid>
 

@@ -16,6 +16,7 @@ import { supplierSaga } from "features/supplier/supplierSaga";
 import { productSaga } from "features/product/productSaga";
 import { paymentMethodSaga } from "features/paymentMethod/paymentMethodSaga";
 import { orderSaga } from "features/order/orderSaga";
+import { productCommentSaga } from "features/productComment/productCommentSaga";
 
 export default function* rootSaga() {
   yield all([
@@ -35,5 +36,6 @@ export default function* rootSaga() {
     productSaga(),
     paymentMethodSaga(),
     orderSaga(),
+    productCommentSaga(),
   ]);
 }
