@@ -1,22 +1,15 @@
 // THIRD IMPORT
-import React, { useState } from "react";
-import {
-  Drawer,
-  Box,
-  useMediaQuery,
-  Grid,
-  Typography,
-  Divider,
-  Button,
-} from "@mui/material";
-import { useTheme } from "@mui/material/styles";
+import { useState } from "react";
+import { Box, Grid, Button } from "@mui/material";
 import { useFormik } from "formik";
 import * as yup from "yup";
 
 // ICONS IMPORT
 import SaveIcon from "@mui/icons-material/Save";
+import DoDisturbIcon from "@mui/icons-material/DoDisturb";
 
 // PROJECT IMPORT
+import DialogPopUp from "components/Extended/DialogPopUp";
 import TextFieldCustom from "components/Extended/TextFieldCustom";
 import StatusFilter from "components/Common/StatusFilter";
 import { useDispatch } from "app/store";
@@ -24,6 +17,8 @@ import createNotification from "components/Extended/Notification";
 import WebsiteGroupSelect from "components/Common/WebsiteGroupSelect";
 import UploadImage from "components/Extended/UploadImage";
 import Loading from "components/Extended/Loading";
+import TabWrapper from "components/Extended/TabWrapper";
+import LocationWebsite from "components/LocationWebsite";
 
 // TYPES IMPORT
 import { WebsiteType, ResponseError } from "types/website";
@@ -37,8 +32,6 @@ interface Props {
 
 const WebsiteDrawer = ({ visible, closeDrawer, dataEdit, getList }: Props) => {
   const dispatch = useDispatch();
-  const theme = useTheme();
-  const matchDownSM = useMediaQuery(theme.breakpoints.down("md"));
 
   const [loading, setLoading] = useState<boolean>(false);
   const [errors, setErrors] = useState<ResponseError>({});
@@ -52,6 +45,7 @@ const WebsiteDrawer = ({ visible, closeDrawer, dataEdit, getList }: Props) => {
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
+      id: dataEdit?.id || "",
       name: dataEdit?.name || "",
       description: dataEdit?.description || "",
       logo: dataEdit?.logo || "",
@@ -91,7 +85,7 @@ const WebsiteDrawer = ({ visible, closeDrawer, dataEdit, getList }: Props) => {
           if (res?.success) {
             createNotification("success", res?.message);
             getList();
-            changeDrawer();
+            closePopUp();
           } else {
             setErrors(res.error);
             createNotification("error", res.message);
@@ -108,7 +102,7 @@ const WebsiteDrawer = ({ visible, closeDrawer, dataEdit, getList }: Props) => {
           if (res?.success) {
             createNotification("success", res?.message);
             getList();
-            changeDrawer();
+            closePopUp();
           } else {
             setErrors(res.error);
             createNotification("error", res.message);
@@ -118,29 +112,57 @@ const WebsiteDrawer = ({ visible, closeDrawer, dataEdit, getList }: Props) => {
     }
   };
 
-  const changeDrawer = () => {
+  const closePopUp = () => {
     closeDrawer();
     formik.resetForm();
     formik.setTouched({}, false);
     setErrors({});
   };
 
-  return (
-    <>
-      <Drawer anchor={"right"} open={visible} onClose={changeDrawer}>
-        <Box
-          sx={{
-            width: matchDownSM ? "100%" : "400px",
-            p: 2,
-          }}
-        >
-          <Typography variant="h4" sx={{ mb: 3 }}>
-            {dataEdit?.id
-              ? `Cập nhật thông tin ${dataEdit?.name}`
-              : "Thêm mới website"}
-            <Divider sx={{ mt: 1 }} />
-          </Typography>
-          <form onSubmit={formik.handleSubmit}>
+  const tabWrapper = [
+    {
+      value: 0,
+      label: "Thông tin cơ bản",
+      tab: (
+        <Grid container spacing={3}>
+          <Grid item xs={12} lg={4}>
+            <TextFieldCustom
+              name="name"
+              formik={formik}
+              errors={errors}
+              label="Tên website"
+              required
+            />
+          </Grid>
+
+          <Grid item xs={12} lg={4}>
+            <WebsiteGroupSelect
+              formik={formik}
+              setFieldValue={formik.setFieldValue}
+              addOrEdit={true}
+            />
+          </Grid>
+
+          <Grid item xs={12} lg={4}>
+            <StatusFilter
+              addOrEdit={true}
+              formik={formik}
+              setFieldValue={formik.setFieldValue}
+            />
+          </Grid>
+
+          <Grid item xs={12} lg={8}>
+            <TextFieldCustom
+              name="description"
+              formik={formik}
+              errors={errors}
+              label="Mô tả"
+              multiline
+              rows={6}
+            />
+          </Grid>
+
+          <Grid item xs={12} lg={4}>
             <UploadImage
               image={
                 formik.values.logo
@@ -150,53 +172,54 @@ const WebsiteDrawer = ({ visible, closeDrawer, dataEdit, getList }: Props) => {
               setFieldValue={formik.setFieldValue}
               field="logo"
             />
-            <Grid container spacing={3}>
-              <Grid item xs={12}>
-                <TextFieldCustom
-                  name="name"
-                  formik={formik}
-                  errors={errors}
-                  label="Tên website"
-                  required
-                />
-              </Grid>
+          </Grid>
+        </Grid>
+      ),
+    },
+    {
+      value: 1,
+      label: "Thông tin địa điểm",
+      tab: <LocationWebsite formik={formik}></LocationWebsite>,
+    },
+  ];
 
-              <Grid item xs={12}>
-                <WebsiteGroupSelect
-                  formik={formik}
-                  setFieldValue={formik.setFieldValue}
-                  addOrEdit={true}
-                />
-              </Grid>
+  return (
+    <>
+      <DialogPopUp
+        open={visible}
+        title={
+          dataEdit?.id
+            ? `Cập nhật thông tin ${dataEdit?.name}`
+            : "Thêm mới wesite"
+        }
+        handleClose={() => {
+          closePopUp();
+        }}
+        styleBox={{ minWidth: "1000px", minHeight: "350px" }}
+        styleChildBox={{ p: "0px 30px 20px" }}
+        styleTitle={{ p: "10px 30px" }}
+        showButtonCloseDialog
+      >
+        <Box>
+          <form onSubmit={formik.handleSubmit}>
+            <TabWrapper tabWrapper={tabWrapper} />
 
-              <Grid item xs={12}>
-                <TextFieldCustom
-                  name="description"
-                  formik={formik}
-                  errors={errors}
-                  label="Mô tả"
-                  multiline
-                  rows={3}
-                />
-              </Grid>
-
-              <Grid item xs={12}>
-                <StatusFilter
-                  addOrEdit={true}
-                  formik={formik}
-                  setFieldValue={formik.setFieldValue}
-                />
-              </Grid>
-            </Grid>
-            <Grid
-              item
-              xs={12}
+            <Box
               sx={{
                 mt: 3,
                 display: "flex",
-                justifyContent: "flex-end",
+                justifyContent: "center",
               }}
             >
+              <Button
+                onClick={() => closePopUp()}
+                size="small"
+                variant="outlined"
+                sx={{ mr: "10px" }}
+                endIcon={<DoDisturbIcon />}
+              >
+                Hủy
+              </Button>
               <Button
                 size="small"
                 variant="contained"
@@ -205,11 +228,11 @@ const WebsiteDrawer = ({ visible, closeDrawer, dataEdit, getList }: Props) => {
               >
                 Lưu lại
               </Button>
-            </Grid>
+            </Box>
           </form>
+          {loading && <Loading />}
         </Box>
-        {loading && <Loading />}
-      </Drawer>
+      </DialogPopUp>
     </>
   );
 };

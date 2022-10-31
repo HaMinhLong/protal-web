@@ -70,7 +70,7 @@ const Index = ({ formik }: Props) => {
           component="th"
           scope="row"
         >
-          {item.productName}
+          {item?.productName}
         </TableCell>
         <TableCell>{item?.amount}</TableCell>
         <TableCell>{item?.price}</TableCell>

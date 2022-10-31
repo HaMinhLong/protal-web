@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "app/store";
 import { website, filter } from "features/website/websiteSlice";
 import createNotification from "components/Extended/Notification";
 
-import WebsiteDrawer from "components/DrawerPage/WebsiteDrawer";
+import WebsiteDrawer from "components/ModalPage/WebsiteDrawer";
 import SearchForm from "pages/Website/SearchForm";
 import WebsiteTable from "pages/Website/WebsiteTable";
 
