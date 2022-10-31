@@ -33,14 +33,14 @@ interface Props {
 const OrderModal = ({ open, dataEdit, handleClose, getList }: Props) => {
   const dispatch = useDispatch();
 
-  const [dataOrder, setDataOrder] = useState<OrderType>({});
+  const [dataOrder, setDataOrder] = useState<OrderType>({ id: 0, status: 1 });
   const [loading, setLoading] = useState<boolean>(false);
   const [errors, setErrors] = useState<ResponseError>({});
 
   useEffect(() => {
     if (!open) return;
     if (!dataEdit?.id) {
-      setDataOrder({});
+      setDataOrder({ id: 0, status: 1 });
     } else {
       setLoading(true);
       dispatch({
@@ -82,6 +82,7 @@ const OrderModal = ({ open, dataEdit, handleClose, getList }: Props) => {
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
+      id: dataOrder?.id || 0,
       name: dataOrder?.name || "",
       phone: dataOrder?.phone || "",
       email: dataOrder?.email || "",

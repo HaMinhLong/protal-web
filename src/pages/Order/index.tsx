@@ -54,7 +54,8 @@ const Index = () => {
       attributes:
         "id,name,phone,email,totalPrice,address,description,status,createdAt",
     };
-    if (query?.filter !== "{}") {
+    console.log("query?.filter", query?.filter);
+    if (query?.filter !== "{}" && query?.filter) {
       params = {
         ...params,
         filter: JSON.stringify({

@@ -1,7 +1,7 @@
 import { Linkedin } from "./product";
 
 export interface OrderType {
-  id?: number;
+  id: number;
   name?: string;
   phone?: string;
   email?: string;
@@ -13,7 +13,7 @@ export interface OrderType {
   website?: Linkedin;
   paymentMethod?: Linkedin;
   createdAt?: string | Date;
-  status?: number;
+  status: number;
   productOrders?: ProductOrderType[];
 }
 

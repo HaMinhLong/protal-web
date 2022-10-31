@@ -140,7 +140,7 @@ const SearchForm = ({ setDataEdit, setVisibleDrawer, setLoading }: Props) => {
             endIcon={<AddIcon />}
             sx={{ ml: 2 }}
             onClick={() => {
-              setDataEdit({});
+              setDataEdit({ id: 0, status: 1 });
               setVisibleDrawer(true);
             }}
           >

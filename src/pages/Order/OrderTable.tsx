@@ -1,5 +1,5 @@
 //THIRD IMPORT
-import React, { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
+import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
 import {
   Box,
   useMediaQuery,
@@ -17,6 +17,7 @@ import { useTheme } from "@mui/material/styles";
 
 // ICON IMPORT
 import EditIcon from "@mui/icons-material/Edit";
+import NextPlanIcon from "@mui/icons-material/NextPlan";
 
 // PROJECT IMPORT
 import { order } from "features/order/orderSlice";
@@ -25,7 +26,6 @@ import createNotification from "components/Extended/Notification";
 import Loading from "components/Extended/Loading";
 import NoData from "components/Extended/NoData";
 import AlertDelete from "components/Extended/AlertDelete";
-import TabWrapper from "components/Extended/TabWrapper";
 
 // TYPES IMPORT
 import { OrderType } from "types/order";
@@ -120,6 +120,38 @@ const OrderTable = ({
     );
   };
 
+  const renderStatusAction = (status?: number) => {
+    switch (status) {
+      case 1:
+        return "Tiếp nhận";
+
+      case 2:
+        return "Đóng gói";
+
+      case 3:
+        return "Vận chuyển";
+
+      default:
+        return "Thành công";
+    }
+  };
+
+  const renderStatusActionPre = (status?: number) => {
+    switch (status) {
+      case 3:
+        return "Tiếp nhận";
+
+      case 4:
+        return "Đóng gói";
+
+      case 5:
+        return "Vận chuyển";
+
+      default:
+        return "Đặt hàng";
+    }
+  };
+
   const renderTableBody = (item: OrderType, index: number) => {
     return (
       <TableRow hover key={item.id}>
@@ -129,7 +161,7 @@ const OrderTable = ({
           </Typography>
         </TableCell>
         <TableCell
-          sx={{ width: "20%", overflow: "hidden", maxWidth: 200 }}
+          sx={{ width: "15%", overflow: "hidden", maxWidth: 200 }}
           component="th"
           scope="row"
         >
@@ -157,7 +189,7 @@ const OrderTable = ({
     );
   };
 
-  const handleStatus = (value: number, id: number | undefined) => {
+  const handleStatus = (value: number, id: number) => {
     const status = value;
     const item = {
       status,
@@ -171,6 +203,7 @@ const OrderTable = ({
       callback: (res) => {
         if (res?.success === true) {
           createNotification("success", res?.message);
+          getList();
         } else {
           createNotification("error", res?.message);
         }
@@ -180,6 +213,36 @@ const OrderTable = ({
 
   const renderMenuButton = (item: OrderType) => (
     <>
+      {item?.status !== 1 && (
+        <Button
+          size="small"
+          variant="outlined"
+          endIcon={
+            <NextPlanIcon
+              sx={{ transform: "rotateZ(180deg) rotateX(180deg)" }}
+            />
+          }
+          onClick={() => {
+            handleStatus(item?.status - 1, item?.id);
+          }}
+          sx={{ mr: "10px" }}
+        >
+          {renderStatusActionPre(item?.status)}
+        </Button>
+      )}
+      {item?.status !== 5 && (
+        <Button
+          size="small"
+          variant="outlined"
+          endIcon={<NextPlanIcon />}
+          onClick={() => {
+            handleStatus(item?.status + 1, item?.id);
+          }}
+          sx={{ mr: "10px" }}
+        >
+          {renderStatusAction(item?.status)}
+        </Button>
+      )}
       <Button
         size="small"
         variant="outlined"
