@@ -122,7 +122,7 @@ const ArticleModal = ({ open, dataEdit, handleClose, getList }: Props) => {
           if (res?.success) {
             createNotification("success", res?.message);
             getList();
-            handleClose();
+            closePopUp();
           } else {
             setErrors(res.error);
             createNotification("error", res.message);
@@ -139,7 +139,7 @@ const ArticleModal = ({ open, dataEdit, handleClose, getList }: Props) => {
           if (res?.success) {
             createNotification("success", res?.message);
             getList();
-            handleClose();
+            closePopUp();
           } else {
             setErrors(res.error);
             createNotification("error", res.message);

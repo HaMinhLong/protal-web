@@ -30,7 +30,7 @@ interface Props {
   getList: () => void;
 }
 
-const WebsiteDrawer = ({ visible, closeDrawer, dataEdit, getList }: Props) => {
+const WebsiteModal = ({ visible, closeDrawer, dataEdit, getList }: Props) => {
   const dispatch = useDispatch();
 
   const [loading, setLoading] = useState<boolean>(false);
@@ -195,7 +195,11 @@ const WebsiteDrawer = ({ visible, closeDrawer, dataEdit, getList }: Props) => {
         handleClose={() => {
           closePopUp();
         }}
-        styleBox={{ minWidth: "1000px", minHeight: "350px" }}
+        styleBox={{
+          minWidth: "1000px",
+          minHeight: "500px",
+          maxHeight: "1200px",
+        }}
         styleChildBox={{ p: "0px 30px 20px" }}
         styleTitle={{ p: "10px 30px" }}
         showButtonCloseDialog
@@ -237,4 +241,4 @@ const WebsiteDrawer = ({ visible, closeDrawer, dataEdit, getList }: Props) => {
   );
 };
 
-export default WebsiteDrawer;
+export default WebsiteModal;

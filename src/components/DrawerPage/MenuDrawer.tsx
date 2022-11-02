@@ -25,6 +25,7 @@ import createNotification from "components/Extended/Notification";
 import LocationSelect from "components/Common/LocationSelect";
 import WebsiteSelect from "components/Common/WebsiteSelect";
 import Loading from "components/Extended/Loading";
+import { removeVietnameseTones } from "utils/utils";
 
 // TYPES IMPORT
 import { MenuType, ResponseError } from "types/menuWebsite";
@@ -81,7 +82,7 @@ const WebsiteGroupDrawer = ({
   const validationSchema = yup.object().shape({
     text: yup.string().trim().max(50).required("Vui lòng nhập tên menu"),
     url: yup.string().trim().max(50).required("Vui lòng nhập URL"),
-    icon: yup.string().trim().max(50).required("Vui lòng nhập icon"),
+    icon: yup.string().trim().max(254),
     location: yup.string().required("Vui lòng chọn vị trí menu"),
     status: yup.string().trim().required("Vui lòng nhập trạng thái"),
     websiteId: yup.string().required("Vui lòng chọn website"),
@@ -98,6 +99,8 @@ const WebsiteGroupDrawer = ({
       websiteId: !isAddNew && dataMenu?.websiteId ? dataMenu?.websiteId : "",
       parent: isAddNew ? dataEdit?.id || 0 : dataMenu?.parent,
       droppable: true,
+      categoryId: null,
+      articleId: null,
       status: dataMenu?.status === 0 ? 0 : 1,
     },
     validationSchema,
@@ -156,6 +159,12 @@ const WebsiteGroupDrawer = ({
     }
   };
 
+  const convertTitleToUrl = (value: string) => {
+    const noTones = removeVietnameseTones(value);
+    const url = noTones?.split(" ")?.join("-")?.toLowerCase();
+    formik.setFieldValue("url", `/${url}`);
+  };
+
   const changeDrawer = () => {
     closeDrawer();
     formik.resetForm();
@@ -186,6 +195,9 @@ const WebsiteGroupDrawer = ({
                   formik={formik}
                   errors={errors}
                   label="Tên menu"
+                  handleChange={(value) => {
+                    convertTitleToUrl(value);
+                  }}
                   required
                 />
               </Grid>
@@ -206,7 +218,6 @@ const WebsiteGroupDrawer = ({
                   formik={formik}
                   errors={errors}
                   label="Icon"
-                  required
                 />
               </Grid>
 

@@ -25,6 +25,7 @@ import WebsiteSelect from "components/Common/WebsiteSelect";
 import CategoryGroupSelect from "components/Common/CategoryGroupSelect";
 import UploadImage from "components/Extended/UploadImage";
 import Loading from "components/Extended/Loading";
+import { removeVietnameseTones } from "utils/utils";
 
 // TYPES IMPORT
 import { CategoryType, ResponseError } from "types/category";
@@ -166,6 +167,12 @@ const CategoryDrawer = ({
     setErrors({});
   };
 
+  const convertTitleToUrl = (value: string) => {
+    const noTones = removeVietnameseTones(value);
+    const url = noTones?.split(" ")?.join("-")?.toLowerCase();
+    formik.setFieldValue("url", `/${url}`);
+  };
+
   return (
     <>
       <Drawer anchor={"right"} open={visible} onClose={changeDrawer}>
@@ -195,6 +202,9 @@ const CategoryDrawer = ({
                   formik={formik}
                   errors={errors}
                   label="Tên chuyên mục"
+                  handleChange={(value) => {
+                    convertTitleToUrl(value);
+                  }}
                   required
                 />
               </Grid>

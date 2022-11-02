@@ -10,6 +10,10 @@ export interface MenuType {
   parent?: string;
   icon?: string;
   websiteId?: string;
+  articleId?: string | null;
+  categoryId?: string | null;
+  category?: { id: number; text: string };
+  categoryName?: string;
   website?: WebsiteType;
   createdAt?: string | Date;
   status?: number;

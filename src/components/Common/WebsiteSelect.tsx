@@ -12,9 +12,15 @@ interface Props {
   formik: any;
   setFieldValue: any;
   addOrEdit: boolean;
+  readOnly?: boolean;
 }
 
-const WebsiteSelect = ({ formik, setFieldValue, addOrEdit }: Props) => {
+const WebsiteSelect = ({
+  formik,
+  setFieldValue,
+  addOrEdit,
+  readOnly,
+}: Props) => {
   const dispatch = useDispatch();
 
   const [lists, setLists] = useState<any>([]);
@@ -57,6 +63,7 @@ const WebsiteSelect = ({ formik, setFieldValue, addOrEdit }: Props) => {
               )[0]
             : { value: "", label: "" }
         }
+        readOnly={readOnly}
         options={lists}
         disableClearable={addOrEdit}
         renderInput={(params) => (

@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "app/store";
 import { website, filter } from "features/website/websiteSlice";
 import createNotification from "components/Extended/Notification";
 
-import WebsiteDrawer from "components/ModalPage/WebsiteDrawer";
+import WebsiteModal from "components/ModalPage/WebsiteModal";
 import SearchForm from "pages/Website/SearchForm";
 import WebsiteTable from "pages/Website/WebsiteTable";
 
@@ -104,7 +104,7 @@ const Index = () => {
         />
       </MainCard>
 
-      <WebsiteDrawer
+      <WebsiteModal
         visible={visibleDrawer}
         closeDrawer={() => setVisibleDrawer(false)}
         dataEdit={dataEdit}
