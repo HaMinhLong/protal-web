@@ -164,7 +164,7 @@ const SearchForm = ({ setDataEdit, setVisibleDrawer, setLoading }: Props) => {
             endIcon={<AddIcon />}
             sx={{ ml: 2 }}
             onClick={() => {
-              setDataEdit({});
+              setDataEdit({ productClass1s: [], productClass2s: [] });
               setVisibleDrawer(true);
             }}
           >

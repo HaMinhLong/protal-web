@@ -150,7 +150,12 @@ const ProductTable = ({
         >
           {item?.name}
         </TableCell>
-        <TableCell>{item?.price}</TableCell>
+        <TableCell>
+          {item?.price?.toLocaleString("vi", {
+            style: "currency",
+            currency: "VND",
+          })}
+        </TableCell>
         <TableCell>{item?.website?.name}</TableCell>
         <TableCell>{item?.category?.text}</TableCell>
         <TableCell>

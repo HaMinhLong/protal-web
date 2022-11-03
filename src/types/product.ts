@@ -7,6 +7,7 @@ export interface ProductType {
   description?: string;
   content?: string;
   images?: string;
+  isSale?: boolean;
   websiteId?: string | number;
   categoryId?: string | number;
   producerId?: string | number;
@@ -18,6 +19,15 @@ export interface ProductType {
   supplier?: Linkedin;
   createdAt?: string | Date;
   status?: number;
+  productClass1s: ProductClass[];
+  productClass2s: ProductClass[];
+}
+
+export interface ProductClass {
+  id: number;
+  name: string;
+  images?: string;
+  flag: string;
 }
 
 export interface FilterProduct {

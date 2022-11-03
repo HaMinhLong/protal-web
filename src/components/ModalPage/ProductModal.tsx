@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 // THIRD IMPORT
 import { useEffect, useState } from "react";
-import { Box, Grid, Button } from "@mui/material";
+import { Box, Grid, Button, Checkbox } from "@mui/material";
 import * as yup from "yup";
 import { useFormik } from "formik";
 
@@ -23,6 +23,7 @@ import { removeVietnameseTones } from "utils/utils";
 import TabWrapper from "components/Extended/TabWrapper";
 import ProducerSelect from "components/Common/ProducerSelect";
 import SupplierSelect from "components/Common/SupplierSelect";
+import ProductClass from "components/ProductClass";
 
 // TYPES IMPORT
 import { ProductType, ResponseError } from "types/product";
@@ -38,14 +39,17 @@ interface Props {
 const ProductModal = ({ open, dataEdit, handleClose, getList }: Props) => {
   const dispatch = useDispatch();
 
-  const [dataProduct, setDataProduct] = useState<ProductType>({});
+  const [dataProduct, setDataProduct] = useState<ProductType>({
+    productClass1s: [],
+    productClass2s: [],
+  });
   const [loading, setLoading] = useState<boolean>(false);
   const [errors, setErrors] = useState<ResponseError>({});
 
   useEffect(() => {
     if (!open) return;
     if (!dataEdit?.id) {
-      setDataProduct({});
+      setDataProduct({ productClass1s: [], productClass2s: [] });
     } else {
       setLoading(true);
       dispatch({
@@ -96,6 +100,15 @@ const ProductModal = ({ open, dataEdit, handleClose, getList }: Props) => {
       producerId: dataProduct?.producerId || "",
       supplierId: dataProduct?.supplierId || "",
       categoryName: dataProduct?.category?.text || "",
+      productClass1s:
+        dataProduct?.productClass1s?.length > 0
+          ? dataProduct?.productClass1s
+          : [{ id: 1, name: "Loại 1", flag: "add" }],
+      productClass2s:
+        dataProduct?.productClass2s?.length > 0
+          ? dataProduct?.productClass2s
+          : [{ id: 1, name: "Loại 1", flag: "add" }],
+      isSale: dataProduct?.isSale || false,
       status: dataProduct?.status === 0 ? 0 : 1,
     },
     validationSchema,
@@ -155,6 +168,8 @@ const ProductModal = ({ open, dataEdit, handleClose, getList }: Props) => {
     const url = noTones?.split(" ")?.join("-")?.toLowerCase();
     formik.setFieldValue("url", url);
   };
+
+  const label = { inputProps: { "aria-label": "Giảm giá" } };
 
   const closePopUp = () => {
     handleClose();
@@ -229,7 +244,7 @@ const ProductModal = ({ open, dataEdit, handleClose, getList }: Props) => {
               name="price"
               formik={formik}
               errors={errors}
-              label="Giá"
+              label="Giá sản phẩm"
               type="number"
             />
           </Grid>
@@ -239,7 +254,7 @@ const ProductModal = ({ open, dataEdit, handleClose, getList }: Props) => {
               name="negotiablePrice"
               formik={formik}
               errors={errors}
-              label="Giá thỏa thuận"
+              label="Giá sale"
               type="number"
             />
           </Grid>
@@ -271,6 +286,16 @@ const ProductModal = ({ open, dataEdit, handleClose, getList }: Props) => {
               multiple
             />
           </Grid>
+          <Grid item xs={12} md={6} lg={4}>
+            Sale sản phẩm
+            <Checkbox
+              {...label}
+              checked={formik?.values?.isSale}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                formik.setFieldValue("isSale", e.target.checked);
+              }}
+            />
+          </Grid>
         </Grid>
       ),
     },
@@ -285,6 +310,11 @@ const ProductModal = ({ open, dataEdit, handleClose, getList }: Props) => {
           data={formik?.values?.content}
         />
       ),
+    },
+    {
+      value: 2,
+      label: "Nhóm phân loại",
+      tab: <ProductClass formikProp={formik} />,
     },
   ];
 

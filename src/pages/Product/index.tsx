@@ -24,7 +24,10 @@ const Index = () => {
 
   const [loading, setLoading] = useState<boolean>(false);
   const [visibleDrawer, setVisibleDrawer] = useState<boolean>(false);
-  const [dataEdit, setDataEdit] = useState<ProductType>({});
+  const [dataEdit, setDataEdit] = useState<ProductType>({
+    productClass1s: [],
+    productClass2s: [],
+  });
 
   useEffect(() => {
     getList();
