@@ -1,23 +1,17 @@
 // THIRD IMPORT
-import { useState } from "react";
 import { Grid, Box, Button, Typography, TextField } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
 import AddIcon from "@mui/icons-material/Add";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 // PROJECT IMPORT
-import { ProductClass } from "types/product";
+import DetailProductClass from "components/ProductClass/DetailProductClass";
 
 interface Props {
   formikProp: any;
 }
 
 const Index = ({ formikProp }: Props) => {
-  const [productClass1, setProductClass1] = useState<ProductClass[]>(
-    formikProp?.values?.productClass1s
-  );
-  const [productClass2, setProductClass2] = useState<ProductClass[]>(
-    formikProp?.values?.productClass2s
-  );
-
   const styleBox = {
     p: "10px",
     mb: "10px",
@@ -31,107 +25,100 @@ const Index = ({ formikProp }: Props) => {
     borderBottom: "1px solid #bbb",
   };
 
+  const productClassArr = [{ id: 1 }, { id: 2 }];
+
+  const deleteProductClass = (type: number, id: number) => {
+    const newValue = formikProp?.values?.[`productClass${type}s`]?.map(
+      (item) => {
+        if (item?.id === id) return { ...item, flag: "delete" };
+        return item;
+      }
+    );
+    const newProductPrices = formikProp?.values?.["productPrices"]?.map(
+      (item) => {
+        if (item?.[`productClass${type}Id`] === id)
+          return { ...item, flag: "delete" };
+        return item;
+      }
+    );
+
+    formikProp.setFieldValue(`productPrices`, newProductPrices);
+    formikProp.setFieldValue(`productClass${type}s`, newValue);
+  };
+
   return (
     <Grid container spacing={2}>
       <Grid item xs={12} md={4} lg={4}>
-        <Box sx={{ ...styleBox }}>
-          <Typography sx={{ ...styleText }}>Nhóm phân loại 1</Typography>
+        {productClassArr?.map((element) => {
+          const listProductClass =
+            formikProp?.values?.[`productClass${element?.id}s`];
+          return (
+            <Box sx={{ ...styleBox }} key={element?.id}>
+              <Typography sx={{ ...styleText }}>
+                Nhóm phân loại {element?.id}
+              </Typography>
 
-          {productClass1?.map((item) => (
-            <TextField
-              size="small"
-              fullWidth
-              name="name"
-              variant="standard"
-              value={item?.name}
-              key={item?.id}
-              sx={{ mb: 1 }}
-              onChange={(e) => {
-                const newValue = productClass1?.map((ele) => {
-                  if (ele?.id === item?.id)
-                    return { ...ele, name: e.target.value };
-                  return ele;
-                });
-                setProductClass1(newValue);
-                formikProp.setFieldValue("productClass1s", newValue);
-              }}
-            />
-          ))}
+              {listProductClass
+                ?.filter((item) => item?.flag !== "delete")
+                ?.map((item) => (
+                  <Box display="flex" key={item?.id}>
+                    <TextField
+                      size="small"
+                      fullWidth
+                      name="name"
+                      variant="standard"
+                      value={item?.name}
+                      sx={{ mb: 1 }}
+                      onChange={(e) => {
+                        const newValue = listProductClass?.map((ele) => {
+                          if (ele?.id === item?.id)
+                            return { ...ele, name: e.target.value };
+                          return ele;
+                        });
+                        formikProp.setFieldValue(
+                          `productClass${element?.id}s`,
+                          newValue
+                        );
+                      }}
+                    />
+                    <IconButton
+                      aria-label="delete product class"
+                      edge="end"
+                      onClick={() => deleteProductClass(element?.id, item?.id)}
+                    >
+                      <DeleteIcon color="error" fontSize="small" />
+                    </IconButton>
+                  </Box>
+                ))}
 
-          <Button
-            sx={{ mt: 1 }}
-            fullWidth
-            startIcon={<AddIcon />}
-            variant="outlined"
-            onClick={() => {
-              const newValue = productClass1.concat([
-                {
-                  id: Math.floor(
-                    Math.random() * (100000000000 - 1000000000 + 1)
-                  ),
-                  name: `Loại ${productClass1?.length + 1}`,
-                  flag: "add",
-                },
-              ]);
-              setProductClass1(newValue);
-              formikProp.setFieldValue("productClass1s", newValue);
-            }}
-            disabled={productClass1?.length === 10}
-          >
-            Thêm phân loại ({productClass1?.length}/10)
-          </Button>
-        </Box>
-
-        <Box sx={{ ...styleBox }}>
-          <Typography sx={{ ...styleText }}>Nhóm phân loại 2</Typography>
-
-          {productClass2?.map((item) => (
-            <TextField
-              size="small"
-              fullWidth
-              name="name"
-              value={item?.name}
-              variant="standard"
-              key={item?.id}
-              sx={{ mb: 1 }}
-              onChange={(e) => {
-                const newValue = productClass2?.map((ele) => {
-                  if (ele?.id === item?.id)
-                    return { ...ele, name: e.target.value };
-                  return ele;
-                });
-                setProductClass2(newValue);
-                formikProp.setFieldValue("productClass2s", newValue);
-              }}
-            />
-          ))}
-
-          <Button
-            sx={{ mt: 1 }}
-            fullWidth
-            startIcon={<AddIcon />}
-            variant="outlined"
-            onClick={() => {
-              const newValue = productClass2.concat([
-                {
-                  id: Math.floor(
-                    Math.random() * (100000000000 - 1000000000 + 1)
-                  ),
-                  name: `Loại ${productClass2?.length + 1}`,
-                  flag: "add",
-                },
-              ]);
-              setProductClass2(newValue);
-              formikProp.setFieldValue("productClass2s", newValue);
-            }}
-            disabled={productClass2?.length === 10}
-          >
-            Thêm phân loại ({productClass2?.length}/10)
-          </Button>
-        </Box>
+              <Button
+                sx={{ mt: 1 }}
+                fullWidth
+                startIcon={<AddIcon />}
+                variant="outlined"
+                onClick={() => {
+                  const newValue = [
+                    {
+                      id: Math.floor(Math.random() * (10000000 - 100000 + 1)),
+                      name: `Loại ${listProductClass?.length + 1}`,
+                      flag: "add",
+                    },
+                  ].concat(listProductClass);
+                  formikProp.setFieldValue(
+                    `productClass${element?.id}s`,
+                    newValue
+                  );
+                }}
+                disabled={listProductClass?.length === 10}
+              >
+                Thêm phân loại ({listProductClass?.length}/10)
+              </Button>
+            </Box>
+          );
+        })}
       </Grid>
-      <Grid item xs={12} md={4} lg={4}>
-        2
+      <Grid item xs={12} md={8} lg={8}>
+        <DetailProductClass formikProp={formikProp} />
       </Grid>
     </Grid>
   );

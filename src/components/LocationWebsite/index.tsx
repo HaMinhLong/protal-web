@@ -19,7 +19,6 @@ import { useDispatch } from "react-redux";
 // PROJECT IMPORT
 import Nodata from "components/Extended/NoData";
 import { LocationType } from "types/location";
-import AlertDelete from "components/Extended/AlertDelete";
 import LocationModal from "components/ModalPage/LocationModal";
 import SwitchStatus from "components/Extended/SwitchStatus";
 import createNotification from "components/Extended/Notification";

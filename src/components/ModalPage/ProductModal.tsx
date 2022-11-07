@@ -103,12 +103,13 @@ const ProductModal = ({ open, dataEdit, handleClose, getList }: Props) => {
       productClass1s:
         dataProduct?.productClass1s?.length > 0
           ? dataProduct?.productClass1s
-          : [{ id: 1, name: "Loại 1", flag: "add" }],
+          : [],
       productClass2s:
         dataProduct?.productClass2s?.length > 0
           ? dataProduct?.productClass2s
-          : [{ id: 1, name: "Loại 1", flag: "add" }],
+          : [],
       isSale: dataProduct?.isSale || false,
+      productPrices: dataProduct?.productPrices || [],
       status: dataProduct?.status === 0 ? 0 : 1,
     },
     validationSchema,
@@ -136,7 +137,7 @@ const ProductModal = ({ open, dataEdit, handleClose, getList }: Props) => {
           if (res?.success) {
             createNotification("success", res?.message);
             getList();
-            handleClose();
+            closePopUp();
           } else {
             setErrors(res.error);
             createNotification("error", res.message);
@@ -153,7 +154,7 @@ const ProductModal = ({ open, dataEdit, handleClose, getList }: Props) => {
           if (res?.success) {
             createNotification("success", res?.message);
             getList();
-            handleClose();
+            closePopUp();
           } else {
             setErrors(res.error);
             createNotification("error", res.message);
