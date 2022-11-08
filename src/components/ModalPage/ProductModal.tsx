@@ -221,6 +221,10 @@ const ProductModal = ({ open, dataEdit, handleClose, getList }: Props) => {
               formik={formik}
               setFieldValue={formik.setFieldValue}
               addOrEdit={true}
+              handleChange={() => {
+                formik.setFieldValue("categoryId", "");
+                formik.setFieldValue("categoryName", "");
+              }}
             />
           </Grid>
 
@@ -229,6 +233,7 @@ const ProductModal = ({ open, dataEdit, handleClose, getList }: Props) => {
               formik={formik}
               setFieldValue={formik.setFieldValue}
               addOrEdit={true}
+              websiteId={formik?.values?.websiteId}
             />
           </Grid>
 

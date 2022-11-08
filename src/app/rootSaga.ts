@@ -18,6 +18,7 @@ import { paymentMethodSaga } from "features/paymentMethod/paymentMethodSaga";
 import { orderSaga } from "features/order/orderSaga";
 import { productCommentSaga } from "features/productComment/productCommentSaga";
 import { locationSaga } from "features/location/locationSaga";
+import { collectionSaga } from "features/collection/collectionSaga";
 
 export default function* rootSaga() {
   yield all([
@@ -37,7 +38,8 @@ export default function* rootSaga() {
     productSaga(),
     paymentMethodSaga(),
     orderSaga(),
-    locationSaga(),
     productCommentSaga(),
+    locationSaga(),
+    collectionSaga(),
   ]);
 }

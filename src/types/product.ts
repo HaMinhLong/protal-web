@@ -22,6 +22,21 @@ export interface ProductType {
   productClass1s: ProductClass[];
   productClass2s: ProductClass[];
   productPrices?: ProductPricesType[];
+  collectionProducts?: CollectionProductType[];
+}
+
+export interface CollectionProductType {
+  id?: number;
+  value?: number;
+  collectionId?: number;
+  productId?: number;
+  name?: string;
+  label?: string;
+  images?: string;
+  price?: number;
+  negotiablePrice?: number;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface ProductClass {

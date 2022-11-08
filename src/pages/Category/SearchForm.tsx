@@ -47,7 +47,6 @@ const SearchForm = ({
       status: categoryState?.filter?.status || "",
     },
     onSubmit: (values) => {
-      console.log("values", values);
       handleSearch(values);
     },
   });
@@ -83,8 +82,6 @@ const SearchForm = ({
       attributes:
         "id,text,droppable,parent,url,position,websiteId,categoryGroupId,isHome,status,createdAt",
     };
-
-    console.log("query", query);
 
     dispatch(filter(values));
     dispatch({

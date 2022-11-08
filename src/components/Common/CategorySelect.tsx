@@ -20,12 +20,14 @@ import ErrorIcon from "@mui/icons-material/Error";
 // PROJECT IMPORT
 import { useDispatch } from "app/store";
 
-const PAGE_SIZE = 1000;
+const PAGE_SIZE = 300;
 
 interface Props {
   formik: any;
   setFieldValue: any;
   addOrEdit: boolean;
+  websiteId: number | string;
+  categoryGroupId?: number;
 }
 
 const CustomContent = React.forwardRef(function CustomContent(props, ref: any) {
@@ -94,7 +96,13 @@ const CustomTreeItem = (props) => (
   <TreeItem ContentComponent={CustomContent} {...props} />
 );
 
-const CategorySelect = ({ formik, setFieldValue, addOrEdit }: Props) => {
+const CategorySelect = ({
+  formik,
+  setFieldValue,
+  addOrEdit,
+  websiteId,
+  categoryGroupId,
+}: Props) => {
   const dispatch = useDispatch();
   const theme = useTheme();
 
@@ -104,12 +112,12 @@ const CategorySelect = ({ formik, setFieldValue, addOrEdit }: Props) => {
   const [lists, setLists] = useState<any>([]);
 
   useEffect(() => {
-    if (!formik?.values?.websiteId) {
+    if (!websiteId) {
       setLists([]);
     } else {
       getList();
     }
-  }, [formik?.values?.websiteId]);
+  }, [websiteId]);
 
   const children = (p, c) => {
     if (p.hasOwnProperty("children")) {
@@ -126,26 +134,30 @@ const CategorySelect = ({ formik, setFieldValue, addOrEdit }: Props) => {
       payload: {
         filter: JSON.stringify({
           status: 1,
-          websiteId: formik?.values?.websiteId,
+          websiteId: websiteId,
+          categoryGroupId: categoryGroupId || "",
         }),
         range: JSON.stringify([0, PAGE_SIZE]),
       },
       callback: (res) => {
-        const { list } = res?.results;
-        for (let i = 0; i < list.length - 1; i++) {
-          const a = list[i];
-          for (let j = i + 1; j < list.length; j++) {
-            const b = list[j];
-            if (a.id === b.parent) {
-              children(a, b);
-            } else if (b.id === a.parent) {
-              children(b, a);
+        if (res?.success) {
+          const { list } = res?.results;
+          for (let i = 0; i < list.length - 1; i++) {
+            const a = list[i];
+            for (let j = i + 1; j < list.length; j++) {
+              const b = list[j];
+              if (a.id === b.parent) {
+                children(a, b);
+              } else if (b.id === a.parent) {
+                children(b, a);
+              }
             }
           }
-        }
 
-        const result = list.filter((x) => !x.parent);
-        setLists(result);
+          const result = list.filter((x) => !x.parent);
+
+          setLists(result);
+        }
       },
     });
   };

@@ -25,6 +25,7 @@ const Supplier = Loadable(lazy(() => import("pages/Supplier")));
 const PaymentMethod = Loadable(lazy(() => import("pages/PaymentMethod")));
 const Order = Loadable(lazy(() => import("pages/Order")));
 const ProductComment = Loadable(lazy(() => import("pages/ProductComment")));
+const Collection = Loadable(lazy(() => import("pages/Collection")));
 
 const MainRoutes = {
   path: "/",
@@ -123,6 +124,11 @@ const MainRoutes = {
       path: "/comment",
       role: [ADMIN_TYPE, CUSTOMER_TYPE],
       element: <ProductComment />,
+    },
+    {
+      path: "/collection",
+      role: [ADMIN_TYPE, CUSTOMER_TYPE],
+      element: <Collection />,
     },
   ],
 };

@@ -8,19 +8,18 @@ import SearchIcon from "@mui/icons-material/Search";
 import AddIcon from "@mui/icons-material/Add";
 
 // PROJECT IMPORT
-import { article, filter } from "features/article/articleSlice";
+import { collection, filter } from "features/collection/collectionSlice";
 import { useDispatch, useSelector } from "app/store";
 import TextFieldCustom from "components/Extended/TextFieldCustom";
 import StatusFilter from "components/Common/StatusFilter";
 import createNotification from "components/Extended/Notification";
 import WebsiteSelect from "components/Common/WebsiteSelect";
-import CategorySelect from "components/Common/CategorySelect";
 
 // TYPES IMPORT
-import { FilterArticle, ArticleType } from "types/article";
+import { FilterCollection, CollectionType } from "types/collection";
 
 interface Props {
-  setDataEdit: Dispatch<SetStateAction<ArticleType>>;
+  setDataEdit: Dispatch<SetStateAction<CollectionType>>;
   setVisibleDrawer: Dispatch<SetStateAction<boolean>>;
   setLoading: Dispatch<SetStateAction<boolean>>;
 }
@@ -30,39 +29,32 @@ const PAGE_SIZE = Number(process.env.REACT_APP_PAGE_SIZE);
 const SearchForm = ({ setDataEdit, setVisibleDrawer, setLoading }: Props) => {
   const dispatch = useDispatch();
 
-  const articleState = useSelector(article);
+  const collectionState = useSelector(collection);
 
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      title: articleState?.filter?.title || "",
-      websiteId: articleState?.filter?.websiteId || "",
-      categoryId: articleState?.filter?.categoryId || "",
-      categoryName: articleState?.filter?.categoryName || "",
-      status: articleState?.filter?.status || "",
+      name: collectionState?.filter?.name || "",
+      websiteId: collectionState?.filter?.websiteId || "",
+      status: collectionState?.filter?.status || "",
     },
     onSubmit: (values) => {
       handleSearch(values);
     },
   });
 
-  const handleSearch = (values: FilterArticle) => {
+  const handleSearch = (values: FilterCollection) => {
     setLoading(true);
-    const queryName: FilterArticle = {
-      title: values?.title?.trim(),
+    const queryName: FilterCollection = {
+      name: values?.name?.trim(),
       websiteId: values?.websiteId,
-      categoryId: values?.categoryId,
       status: `${values?.status}`,
     };
-    if (!values?.title?.trim()) {
-      delete queryName.title;
+    if (!values?.name?.trim()) {
+      delete queryName.name;
     }
     if (!values?.websiteId) {
       delete queryName.websiteId;
-    }
-    if (!values?.categoryId) {
-      delete queryName.categoryId;
-      delete queryName.categoryName;
     }
     if (!values?.status) {
       delete queryName.status;
@@ -72,13 +64,12 @@ const SearchForm = ({ setDataEdit, setVisibleDrawer, setLoading }: Props) => {
       filter: JSON.stringify(queryName),
       range: JSON.stringify([0, PAGE_SIZE]),
       sort: JSON.stringify(["createdAt", "DESC"]),
-      attributes:
-        "id,title,websiteId,categoryId,author,source,status,createdAt",
+      attributes: "id,name,description,status,createdAt",
     };
 
     dispatch(filter(values));
     dispatch({
-      type: "article/fetch",
+      type: "collection/fetch",
       payload: query,
       callback: (res) => {
         setLoading(false);
@@ -93,7 +84,11 @@ const SearchForm = ({ setDataEdit, setVisibleDrawer, setLoading }: Props) => {
     <form onSubmit={formik.handleSubmit}>
       <Grid container spacing={2}>
         <Grid item xs={12} md={6} lg={3}>
-          <TextFieldCustom name="title" formik={formik} label="Tên tin tức" />
+          <TextFieldCustom
+            name="name"
+            formik={formik}
+            label="Tên bộ danh sách"
+          />
         </Grid>
 
         <Grid item xs={12} md={6} lg={3}>
@@ -101,19 +96,6 @@ const SearchForm = ({ setDataEdit, setVisibleDrawer, setLoading }: Props) => {
             formik={formik}
             setFieldValue={formik.setFieldValue}
             addOrEdit={false}
-            handleChange={() => {
-              formik.setFieldValue("categoryId", "");
-              formik.setFieldValue("categoryName", "");
-            }}
-          />
-        </Grid>
-
-        <Grid item xs={12} md={6} lg={3}>
-          <CategorySelect
-            formik={formik}
-            setFieldValue={formik.setFieldValue}
-            addOrEdit={false}
-            websiteId={formik?.values?.websiteId}
           />
         </Grid>
 
@@ -124,12 +106,11 @@ const SearchForm = ({ setDataEdit, setVisibleDrawer, setLoading }: Props) => {
             setFieldValue={formik.setFieldValue}
           />
         </Grid>
-
         <Grid
           item
           xs={12}
-          md={12}
-          lg={12}
+          md={6}
+          lg={3}
           sx={{ display: "flex", justifyContent: "flex-end" }}
         >
           <Button variant="contained" endIcon={<SearchIcon />} type="submit">

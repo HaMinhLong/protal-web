@@ -13,6 +13,7 @@ interface Props {
   setFieldValue: any;
   addOrEdit: boolean;
   readOnly?: boolean;
+  handleChange?: () => void;
 }
 
 const WebsiteSelect = ({
@@ -20,6 +21,7 @@ const WebsiteSelect = ({
   setFieldValue,
   addOrEdit,
   readOnly,
+  handleChange,
 }: Props) => {
   const dispatch = useDispatch();
 
@@ -84,7 +86,10 @@ const WebsiteSelect = ({
             }
           />
         )}
-        onChange={(e, data) => setFieldValue("websiteId", data?.value)}
+        onChange={(e, data) => {
+          setFieldValue("websiteId", data?.value);
+          if (handleChange) handleChange();
+        }}
       />
       {formik.touched.websiteId && formik.errors.websiteId && (
         <FormHelperText error className="error-custom">

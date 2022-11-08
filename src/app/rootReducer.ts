@@ -21,6 +21,7 @@ import paymentMethodReducer from "features/paymentMethod/paymentMethodSlice";
 import orderReducer from "features/order/orderSlice";
 import productCommentReducer from "features/productComment/productCommentSlice";
 import locationReducer from "features/location/locationSlice";
+import collectionReducer from "features/collection/collectionSlice";
 
 const rootReducer = combineReducers({
   customization: customizationReducer,
@@ -44,6 +45,7 @@ const rootReducer = combineReducers({
   order: orderReducer,
   productComment: productCommentReducer,
   location: locationReducer,
+  collection: collectionReducer,
 });
 
 export default rootReducer;

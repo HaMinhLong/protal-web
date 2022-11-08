@@ -1,4 +1,4 @@
-import { put, call, takeLatest } from "redux-saga/effects";
+import { put, call, takeLatest, takeEvery } from "redux-saga/effects";
 import {
   save,
   info,
@@ -23,7 +23,7 @@ function* getList({ payload, callback }) {
       yield put(save(data.results || {}));
     }
     yield put(query(payload));
-    if (callback) callback(data);
+    if (callback && data) callback(data);
   } catch (error: any) {
     if (callback) callback(error);
   }
@@ -32,7 +32,7 @@ function* getList({ payload, callback }) {
 function* fetchLazyLoading({ payload, callback }) {
   try {
     const { data } = yield call(getListCategory, payload);
-    if (callback) callback(data);
+    if (callback && data) callback(data);
   } catch (error: any) {
     if (callback) callback(error);
   }
@@ -44,7 +44,7 @@ function* getOne({ payload: { id }, callback }) {
     if (data) {
       yield put(info(data.results.list || {}));
     }
-    if (callback) callback(data);
+    if (callback && data) callback(data);
   } catch (error: any) {
     if (callback) callback(error);
   }
@@ -53,7 +53,7 @@ function* getOne({ payload: { id }, callback }) {
 function* create({ payload, callback }) {
   try {
     const { data } = yield call(createCategory, payload);
-    if (callback) callback(data);
+    if (callback && data) callback(data);
   } catch (error: any) {
     if (callback) callback(error);
   }
@@ -62,7 +62,7 @@ function* create({ payload, callback }) {
 function* handleUploadImage({ payload, callback }) {
   try {
     const { data } = yield call(uploadImage, payload);
-    if (callback) callback(data);
+    if (callback && data) callback(data);
   } catch (error: any) {
     if (callback) callback(error);
   }
@@ -71,7 +71,7 @@ function* handleUploadImage({ payload, callback }) {
 function* updateRecord({ payload: { id, params }, callback }) {
   try {
     const { data } = yield call(updateCategory, id, params);
-    if (callback) callback(data);
+    if (callback && data) callback(data);
   } catch (error: any) {
     console.log("error", error);
     if (callback) callback(error);
@@ -89,7 +89,7 @@ function* updateStatus({ payload: { id, params }, callback }) {
       })
     );
 
-    if (callback) callback(data);
+    if (callback && data) callback(data);
   } catch (error: any) {
     if (callback) callback(error);
   }
@@ -98,7 +98,7 @@ function* updateStatus({ payload: { id, params }, callback }) {
 function* deleteRecord({ payload: { id }, callback }) {
   try {
     const { data } = yield call(deleteCategory, id);
-    if (callback) callback(data);
+    if (callback && data) callback(data);
   } catch (error: any) {
     if (callback) callback(error);
   }
@@ -117,7 +117,7 @@ export function* categorySaga(): any {
   yield takeLatest(typeFetch, getList);
   yield takeLatest(typeGetOne, getOne);
   yield takeLatest(typeAdd, create);
-  yield takeLatest(typeFetchLazyLoading, fetchLazyLoading);
+  yield takeEvery(typeFetchLazyLoading, fetchLazyLoading);
   yield takeLatest(typeUpdate, updateRecord);
   yield takeLatest(typeUpdateStatus, updateStatus);
   yield takeLatest(typeDelete, deleteRecord);

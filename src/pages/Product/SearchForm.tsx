@@ -113,6 +113,10 @@ const SearchForm = ({ setDataEdit, setVisibleDrawer, setLoading }: Props) => {
             formik={formik}
             setFieldValue={formik.setFieldValue}
             addOrEdit={false}
+            handleChange={() => {
+              formik.setFieldValue("categoryId", "");
+              formik.setFieldValue("categoryName", "");
+            }}
           />
         </Grid>
 
@@ -121,6 +125,7 @@ const SearchForm = ({ setDataEdit, setVisibleDrawer, setLoading }: Props) => {
             formik={formik}
             setFieldValue={formik.setFieldValue}
             addOrEdit={false}
+            websiteId={formik?.values?.websiteId}
           />
         </Grid>
 

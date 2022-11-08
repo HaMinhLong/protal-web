@@ -4,19 +4,19 @@ import {
   info,
   query,
   updateStatusSlice,
-} from "features/website/websiteSlice";
+} from "features/collection/collectionSlice";
 import {
-  getListWebsite,
-  getOneWebsite,
-  createWebsite,
-  updateWebsite,
-  updateStatusWebsite,
-  deleteWebsite,
-} from "api/website";
+  getListCollection,
+  getOneCollection,
+  createCollection,
+  updateCollection,
+  updateStatusCollection,
+  deleteCollection,
+} from "api/collection";
 
 function* getList({ payload, callback }) {
   try {
-    const { data } = yield call(getListWebsite, payload);
+    const { data } = yield call(getListCollection, payload);
 
     if (data && data.success) {
       yield put(save(data.results || {}));
@@ -30,7 +30,7 @@ function* getList({ payload, callback }) {
 
 function* fetchLazyLoading({ payload, callback }) {
   try {
-    const { data } = yield call(getListWebsite, payload);
+    const { data } = yield call(getListCollection, payload);
     if (callback && data) callback(data);
   } catch (error: any) {
     if (callback) callback(error);
@@ -39,7 +39,7 @@ function* fetchLazyLoading({ payload, callback }) {
 
 function* getOne({ payload: { id }, callback }) {
   try {
-    const { data } = yield call(getOneWebsite, id);
+    const { data } = yield call(getOneCollection, id);
     if (data) {
       yield put(info(data.results.list || {}));
     }
@@ -51,7 +51,7 @@ function* getOne({ payload: { id }, callback }) {
 
 function* create({ payload, callback }) {
   try {
-    const { data } = yield call(createWebsite, payload);
+    const { data } = yield call(createCollection, payload);
     if (callback && data) callback(data);
   } catch (error: any) {
     if (callback) callback(error);
@@ -60,7 +60,7 @@ function* create({ payload, callback }) {
 
 function* updateRecord({ payload: { id, params }, callback }) {
   try {
-    const { data } = yield call(updateWebsite, id, params);
+    const { data } = yield call(updateCollection, id, params);
     if (callback && data) callback(data);
   } catch (error: any) {
     console.log("error", error);
@@ -70,7 +70,7 @@ function* updateRecord({ payload: { id, params }, callback }) {
 
 function* updateStatus({ payload: { id, params }, callback }) {
   try {
-    const { data } = yield call(updateStatusWebsite, id, params);
+    const { data } = yield call(updateStatusCollection, id, params);
 
     yield put(
       updateStatusSlice({
@@ -87,22 +87,22 @@ function* updateStatus({ payload: { id, params }, callback }) {
 
 function* deleteRecord({ payload: { id }, callback }) {
   try {
-    const { data } = yield call(deleteWebsite, id);
+    const { data } = yield call(deleteCollection, id);
     if (callback && data) callback(data);
   } catch (error: any) {
     if (callback) callback(error);
   }
 }
 
-const typeFetch: any = "website/fetch";
-const typeGetOne: any = "website/getOne";
-const typeAdd: any = "website/add";
-const typeFetchLazyLoading: any = "website/fetchLazyLoading";
-const typeUpdate: any = "website/update";
-const typeUpdateStatus: any = "website/updateStatus";
-const typeDelete: any = "website/delete";
+const typeFetch: any = "collection/fetch";
+const typeGetOne: any = "collection/getOne";
+const typeAdd: any = "collection/add";
+const typeFetchLazyLoading: any = "collection/fetchLazyLoading";
+const typeUpdate: any = "collection/update";
+const typeUpdateStatus: any = "collection/updateStatus";
+const typeDelete: any = "collection/delete";
 
-export function* websiteSaga(): any {
+export function* collectionSaga(): any {
   yield takeLatest(typeFetch, getList);
   yield takeLatest(typeGetOne, getOne);
   yield takeLatest(typeAdd, create);

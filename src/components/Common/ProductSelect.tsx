@@ -1,6 +1,6 @@
 // THIRD IMPORT
 import { useState, useEffect } from "react";
-import { TextField, Autocomplete, FormHelperText } from "@mui/material";
+import { TextField, Autocomplete, FormHelperText, Box } from "@mui/material";
 import ErrorIcon from "@mui/icons-material/Error";
 
 // TYPES IMPORT
@@ -14,7 +14,12 @@ interface Props {
   addOrEdit: boolean;
   handleChange?: (value: any) => void;
   websiteId?: number | string;
+  categoryId?: number | string;
+  productsSelected?: number[];
+  fetchData?: boolean;
 }
+
+const END_POINT = process.env.REACT_APP_SERVER;
 
 const ProductSelect = ({
   formik,
@@ -22,10 +27,21 @@ const ProductSelect = ({
   addOrEdit,
   handleChange,
   websiteId,
+  categoryId,
+  productsSelected,
+  fetchData,
 }: Props) => {
   const dispatch = useDispatch();
 
   const [lists, setLists] = useState<any>([]);
+
+  useEffect(() => {
+    setLists(lists?.filter((item) => !productsSelected?.includes(item?.value)));
+  }, [productsSelected]);
+
+  useEffect(() => {
+    getList();
+  }, [categoryId, fetchData, websiteId]);
 
   useEffect(() => {
     getList();
@@ -35,20 +51,32 @@ const ProductSelect = ({
     dispatch({
       type: "product/fetchLazyLoading",
       payload: {
-        filter: JSON.stringify({ status: 1, websiteId: websiteId }),
-        range: JSON.stringify([0, 50]),
+        filter: JSON.stringify({
+          status: 1,
+          websiteId: websiteId,
+          categoryId: categoryId || "",
+        }),
+        range: JSON.stringify([0, 1000]),
       },
       callback: (res) => {
         const { list } = res?.results;
         const dataSelect = list?.map((item) => {
           return {
             price: item.price,
+            images: item.images,
             negotiablePrice: item.negotiablePrice,
             value: item.id,
             label: item.name,
           };
         });
-        setLists(dataSelect);
+
+        setLists(
+          productsSelected
+            ? dataSelect?.filter(
+                (item) => !productsSelected?.includes(item?.value)
+              )
+            : dataSelect
+        );
       },
     });
   };
@@ -60,15 +88,28 @@ const ProductSelect = ({
         size="small"
         disablePortal
         id="combo-box-demo"
-        value={
-          lists?.length > 0
-            ? lists?.filter(
-                (item) => item.value === formik?.values?.productId
-              )[0]
-            : { value: "", label: "" }
-        }
+        value={{ value: "", label: "" }}
         options={lists}
         disableClearable={addOrEdit}
+        renderOption={(props, option) => (
+          <Box
+            component="li"
+            sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
+            {...props}
+          >
+            <img
+              loading="lazy"
+              width="20"
+              src={`${END_POINT}${
+                lists
+                  ?.find((item) => item.value === option.value)
+                  ?.images?.split(",")[0]
+              }`}
+              alt={option?.label}
+            />
+            {option.label}
+          </Box>
+        )}
         renderInput={(params) => (
           <TextField
             {...params}
@@ -89,7 +130,6 @@ const ProductSelect = ({
         )}
         onChange={(e, data) => {
           if (handleChange) handleChange(data);
-          setFieldValue("productId", data?.value);
         }}
       />
       {formik.touched.productId && formik.errors.productId && (

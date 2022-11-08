@@ -22,7 +22,7 @@ function* getList({ payload, callback }) {
       yield put(save(data.results || {}));
     }
     yield put(query(payload));
-    if (callback) callback(data);
+    if (callback && data) callback(data);
   } catch (error: any) {
     if (callback) callback(error);
   }
@@ -31,7 +31,7 @@ function* getList({ payload, callback }) {
 function* fetchLazyLoading({ payload, callback }) {
   try {
     const { data } = yield call(getListLocation, payload);
-    if (callback) callback(data);
+    if (callback && data) callback(data);
   } catch (error: any) {
     if (callback) callback(error);
   }
@@ -43,7 +43,7 @@ function* getOne({ payload: { id }, callback }) {
     if (data) {
       yield put(info(data.results.list || {}));
     }
-    if (callback) callback(data);
+    if (callback && data) callback(data);
   } catch (error: any) {
     if (callback) callback(error);
   }
@@ -52,7 +52,7 @@ function* getOne({ payload: { id }, callback }) {
 function* create({ payload, callback }) {
   try {
     const { data } = yield call(createLocation, payload);
-    if (callback) callback(data);
+    if (callback && data) callback(data);
   } catch (error: any) {
     if (callback) callback(error);
   }
@@ -61,7 +61,7 @@ function* create({ payload, callback }) {
 function* updateRecord({ payload: { id, params }, callback }) {
   try {
     const { data } = yield call(updateLocation, id, params);
-    if (callback) callback(data);
+    if (callback && data) callback(data);
   } catch (error: any) {
     console.log("error", error);
     if (callback) callback(error);
@@ -79,7 +79,7 @@ function* updateStatus({ payload: { id, params }, callback }) {
       })
     );
 
-    if (callback) callback(data);
+    if (callback && data) callback(data);
   } catch (error: any) {
     if (callback) callback(error);
   }
@@ -88,7 +88,7 @@ function* updateStatus({ payload: { id, params }, callback }) {
 function* deleteRecord({ payload: { id }, callback }) {
   try {
     const { data } = yield call(deleteLocation, id);
-    if (callback) callback(data);
+    if (callback && data) callback(data);
   } catch (error: any) {
     if (callback) callback(error);
   }

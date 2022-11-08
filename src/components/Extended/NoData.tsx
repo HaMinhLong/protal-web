@@ -14,7 +14,7 @@ const NoData = () => {
         alt="NoDataImg"
         style={{ marginRight: matchDownSM ? 8 : 16 }}
       />
-      <p>Không có bản ghi nào được hiển thị</p>
+      <p style={{ fontSize: "14px" }}>Không có bản ghi nào được hiển thị</p>
     </div>
   );
 };
