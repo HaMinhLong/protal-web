@@ -8,8 +8,13 @@ const Index = () => {
   const { login } = useAuth();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = async (e: React.SyntheticEvent) => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
     e.preventDefault();
     await login(username, password);
   };
@@ -50,7 +55,9 @@ const Index = () => {
               </div>
 
               <div className="inputBx">
-                <button type="submit">Đăng nhập</button>
+                <button type="submit">
+                  {loading ? "Loading..." : "Đăng nhập"}
+                </button>
               </div>
             </form>
           </div>
