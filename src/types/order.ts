@@ -27,6 +27,7 @@ export interface ProductOrderType {
   orderId?: string | number;
   productId: number | string;
   productName: string;
+  category: string;
 }
 
 export interface FilterOrder {

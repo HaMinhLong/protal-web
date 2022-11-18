@@ -4,7 +4,7 @@ import { Box } from "@mui/material";
 // PROJECT IMPORT
 import MainCard from "components/Cards/MainCard";
 
-const index = () => {
+const Index = () => {
   return (
     <MainCard content={false}>
       <Box sx={{ padding: 2 }}>
@@ -14,4 +14,4 @@ const index = () => {
   );
 };
 
-export default index;
+export default Index;

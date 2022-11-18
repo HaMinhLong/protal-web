@@ -34,6 +34,13 @@ export const formatNumberWithDot = (number: any) => {
   return `${prefix}${result}${list[1] ? `.${list[1]}` : ""}`;
 };
 
+export const formatPrice = (price: number) => {
+  return price?.toLocaleString("vi", {
+    style: "currency",
+    currency: "VND",
+  });
+};
+
 export const removeVietnameseTones = (str: string) => {
   str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
   str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");

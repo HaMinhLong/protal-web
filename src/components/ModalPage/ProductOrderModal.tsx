@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 // THIRD IMPORT
 import { useEffect, useState } from "react";
-import { Box, Grid, Button } from "@mui/material";
+import { Box, Button, Grid } from "@mui/material";
 import * as yup from "yup";
 import { useFormik } from "formik";
 
@@ -33,15 +33,16 @@ const initialData: ProductOrderType = {
   totalPrice: 0,
   productId: 0,
   productName: "",
+  category: "",
   flag: "add",
 };
 
 const ProductOrderModal = ({
-  open,
-  dataEdit,
-  handleClose,
-  formikProp,
-}: Props) => {
+                             open,
+                             dataEdit,
+                             handleClose,
+                             formikProp,
+                           }: Props) => {
   const [dataProductOrder, setDataProductOrder] =
     useState<ProductOrderType>(initialData);
 
@@ -78,6 +79,7 @@ const ProductOrderModal = ({
       orderId: dataProductOrder?.orderId || "",
       productId: dataProductOrder?.productId || "",
       productName: dataProductOrder?.productName || "",
+      category: dataProductOrder?.category || "",
     },
     validationSchema,
     onSubmit: (values) => {
@@ -144,12 +146,13 @@ const ProductOrderModal = ({
       <Box>
         <form onSubmit={formik.handleSubmit}>
           <Grid container spacing={3} sx={{ mt: 1 }}>
-            <Grid item xs={12} md={6} lg={12}>
+            <Grid item xs={12} md={6} lg={6}>
               <ProductSelect
                 formik={formik}
                 setFieldValue={formik.setFieldValue}
                 addOrEdit={false}
                 handleChange={(value) => {
+                  formik.setFieldValue("productId", value.value || "");
                   formik.setFieldValue("productName", value.label || "");
                   formik.setFieldValue("price", value.price || 0);
                   formik.setFieldValue(
@@ -158,6 +161,14 @@ const ProductOrderModal = ({
                   );
                 }}
                 websiteId={formikProp?.values?.websiteId}
+              />
+            </Grid>
+            <Grid item xs={12} md={6} lg={6}>
+              <TextFieldCustom
+                name="category"
+                formik={formik}
+                required
+                label="Loại sản phẩm"
               />
             </Grid>
             <Grid item xs={12} md={6} lg={6}>
@@ -222,7 +233,7 @@ const ProductOrderModal = ({
               size="small"
               variant="outlined"
               sx={{ mr: "10px" }}
-              endIcon={<DoDisturbIcon />}
+              endIcon={<DoDisturbIcon/>}
             >
               Hủy
             </Button>
@@ -230,7 +241,7 @@ const ProductOrderModal = ({
               size="small"
               variant="contained"
               type="submit"
-              endIcon={<SaveIcon />}
+              endIcon={<SaveIcon/>}
             >
               Lưu lại
             </Button>

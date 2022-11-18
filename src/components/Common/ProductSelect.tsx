@@ -1,10 +1,9 @@
 // THIRD IMPORT
-import { useState, useEffect } from "react";
-import { TextField, Autocomplete, FormHelperText, Box } from "@mui/material";
+import { useEffect, useState } from "react";
+import { Autocomplete, Box, FormHelperText, TextField } from "@mui/material";
 import ErrorIcon from "@mui/icons-material/Error";
 
 // TYPES IMPORT
-
 // PROJECT IMPORT
 import { useDispatch } from "app/store";
 
@@ -22,15 +21,15 @@ interface Props {
 const END_POINT = process.env.REACT_APP_SERVER;
 
 const ProductSelect = ({
-  formik,
-  setFieldValue,
-  addOrEdit,
-  handleChange,
-  websiteId,
-  categoryId,
-  productsSelected,
-  fetchData,
-}: Props) => {
+                         formik,
+                         setFieldValue,
+                         addOrEdit,
+                         handleChange,
+                         websiteId,
+                         categoryId,
+                         productsSelected,
+                         fetchData,
+                       }: Props) => {
   const dispatch = useDispatch();
 
   const [lists, setLists] = useState<any>([]);
@@ -73,8 +72,8 @@ const ProductSelect = ({
         setLists(
           productsSelected
             ? dataSelect?.filter(
-                (item) => !productsSelected?.includes(item?.value)
-              )
+              (item) => !productsSelected?.includes(item?.value)
+            )
             : dataSelect
         );
       },
@@ -88,7 +87,10 @@ const ProductSelect = ({
         size="small"
         disablePortal
         id="combo-box-demo"
-        value={{ value: "", label: "" }}
+        value={{
+          value: productsSelected ? "" : formik?.values?.productId,
+          label: productsSelected ? "" : formik?.values?.productName
+        }}
         options={lists}
         disableClearable={addOrEdit}
         renderOption={(props, option) => (

@@ -2,7 +2,7 @@
 import { useNavigate } from "react-router-dom";
 
 // PROJECT IMPORT
-import { DASHBOARD_PATH, ARTICLE_PATH, ADMIN_TYPE } from "config";
+import { ADMIN_TYPE, ARTICLE_PATH, DASHBOARD_PATH } from "config";
 import useAuth from "hooks/useAuth";
 
 // STYLES IMPORT

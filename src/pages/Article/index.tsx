@@ -1,8 +1,7 @@
 // THIRD IMPORT
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 // ICON IMPORT
-
 // PROJECT IMPORT
 import MainCard from "components/Cards/MainCard";
 import { useDispatch, useSelector } from "app/store";
@@ -18,96 +17,99 @@ import { ArticleType } from "types/article";
 const PAGE_SIZE = Number(process.env.REACT_APP_PAGE_SIZE);
 
 const Index = () => {
-  const dispatch = useDispatch();
+	const dispatch = useDispatch();
 
-  const articleState = useSelector(article);
+	const articleState = useSelector(article);
 
-  const [loading, setLoading] = useState<boolean>(false);
-  const [visibleDrawer, setVisibleDrawer] = useState<boolean>(false);
-  const [dataEdit, setDataEdit] = useState<ArticleType>({
-    id: 0,
-    title: "",
-    description: "",
-    createdAt: "",
-    status: 0,
-  });
+	const [loading, setLoading] = useState<boolean>(false);
+	const [visibleDrawer, setVisibleDrawer] = useState<boolean>(false);
+	const [dataEdit, setDataEdit] = useState<ArticleType>({
+		id: 0,
+		title: "",
+		description: "",
+		createdAt: "",
+		status: 0,
+	});
 
-  useEffect(() => {
-    getList();
-  }, []);
+	useEffect(() => {
+		getList();
+	}, []);
 
-  const getList = () => {
-    setLoading(true);
-    const { query } = articleState;
-    const queryFilter = articleState.filter;
+	const getList = () => {
+		setLoading(true);
+		const { query } = articleState;
+		const queryFilter = articleState.filter;
 
-    let params = {
-      filter: JSON.stringify({}),
-      range: JSON.stringify([0, PAGE_SIZE]),
-      sort: JSON.stringify(["createdAt", "DESC"]),
-      attributes:
-        "id,title,websiteId,categoryId,author,source,status,createdAt",
-    };
-    if (query?.filter !== "{}") {
-      params = {
-        ...params,
-        filter: query?.filter,
-      };
-    }
-    if (query?.range !== "{}") {
-      params = {
-        ...params,
-        range: query?.range,
-      };
-    }
-    if (query?.sort !== "{}") {
-      params = {
-        ...params,
-        sort: query?.sort,
-      };
-    }
+		let params = {
+			filter: JSON.stringify({}),
+			range: JSON.stringify([0, PAGE_SIZE]),
+			sort: JSON.stringify(["createdAt", "DESC"]),
+			attributes:
+				"id,title,websiteId,categoryId,author,source,status,createdAt",
+		};
 
-    dispatch(filter(queryFilter));
-    dispatch({
-      type: "article/fetch",
-      payload: params,
-      callback: (res: any) => {
-        setLoading(false);
-        if (res?.success === false) {
-          createNotification("error", res?.message);
-        }
-      },
-    });
-  };
+		if (query?.filter !== "{}") {
+			params = {
+				...params,
+				filter: query?.filter,
+			};
+		}
 
-  return (
-    <MainCard
-      title={
-        <SearchForm
-          setDataEdit={setDataEdit}
-          setVisibleDrawer={setVisibleDrawer}
-          setLoading={setLoading}
-        />
-      }
-      content={false}
-    >
-      <ArticleTable
-        getList={getList}
-        dataEdit={dataEdit}
-        setDataEdit={setDataEdit}
-        setVisibleDrawer={setVisibleDrawer}
-        loading={loading}
-        setLoading={setLoading}
-      />
+		if (query?.range !== "{}") {
+			params = {
+				...params,
+				range: query?.range,
+			};
+		}
 
-      <ArticleModal
-        open={visibleDrawer}
-        dataEdit={dataEdit}
-        handleClose={() => setVisibleDrawer(false)}
-        getList={getList}
-      />
-    </MainCard>
-  );
+		if (query?.sort !== "{}") {
+			params = {
+				...params,
+				sort: query?.sort,
+			};
+		}
+
+		dispatch(filter(queryFilter));
+		dispatch({
+			type: "article/fetch",
+			payload: params,
+			callback: (res: any) => {
+				setLoading(false);
+				if (res?.success === false) {
+					createNotification("error", res?.message);
+				}
+			},
+		});
+	};
+
+	return (
+		<MainCard
+			title={
+				<SearchForm
+					setDataEdit={setDataEdit}
+					setVisibleDrawer={setVisibleDrawer}
+					setLoading={setLoading}
+				/>
+			}
+			content={false}
+		>
+			<ArticleTable
+				getList={getList}
+				dataEdit={dataEdit}
+				setDataEdit={setDataEdit}
+				setVisibleDrawer={setVisibleDrawer}
+				loading={loading}
+				setLoading={setLoading}
+			/>
+
+			<ArticleModal
+				open={visibleDrawer}
+				dataEdit={dataEdit}
+				handleClose={() => setVisibleDrawer(false)}
+				getList={getList}
+			/>
+		</MainCard>
+	);
 };
 
 export default Index;

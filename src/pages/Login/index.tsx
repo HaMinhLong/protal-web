@@ -28,7 +28,6 @@ const Index = () => {
         <div className="square"></div>
         <div className="square"></div>
         <div className="square"></div>
-
         <div className="container">
           <div className="form">
             <h2>Protal Website CMS</h2>

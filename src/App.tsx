@@ -17,13 +17,13 @@ const App = () => {
   return (
     <>
       <ThemeCustomization>
-        <CssBaseline />
-        <NotificationContainer />
+        <CssBaseline/>
+         <NotificationContainer/>
         <NavigationScroll>
           <AuthProvider>
             <>
-              <Routes />
-              <Snackbar />
+              <Routes/>
+              <Snackbar/>
             </>
           </AuthProvider>
         </NavigationScroll>

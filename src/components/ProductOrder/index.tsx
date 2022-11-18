@@ -3,14 +3,14 @@ import { useState } from "react";
 import {
   Box,
   Button,
-  TableRow,
+  IconButton,
+  Table,
+  TableBody,
   TableCell,
   TableContainer,
-  Table,
   TableHead,
-  TableBody,
+  TableRow,
   Typography,
-  IconButton,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -19,6 +19,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { ProductOrderType } from "types/order";
 import AlertDelete from "components/Extended/AlertDelete";
 import ProductOrderModal from "components/ModalPage/ProductOrderModal";
+import { formatPrice } from 'utils/utils'
 
 interface Props {
   formik: any;
@@ -32,6 +33,7 @@ const initialData: ProductOrderType = {
   totalPrice: 0,
   productId: 0,
   productName: "",
+  category: "",
   flag: "add",
 };
 
@@ -48,6 +50,7 @@ const Index = ({ formik }: Props) => {
           #
         </TableCell>
         <TableCell sx={styleCell}>Tên sản phẩm</TableCell>
+        <TableCell sx={styleCell}>Loại sản phẩm</TableCell>
         <TableCell sx={styleCell}>Số lượng</TableCell>
         <TableCell sx={styleCell}>Giá</TableCell>
         <TableCell sx={styleCell}>Giá thỏa thuận</TableCell>
@@ -72,10 +75,11 @@ const Index = ({ formik }: Props) => {
         >
           {item?.productName}
         </TableCell>
+        <TableCell>{item?.category}</TableCell>
         <TableCell>{item?.amount}</TableCell>
-        <TableCell>{item?.price}</TableCell>
-        <TableCell>{item?.negotiablePrice}</TableCell>
-        <TableCell>{item?.totalPrice}</TableCell>
+        <TableCell>{formatPrice(item?.price)}</TableCell>
+        <TableCell>{formatPrice(item?.negotiablePrice)}</TableCell>
+        <TableCell>{formatPrice(item?.totalPrice)}</TableCell>
         <TableCell align="right">{renderButton(item)}</TableCell>
       </TableRow>
     );
@@ -103,7 +107,7 @@ const Index = ({ formik }: Props) => {
             setVisibleAdd(true);
           }}
         >
-          <EditIcon fontSize="small" color="primary" />
+          <EditIcon fontSize="small" color="primary"/>
         </IconButton>
         <IconButton
           size="small"
@@ -112,7 +116,7 @@ const Index = ({ formik }: Props) => {
             setDataEdit(item);
           }}
         >
-          <DeleteIcon fontSize="small" color="error" />
+          <DeleteIcon fontSize="small" color="error"/>
         </IconButton>
       </Box>
     );
