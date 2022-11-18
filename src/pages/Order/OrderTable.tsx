@@ -2,16 +2,16 @@
 import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
 import {
   Box,
-  useMediaQuery,
   Button,
-  TableContainer,
-  Table,
-  TableHead,
-  TableCell,
-  TableRow,
-  TableBody,
-  Typography,
   Pagination,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+  useMediaQuery,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 
@@ -30,6 +30,7 @@ import AlertDelete from "components/Extended/AlertDelete";
 // TYPES IMPORT
 import { OrderType } from "types/order";
 import moment from "moment";
+import { formatPrice } from "../../utils/utils";
 
 interface Props {
   dataEdit: OrderType;
@@ -43,13 +44,13 @@ interface Props {
 const PAGE_SIZE = Number(process.env.REACT_APP_PAGE_SIZE);
 
 const OrderTable = ({
-  dataEdit,
-  setDataEdit,
-  setVisibleDrawer,
-  loading,
-  setLoading,
-  getList,
-}: Props) => {
+                      dataEdit,
+                      setDataEdit,
+                      setVisibleDrawer,
+                      loading,
+                      setLoading,
+                      getList,
+                    }: Props) => {
   const dispatch = useDispatch();
   const theme = useTheme();
 
@@ -152,6 +153,12 @@ const OrderTable = ({
     }
   };
 
+  const styleTableCell = {
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: 'nowrap',
+  }
+
   const renderTableBody = (item: OrderType, index: number) => {
     return (
       <TableRow hover key={item.id}>
@@ -161,30 +168,32 @@ const OrderTable = ({
           </Typography>
         </TableCell>
         <TableCell
-          sx={{ width: "15%", overflow: "hidden", maxWidth: 200 }}
+          sx={{ ...styleTableCell, minWidth: '150px', maxWidth: '150px' }}
           component="th"
           scope="row"
         >
           {item.name}
         </TableCell>
-        <TableCell>{item?.phone}</TableCell>
-        <TableCell>{item?.email}</TableCell>
-        <TableCell>{item?.website?.name}</TableCell>
-        <TableCell>{item?.paymentMethod?.name}</TableCell>
-        <TableCell>{item?.totalPrice}</TableCell>
+        <TableCell sx={{ ...styleTableCell, minWidth: '150px', maxWidth: '150px' }}>{item?.phone}</TableCell>
+        <TableCell sx={{ ...styleTableCell, minWidth: '150px', maxWidth: '150px' }}>{item?.email}</TableCell>
+        <TableCell sx={{ ...styleTableCell, minWidth: '100px', maxWidth: '100px' }}>{item?.website?.name}</TableCell>
         <TableCell
-          sx={{
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            maxWidth: "400px",
-          }}
+          sx={{ ...styleTableCell, minWidth: '150px', maxWidth: '150px' }}>{item?.paymentMethod?.name}</TableCell>
+        <TableCell>{formatPrice(item?.totalPrice || 0)}</TableCell>
+        <TableCell
+          sx={{ ...styleTableCell, minWidth: '300px', maxWidth: '300px' }}
         >
           {item?.address}
         </TableCell>
-        <TableCell>
+        <TableCell sx={{ ...styleTableCell, minWidth: '150px', maxWidth: '150px' }}>
           {moment(item?.createdAt).format("DD/MM/YYYY HH:mm")}
         </TableCell>
-        <TableCell align="right">{renderMenuButton(item)}</TableCell>
+        <TableCell align="right"
+                   sx={{
+                     ...styleTableCell,
+                     minWidth: item?.status === 1 || item?.status === 5 ? '300px' : '350px',
+                     maxWidth: item?.status === 1 || item?.status === 5 ? '300px' : '350px'
+                   }}>{renderMenuButton(item)}</TableCell>
       </TableRow>
     );
   };
@@ -234,7 +243,7 @@ const OrderTable = ({
         <Button
           size="small"
           variant="outlined"
-          endIcon={<NextPlanIcon />}
+          endIcon={<NextPlanIcon/>}
           onClick={() => {
             handleStatus(item?.status + 1, item?.id);
           }}
@@ -246,7 +255,7 @@ const OrderTable = ({
       <Button
         size="small"
         variant="outlined"
-        endIcon={<EditIcon />}
+        endIcon={<EditIcon/>}
         onClick={() => {
           setDataEdit(item);
           setVisibleDrawer(true);
@@ -302,8 +311,8 @@ const OrderTable = ({
           />
         )}
       </TableContainer>
-      {orders?.length === 0 && <NoData />}
-      {loading && <Loading />}
+      {orders?.length === 0 && <NoData/>}
+      {loading && <Loading/>}
 
       {confirmDelete && (
         <AlertDelete
