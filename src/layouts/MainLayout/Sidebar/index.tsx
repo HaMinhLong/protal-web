@@ -1,15 +1,15 @@
 // THIRD-PARTY
-import { Box, Drawer, Stack, useMediaQuery } from "@mui/material";
-import { memo, useMemo } from "react";
-import { useTheme } from "@mui/material/styles";
+import { Box, Drawer, Stack, useMediaQuery } from '@mui/material';
+import { memo, useMemo } from 'react';
+import { useTheme } from '@mui/material/styles';
 
 // PROJECT IMPORTS
-import Chip from "components/Extended/Chip";
-import LogoSection from "../LogoSection";
-import MenuList from "./MenuList";
-import { drawerWidth } from "app/constant";
-import { openDrawer } from "features/menu/menuSlice";
-import { useDispatch, useSelector, RootState } from "app/store";
+import Chip from 'components/Extended/Chip';
+import LogoSection from '../LogoSection';
+import MenuList from './MenuList';
+import { drawerWidth } from 'app/constant';
+import { openDrawer } from 'features/menu/menuSlice';
+import { useDispatch, useSelector, RootState } from 'app/store';
 
 interface SidebarProps {
   window?: Window;
@@ -17,15 +17,15 @@ interface SidebarProps {
 
 const Sidebar = ({ window }: SidebarProps) => {
   const theme = useTheme();
-  const matchUpMd = useMediaQuery(theme.breakpoints.up("md"));
+  const matchUpMd = useMediaQuery(theme.breakpoints.up('md'));
 
   const dispatch = useDispatch();
   const { drawerOpen } = useSelector((state: RootState) => state.menu);
 
   const logo = useMemo(
     () => (
-      <Box sx={{ display: { xs: "block", md: "none" } }}>
-        <Box sx={{ display: "flex", p: 2, mx: "auto" }}>
+      <Box sx={{ display: { xs: 'block', md: 'none' } }}>
+        <Box sx={{ display: 'flex', p: 2, mx: 'auto' }}>
           <LogoSection />
         </Box>
       </Box>
@@ -37,20 +37,14 @@ const Sidebar = ({ window }: SidebarProps) => {
     () => (
       <div
         style={{
-          height: !matchUpMd ? "calc(100vh - 56px)" : "calc(100vh - 88px)",
-          paddingLeft: "16px",
-          paddingRight: "16px",
+          height: !matchUpMd ? 'calc(100vh - 56px)' : 'calc(100vh - 48px)',
+          paddingLeft: '16px',
+          paddingRight: '16px'
         }}
       >
         <MenuList />
         <Stack direction="row" justifyContent="center" sx={{ mb: 2 }}>
-          <Chip
-            label={process.env.REACT_APP_VERSION}
-            disabled
-            chipColor="secondary"
-            size="small"
-            sx={{ cursor: "pointer" }}
-          />
+          <Chip label={process.env.REACT_APP_VERSION} disabled chipColor="secondary" size="small" sx={{ cursor: 'pointer' }} />
         </Stack>
       </div>
     ),
@@ -58,31 +52,26 @@ const Sidebar = ({ window }: SidebarProps) => {
     [matchUpMd]
   );
 
-  const container =
-    window !== undefined ? () => window.document.body : undefined;
+  const container = window !== undefined ? () => window.document.body : undefined;
 
   return (
-    <Box
-      component="nav"
-      sx={{ flexShrink: { md: 0 }, width: matchUpMd ? drawerWidth : "auto" }}
-      aria-label="mailbox folders"
-    >
+    <Box component="nav" sx={{ flexShrink: { md: 0 }, width: matchUpMd ? drawerWidth : 'auto' }} aria-label="mailbox folders">
       <Drawer
         container={container}
-        variant={matchUpMd ? "persistent" : "temporary"}
+        variant={matchUpMd ? 'persistent' : 'temporary'}
         anchor="left"
         open={drawerOpen}
         onClose={() => dispatch(openDrawer(!drawerOpen))}
         sx={{
-          "& .MuiDrawer-paper": {
+          '& .MuiDrawer-paper': {
             width: drawerWidth,
             background: theme.palette.background.default,
             color: theme.palette.text.primary,
-            borderRight: "none",
-            [theme.breakpoints.up("md")]: {
-              top: "88px",
-            },
-          },
+            borderRight: `1px solid ${theme.palette.grey[300]}`,
+            [theme.breakpoints.up('md')]: {
+              top: '48px'
+            }
+          }
         }}
         ModalProps={{ keepMounted: true }}
         color="inherit"

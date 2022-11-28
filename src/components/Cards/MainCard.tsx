@@ -1,19 +1,11 @@
-import React, { Ref } from "react";
-import { useTheme } from "@mui/material/styles";
-import {
-  Card,
-  CardContent,
-  CardContentProps,
-  CardHeader,
-  CardHeaderProps,
-  CardProps,
-  Divider,
-  Typography,
-} from "@mui/material";
-import { KeyedObject } from "types";
+import React, { Ref } from 'react';
+import { useTheme } from '@mui/material/styles';
+import { Card, CardContent, CardHeader, Divider, Typography, CardProps, CardHeaderProps, CardContentProps } from '@mui/material';
+
+import { KeyedObject } from 'types';
 
 const headerSX = {
-  "& .MuiCardHeader-action": { mr: 0 },
+  '& .MuiCardHeader-action': { mr: 0 }
 };
 
 export interface MainCardProps extends KeyedObject {
@@ -24,10 +16,10 @@ export interface MainCardProps extends KeyedObject {
   content?: boolean;
   className?: string;
   contentClass?: string;
-  contentSX?: CardContentProps["sx"];
+  contentSX?: CardContentProps['sx'];
   darkTitle?: boolean;
-  sx?: CardProps["sx"];
-  secondary?: CardHeaderProps["action"];
+  sx?: CardProps['sx'];
+  secondary?: CardHeaderProps['action'];
   shadow?: string;
   elevation?: number;
   title?: React.ReactNode | string;
@@ -40,7 +32,7 @@ const MainCard = React.forwardRef(
       boxShadow,
       children,
       content = true,
-      contentClass = "",
+      contentClass = '',
       contentSX = {},
       darkTitle,
       secondary,
@@ -58,29 +50,19 @@ const MainCard = React.forwardRef(
         ref={ref}
         {...others}
         sx={{
-          border: border ? "1px solid" : "none",
-          borderColor: theme.palette.background.default,
-          ":hover": {
+          border: border ? '1px solid' : 'none',
+          borderColor: theme.palette.mode === 'dark' ? theme.palette.background.default : theme.palette.primary[200] + 75,
+          ':hover': {
             boxShadow: boxShadow
-              ? shadow ||
-                (theme.palette.mode === "dark"
-                  ? "0 2px 14px 0 rgb(33 150 243 / 10%)"
-                  : "0 2px 14px 0 rgb(32 40 45 / 8%)")
-              : "inherit",
+              ? shadow || (theme.palette.mode === 'dark' ? '0 2px 14px 0 rgb(33 150 243 / 10%)' : '0 2px 14px 0 rgb(32 40 45 / 8%)')
+              : 'inherit'
           },
-          ...sx,
+          ...sx
         }}
       >
-        {!darkTitle && title && (
-          <CardHeader sx={headerSX} title={title} action={secondary} />
-        )}
-        {darkTitle && title && (
-          <CardHeader
-            sx={headerSX}
-            title={<Typography variant="h3">{title}</Typography>}
-            action={secondary}
-          />
-        )}
+        {/* card header and action */}
+        {!darkTitle && title && <CardHeader sx={headerSX} title={title} action={secondary} />}
+        {darkTitle && title && <CardHeader sx={headerSX} title={<Typography variant="h3">{title}</Typography>} action={secondary} />}
 
         {title && <Divider />}
 
