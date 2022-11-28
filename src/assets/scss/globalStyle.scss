@@ -22,6 +22,7 @@ span {
 }
 
 p,
+tr,
 td,
 th,
 a,
@@ -37,6 +38,16 @@ h4,
 h5,
 h6 {
     color: $primaryDark;
+}
+
+tr,
+td,
+th {
+    color: $primaryDark !important;
+}
+
+h4.title {
+    color: #fff;
 }
 
 a {

@@ -138,7 +138,7 @@ const ProfileSection = () => {
                       overflowX: 'hidden'
                     }}
                   >
-                    <Box sx={{ p: 2 }}>
+                    <Box sx={{ p: 0 }}>
                       <List
                         component="nav"
                         sx={{
@@ -164,6 +164,7 @@ const ProfileSection = () => {
                           </ListItemIcon>
                           <ListItemText primary={<Typography variant="body2">Cài đặt tài khoản</Typography>} />
                         </ListItemButton>
+
                         <ListItemButton
                           sx={{
                             borderRadius: `50px`

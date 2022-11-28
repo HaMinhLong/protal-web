@@ -38,8 +38,8 @@ const Sidebar = ({ window }: SidebarProps) => {
       <div
         style={{
           height: !matchUpMd ? 'calc(100vh - 56px)' : 'calc(100vh - 48px)',
-          paddingLeft: '16px',
-          paddingRight: '16px'
+          paddingLeft: '0px',
+          paddingRight: '0px'
         }}
       >
         <MenuList />
