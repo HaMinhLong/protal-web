@@ -1,28 +1,17 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 // THIRD IMPORT
-import { useState, useEffect } from "react";
-import {
-  Box,
-  Grid,
-  TableRow,
-  TableCell,
-  TableContainer,
-  Table,
-  TableHead,
-  TableBody,
-  Typography,
-  IconButton,
-} from "@mui/material";
-import { useFormik } from "formik";
-import DeleteIcon from "@mui/icons-material/Delete";
+import { useState, useEffect } from 'react';
+import { Box, Grid, TableRow, TableCell, TableContainer, Table, TableHead, TableBody, Typography, IconButton } from '@mui/material';
+import { useFormik } from 'formik';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 // PROJECT IMPORT
-import ProductSelect from "components/Common/ProductSelect";
-import CategorySelect from "components/Common/CategorySelect";
-import Nodata from "components/Extended/NoData";
+import ProductSelect from 'components/Common/ProductSelect';
+import CategorySelect from 'components/Common/CategorySelect';
+import Nodata from 'components/Extended/NoData';
 
 // TYPES IMPORT
-import { CollectionProductType } from "types/product";
+import { CollectionProductType } from 'types/product';
 
 const END_POINT = process.env.REACT_APP_SERVER;
 
@@ -36,23 +25,23 @@ const Index = ({ formikProp }: Props) => {
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      categoryId: "",
-      categoryName: "",
-      productId: "",
+      categoryId: '',
+      categoryName: '',
+      productId: ''
     },
-    onSubmit: (values) => {},
+    onSubmit: (values) => {}
   });
 
   useEffect(() => {
-    formik.setFieldValue("categoryId", "");
-    formik.setFieldValue("categoryName", "");
+    formik.setFieldValue('categoryId', '');
+    formik.setFieldValue('categoryName', '');
   }, [formikProp?.values?.websiteId]);
 
   const renderTableHead = () => {
-    const styleCell = { whiteSpace: "nowrap", fontWeight: "bold" };
+    const styleCell = { whiteSpace: 'nowrap', fontWeight: 'bold' };
     return (
       <TableRow>
-        <TableCell sx={{ ...styleCell, width: "5%" }} align="center">
+        <TableCell sx={{ ...styleCell, width: '5%' }} align="center">
           #
         </TableCell>
         <TableCell sx={styleCell}>Tên sản phẩm</TableCell>
@@ -66,23 +55,23 @@ const Index = ({ formikProp }: Props) => {
   };
 
   const styleTableCell = {
-    overflow: "hidden",
-    whiteSpace: "nowrap",
-    textOverflow: "ellipsis",
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
+    textOverflow: 'ellipsis'
   };
 
   const renderTableBody = (item: CollectionProductType, index: number) => {
     return (
       <TableRow hover key={item.productId}>
-        <TableCell sx={{ width: "5%" }} align="center">
+        <TableCell sx={{ width: '5%' }} align="center">
           <Typography variant="body2">{index + 1}</Typography>
         </TableCell>
         <TableCell
           sx={{
             maxWidth: 350,
             ...styleTableCell,
-            display: "flex",
-            alignItems: "center",
+            display: 'flex',
+            alignItems: 'center'
           }}
           component="th"
           scope="row"
@@ -90,8 +79,8 @@ const Index = ({ formikProp }: Props) => {
           <img
             height="30px"
             width="30px"
-            src={`${END_POINT}${item?.images?.split(",")[0]}`}
-            style={{ marginRight: "10px" }}
+            src={`${END_POINT}${item?.images?.split(',')[0]}`}
+            style={{ marginRight: '10px' }}
             alt={item?.name}
           />
           {item?.name}
@@ -105,14 +94,14 @@ const Index = ({ formikProp }: Props) => {
 
   const handleAdd = (data: CollectionProductType) => {
     formikProp.setFieldValue(
-      "collectionProducts",
+      'collectionProducts',
       formikProp?.values?.collectionProducts.concat([
         {
           ...data,
           name: data?.label,
           productId: data?.value,
-          flag: "add",
-        },
+          flag: 'add'
+        }
       ])
     );
   };
@@ -120,10 +109,9 @@ const Index = ({ formikProp }: Props) => {
   const handleRemove = (item: CollectionProductType) => {
     setFetchData(!fetchData);
     formikProp.setFieldValue(
-      "collectionProducts",
+      'collectionProducts',
       formikProp?.values?.collectionProducts?.map((product) => {
-        if (product?.productId === item?.productId)
-          return { ...product, flag: "delete" };
+        if (product?.productId === item?.productId) return { ...product, flag: 'delete' };
         return product;
       })
     );
@@ -159,7 +147,6 @@ const Index = ({ formikProp }: Props) => {
         <Grid item xs={8}>
           <ProductSelect
             formik={formik}
-            setFieldValue={formik.setFieldValue}
             addOrEdit={false}
             websiteId={formikProp?.values?.websiteId}
             categoryId={formik?.values?.categoryId}
@@ -167,7 +154,7 @@ const Index = ({ formikProp }: Props) => {
               handleAdd(data);
             }}
             productsSelected={formikProp?.values?.collectionProducts
-              ?.filter((item) => item?.flag !== "delete")
+              ?.filter((item) => item?.flag !== 'delete')
               ?.map((item) => {
                 return item?.productId;
               })}
@@ -176,12 +163,12 @@ const Index = ({ formikProp }: Props) => {
         </Grid>
       </Grid>
       <Box>
-        <TableContainer sx={{ overflow: "auto", minHeight: "200px" }}>
+        <TableContainer sx={{ overflow: 'auto', minHeight: '200px' }}>
           <Table>
             <TableHead>{renderTableHead()}</TableHead>
             <TableBody>
               {formikProp?.values?.collectionProducts
-                ?.filter((item) => item?.flag !== "delete")
+                ?.filter((item) => item?.flag !== 'delete')
                 ?.map((item, index) => renderTableBody(item, index))}
             </TableBody>
           </Table>

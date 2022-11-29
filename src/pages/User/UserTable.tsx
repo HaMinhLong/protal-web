@@ -28,6 +28,7 @@ import createNotification from 'components/Extended/Notification';
 import Loading from 'components/Extended/Loading';
 import NoData from 'components/Extended/NoData';
 import AlertDelete from 'components/Extended/AlertDelete';
+import GrantPermissionModal from 'components/ModalPage/GrantPermissionModal';
 
 // TYPES IMPORT
 import { UserType } from 'types/user';
@@ -54,6 +55,8 @@ const UserTable = ({ dataEdit, setDataEdit, setVisibleDrawer, loading, setLoadin
   const pagination = userState.data.pagination;
 
   const [confirmDelete, setConfirmDelete] = useState<boolean>(false);
+  const [visibleModal, setVisibleModal] = useState<boolean>(false);
+  const [userId, setUserId] = useState<number>(0);
 
   const handleTableChange = (e: ChangeEvent<unknown>, page: number) => {
     setLoading(true);
@@ -187,8 +190,8 @@ const UserTable = ({ dataEdit, setDataEdit, setVisibleDrawer, loading, setLoadin
           color="success"
           endIcon={<EditIcon />}
           onClick={() => {
-            setDataEdit(item);
-            setVisibleDrawer(true);
+            setUserId(item?.id || 0);
+            setVisibleModal(true);
           }}
         >
           Cấp quyền
@@ -249,6 +252,13 @@ const UserTable = ({ dataEdit, setDataEdit, setVisibleDrawer, loading, setLoadin
       {userGroups?.length === 0 && <NoData />}
       {loading && <Loading />}
       {confirmDelete && <AlertDelete name={dataEdit?.fullName} open={confirmDelete} handleClose={handleRemove} />}
+      <GrantPermissionModal
+        open={visibleModal}
+        handleClose={() => {
+          setVisibleModal(false);
+        }}
+        id={userId}
+      />
     </Box>
   );
 };

@@ -1,13 +1,7 @@
-import { put, call, takeLatest } from "redux-saga/effects";
-import { save, info, query, updateStatusSlice } from "features/user/userSlice";
-import {
-  getListUser,
-  getOneUser,
-  createUser,
-  updateUser,
-  updateStatusUser,
-  deleteUser,
-} from "api/user";
+import { put, call, takeLatest } from 'redux-saga/effects';
+import { save, info, query, updateStatusSlice } from 'features/user/userSlice';
+import { getListUser, getOneUser, createUser, updateUser, updateStatusUser, deleteUser } from 'api/user';
+import { getListWebsiteUser, updateWebsiteUser } from 'api/websiteUser';
 
 function* getList({ payload, callback }) {
   try {
@@ -69,7 +63,7 @@ function* updateStatus({ payload: { id, params }, callback }) {
     yield put(
       updateStatusSlice({
         id: id,
-        status: params.status,
+        status: params.status
       })
     );
 
@@ -88,13 +82,36 @@ function* deleteRecord({ payload: { id }, callback }) {
   }
 }
 
-const typeFetch: any = "user/fetch";
-const typeGetOne: any = "user/getOne";
-const typeAdd: any = "user/add";
-const typeFetchLazyLoading: any = "user/fetchLazyLoading";
-const typeUpdate: any = "user/update";
-const typeUpdateStatus: any = "user/updateStatus";
-const typeDelete: any = "user/delete";
+function* fetchListWebsiteUser({ payload, callback }) {
+  try {
+    const { data } = yield call(getListWebsiteUser, payload);
+
+    if (callback && data) callback(data);
+  } catch (error: any) {
+    if (callback) callback(error);
+  }
+}
+
+function* editWebsiteUser({ payload: { id, params }, callback }) {
+  try {
+    const { data } = yield call(updateWebsiteUser, id, params);
+    if (callback && data) callback(data);
+  } catch (error: any) {
+    if (callback) callback(error);
+  }
+}
+
+const typeFetch: any = 'user/fetch';
+const typeGetOne: any = 'user/getOne';
+const typeAdd: any = 'user/add';
+const typeFetchLazyLoading: any = 'user/fetchLazyLoading';
+const typeUpdate: any = 'user/update';
+const typeUpdateStatus: any = 'user/updateStatus';
+const typeDelete: any = 'user/delete';
+
+// WEBSITE USER
+const typeWebsiteUserFetch: any = 'websiteUser/fetch';
+const typeWebsiteUserUpdate: any = 'websiteUser/update';
 
 export function* userSaga(): any {
   yield takeLatest(typeFetch, getList);
@@ -104,4 +121,6 @@ export function* userSaga(): any {
   yield takeLatest(typeUpdate, updateRecord);
   yield takeLatest(typeUpdateStatus, updateStatus);
   yield takeLatest(typeDelete, deleteRecord);
+  yield takeLatest(typeWebsiteUserFetch, fetchListWebsiteUser);
+  yield takeLatest(typeWebsiteUserUpdate, editWebsiteUser);
 }

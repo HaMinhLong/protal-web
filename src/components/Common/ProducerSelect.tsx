@@ -1,12 +1,12 @@
 // THIRD IMPORT
-import { useState, useEffect } from "react";
-import { TextField, Autocomplete, FormHelperText } from "@mui/material";
-import ErrorIcon from "@mui/icons-material/Error";
+import { useState, useEffect } from 'react';
+import { TextField, Autocomplete, FormHelperText } from '@mui/material';
+import ErrorIcon from '@mui/icons-material/Error';
 
 // TYPES IMPORT
 
 // PROJECT IMPORT
-import { useDispatch } from "app/store";
+import { useDispatch } from 'app/store';
 
 interface Props {
   formik: any;
@@ -25,21 +25,21 @@ const ProducerSelect = ({ formik, setFieldValue, addOrEdit }: Props) => {
 
   const getList = () => {
     dispatch({
-      type: "producer/fetchLazyLoading",
+      type: 'producer/fetchLazyLoading',
       payload: {
         filter: JSON.stringify({ status: 1 }),
-        range: JSON.stringify([0, 500]),
+        range: JSON.stringify([0, 500])
       },
       callback: (res) => {
         const { list } = res?.results;
         const dataSelect = list?.map((item) => {
           return {
             value: item.id,
-            label: item.name,
+            label: item.name
           };
         });
         setLists(dataSelect);
-      },
+      }
     });
   };
 
@@ -50,13 +50,7 @@ const ProducerSelect = ({ formik, setFieldValue, addOrEdit }: Props) => {
         size="small"
         disablePortal
         id="combo-box-demo"
-        value={
-          lists?.length > 0
-            ? lists?.filter(
-                (item) => item.value === formik?.values?.producerId
-              )[0]
-            : { value: "", label: "" }
-        }
+        value={lists?.length > 0 ? lists?.filter((item) => item.value === formik?.values?.producerId)[0] : { value: '', label: '' }}
         options={lists}
         disableClearable={addOrEdit}
         renderInput={(params) => (
@@ -69,22 +63,17 @@ const ProducerSelect = ({ formik, setFieldValue, addOrEdit }: Props) => {
                   Nhà sản xuất <span> *</span>
                 </span>
               ) : (
-                "Nhà sản xuất"
+                'Nhà sản xuất'
               )
             }
-            error={
-              formik.touched.producerId && Boolean(formik.errors?.producerId)
-            }
+            error={formik.touched.producerId && Boolean(formik.errors?.producerId)}
           />
         )}
-        onChange={(e, data) => setFieldValue("producerId", data?.value)}
+        onChange={(e, data) => setFieldValue('producerId', data?.value)}
       />
       {formik.touched.producerId && formik.errors.producerId && (
         <FormHelperText error className="error-custom">
-          <ErrorIcon
-            fontSize="small"
-            sx={{ mr: 0.5, width: "18px", height: "18px" }}
-          />
+          <ErrorIcon fontSize="small" sx={{ mr: 0.5, width: '18px', height: '18px' }} />
           {formik.errors.producerId}
         </FormHelperText>
       )}

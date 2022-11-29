@@ -1,34 +1,34 @@
 // THIRD-PARTY
-import { lazy } from "react";
+import { lazy } from 'react';
 
 // PROJECT IMPORTS
-import MainLayout from "layouts/MainLayout";
-import Loadable from "components/Loadable";
-import AuthGuard from "utils/route-guard/AuthGuard";
-import { ADMIN_TYPE, CUSTOMER_TYPE } from "config";
+import MainLayout from 'layouts/MainLayout';
+import Loadable from 'components/Loadable';
+import AuthGuard from 'utils/route-guard/AuthGuard';
+import { ADMIN_TYPE, CUSTOMER_TYPE } from 'config';
 
-const Dashboard = Loadable(lazy(() => import("pages/Dashboard")));
-const UserGroup = Loadable(lazy(() => import("pages/UserGroup")));
-const User = Loadable(lazy(() => import("pages/User")));
-const WebsiteGroup = Loadable(lazy(() => import("pages/WebsiteGroup")));
-const Website = Loadable(lazy(() => import("pages/Website")));
-const CategoryGroup = Loadable(lazy(() => import("pages/CategoryGroup")));
-const Category = Loadable(lazy(() => import("pages/Category")));
-const Article = Loadable(lazy(() => import("pages/Article")));
-const Product = Loadable(lazy(() => import("pages/Product")));
-const Menu = Loadable(lazy(() => import("pages/Menu")));
-const Message = Loadable(lazy(() => import("pages/Message")));
-const ProducerGroup = Loadable(lazy(() => import("pages/ProducerGroup")));
-const Producer = Loadable(lazy(() => import("pages/Producer")));
-const SupplierGroup = Loadable(lazy(() => import("pages/SupplierGroup")));
-const Supplier = Loadable(lazy(() => import("pages/Supplier")));
-const PaymentMethod = Loadable(lazy(() => import("pages/PaymentMethod")));
-const Order = Loadable(lazy(() => import("pages/Order")));
-const ProductComment = Loadable(lazy(() => import("pages/ProductComment")));
-const Collection = Loadable(lazy(() => import("pages/Collection")));
+const Dashboard = Loadable(lazy(() => import('pages/Dashboard')));
+const UserGroup = Loadable(lazy(() => import('pages/UserGroup')));
+const User = Loadable(lazy(() => import('pages/User')));
+const WebsiteGroup = Loadable(lazy(() => import('pages/WebsiteGroup')));
+const Website = Loadable(lazy(() => import('pages/Website')));
+const CategoryGroup = Loadable(lazy(() => import('pages/CategoryGroup')));
+const Category = Loadable(lazy(() => import('pages/Category')));
+const Article = Loadable(lazy(() => import('pages/Article')));
+const Product = Loadable(lazy(() => import('pages/Product')));
+const Menu = Loadable(lazy(() => import('pages/Menu')));
+const Message = Loadable(lazy(() => import('pages/Message')));
+const ProducerGroup = Loadable(lazy(() => import('pages/ProducerGroup')));
+const Producer = Loadable(lazy(() => import('pages/Producer')));
+const SupplierGroup = Loadable(lazy(() => import('pages/SupplierGroup')));
+const Supplier = Loadable(lazy(() => import('pages/Supplier')));
+const PaymentMethod = Loadable(lazy(() => import('pages/PaymentMethod')));
+const Order = Loadable(lazy(() => import('pages/Order')));
+const ProductComment = Loadable(lazy(() => import('pages/ProductComment')));
+const Collection = Loadable(lazy(() => import('pages/Collection')));
 
 const MainRoutes = {
-  path: "/",
+  path: '/',
   element: (
     <AuthGuard>
       <MainLayout />
@@ -36,112 +36,108 @@ const MainRoutes = {
   ),
   children: [
     {
-      path: "/dashboard",
+      path: '/dashboard',
       role: [ADMIN_TYPE],
-      element: <Dashboard />,
+      element: <Dashboard />
     },
     {
-      path: "/userGroup",
+      path: '/userGroup',
       role: [ADMIN_TYPE],
-      element: <UserGroup />,
+      element: <UserGroup />
     },
     {
-      path: "/user",
+      path: '/user',
       role: [ADMIN_TYPE],
-      element: <User />,
+      element: <User />
     },
     {
-      path: "/website-group",
+      path: '/website-group',
       role: [ADMIN_TYPE],
-      element: <WebsiteGroup />,
+      element: <WebsiteGroup />
     },
     {
-      path: "/website",
+      path: '/website',
       role: [ADMIN_TYPE],
-      element: <Website />,
+      element: <Website />
     },
     {
-      path: "/category-group",
+      path: '/category-group',
       role: [ADMIN_TYPE],
-      element: <CategoryGroup />,
+      element: <CategoryGroup />
     },
     {
-      path: "/category",
-      role: [ADMIN_TYPE],
-      element: <Category />,
-    },
-    {
-      path: "/article",
+      path: '/category',
       role: [ADMIN_TYPE, CUSTOMER_TYPE],
-      element: <Article />,
+      element: <Category />
     },
     {
-      path: "/product",
+      path: '/article',
       role: [ADMIN_TYPE, CUSTOMER_TYPE],
-      element: <Product />,
+      element: <Article />
     },
     {
-      path: "/menu",
-      role: [ADMIN_TYPE],
-      element: <Menu />,
-    },
-    {
-      path: "/message",
+      path: '/product',
       role: [ADMIN_TYPE, CUSTOMER_TYPE],
-      element: <Message />,
+      element: <Product />
     },
     {
-      path: "/producerGroup",
+      path: '/menu',
       role: [ADMIN_TYPE, CUSTOMER_TYPE],
-      element: <ProducerGroup />,
+      element: <Menu />
     },
     {
-      path: "/producer",
+      path: '/message',
       role: [ADMIN_TYPE, CUSTOMER_TYPE],
-      element: <Producer />,
+      element: <Message />
     },
     {
-      path: "/supplierGroup",
+      path: '/producerGroup',
       role: [ADMIN_TYPE, CUSTOMER_TYPE],
-      element: <SupplierGroup />,
+      element: <ProducerGroup />
     },
     {
-      path: "/supplier",
+      path: '/producer',
       role: [ADMIN_TYPE, CUSTOMER_TYPE],
-      element: <Supplier />,
+      element: <Producer />
     },
     {
-      path: "/paymentMethod",
+      path: '/supplierGroup',
       role: [ADMIN_TYPE, CUSTOMER_TYPE],
-      element: <PaymentMethod />,
+      element: <SupplierGroup />
     },
     {
-      path: "/order",
+      path: '/supplier',
       role: [ADMIN_TYPE, CUSTOMER_TYPE],
-      element: <Order />,
+      element: <Supplier />
     },
     {
-      path: "/comment",
+      path: '/paymentMethod',
       role: [ADMIN_TYPE, CUSTOMER_TYPE],
-      element: <ProductComment />,
+      element: <PaymentMethod />
     },
     {
-      path: "/collection",
+      path: '/order',
       role: [ADMIN_TYPE, CUSTOMER_TYPE],
-      element: <Collection />,
+      element: <Order />
     },
-  ],
+    {
+      path: '/comment',
+      role: [ADMIN_TYPE, CUSTOMER_TYPE],
+      element: <ProductComment />
+    },
+    {
+      path: '/collection',
+      role: [ADMIN_TYPE, CUSTOMER_TYPE],
+      element: <Collection />
+    }
+  ]
 };
 
-const user = JSON.parse(localStorage.getItem("user") || "{}");
+const user = JSON.parse(localStorage.getItem('user') || '{}');
 
 MainRoutes.children = MainRoutes.children.filter((child) => {
   if (child.role.length > 0) {
-    return child.role.findIndex(
-      (item: number) => item === user?.userGroupId
-    ) !== -1
-      ? 1
-      : 0;
+    return child.role.findIndex((item: number) => item === user?.userGroupId) !== -1 ? 1 : 0;
   }
   return true;
 });

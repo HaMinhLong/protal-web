@@ -7,7 +7,6 @@ import ErrorIcon from '@mui/icons-material/Error';
 
 // PROJECT IMPORT
 import { useDispatch } from 'app/store';
-import { CUSTOMER_TYPE } from 'config';
 
 interface Props {
   formik: any;
@@ -17,19 +16,24 @@ interface Props {
   handleChange?: () => void;
 }
 
-const WebsiteSelect = ({ formik, setFieldValue, addOrEdit, readOnly, handleChange }: Props) => {
+const WebsiteMultipleSelect = ({ formik, setFieldValue, addOrEdit, readOnly, handleChange }: Props) => {
   const dispatch = useDispatch();
 
   const [lists, setLists] = useState<any>([]);
-  const userInfo = JSON.parse(localStorage.getItem('user') || '{}');
+  const [dataAll, setDataAll] = useState<any>([]);
 
   useEffect(() => {
-    if (userInfo?.userGroupId === CUSTOMER_TYPE) {
-      roleUserGetList();
-    } else {
-      getList();
-    }
+    getList();
   }, []);
+
+  useEffect(() => {
+    const websiteUserSelected = formik?.values?.websites?.map((item) => {
+      if (item?.flag !== 'delete') return item?.value;
+      return -1;
+    });
+
+    setLists(dataAll?.filter((item) => !websiteUserSelected?.includes(item?.value)));
+  }, [formik?.values?.websites]);
 
   const getList = () => {
     dispatch({
@@ -47,29 +51,7 @@ const WebsiteSelect = ({ formik, setFieldValue, addOrEdit, readOnly, handleChang
           };
         });
         setLists(dataSelect);
-      }
-    });
-  };
-
-  const roleUserGetList = () => {
-    dispatch({
-      type: 'websiteUser/fetch',
-      payload: {
-        id: userInfo.id
-      },
-      callback: (res) => {
-        if (res?.success) {
-          const {
-            results: { list }
-          } = res;
-          const data = list?.[0]?.websites?.map((item) => {
-            return {
-              value: item?.id,
-              label: item?.name
-            };
-          });
-          setLists(data);
-        }
+        setDataAll(dataSelect);
       }
     });
   };
@@ -81,39 +63,53 @@ const WebsiteSelect = ({ formik, setFieldValue, addOrEdit, readOnly, handleChang
         size="small"
         disablePortal
         id="combo-box-demo"
-        value={lists?.length > 0 ? lists?.filter((item) => item.value === formik?.values?.websiteId)[0] : { value: '', label: '' }}
+        multiple
+        value={[]}
         readOnly={readOnly}
         options={lists}
         disableClearable={addOrEdit}
         renderInput={(params) => (
           <TextField
             {...params}
-            name="websiteId"
+            name="websites"
             label={
               addOrEdit ? (
                 <span className="input-label">
-                  Website <span> *</span>
+                  Vui lòng chọn website <span> *</span>
                 </span>
               ) : (
-                'Website'
+                'Vui lòng chọn website'
               )
             }
-            error={formik.touched.websiteId && Boolean(formik.errors?.websiteId)}
+            error={formik.touched.websites && Boolean(formik.errors?.websites)}
           />
         )}
         onChange={(e, data) => {
-          setFieldValue('websiteId', data?.value);
+          const selected: any = data?.[0];
+          const websiteDeleted = formik?.values?.websites?.find((item) => item?.value === selected?.value);
+          console.log('websiteDeleted', websiteDeleted);
+          if (websiteDeleted) {
+            setFieldValue(
+              'websites',
+              formik?.values?.websites?.map((item) => {
+                if (item?.value === selected?.value) return { ...item, flag: item?.oldFlag };
+                return item;
+              })
+            );
+          } else {
+            setFieldValue('websites', [{ ...selected, flag: 'add', oldFlag: 'add' }].concat(formik?.values?.websites));
+          }
           if (handleChange) handleChange();
         }}
       />
-      {formik.touched.websiteId && formik.errors.websiteId && (
+      {formik.touched.websites && formik.errors.websites && (
         <FormHelperText error className="error-custom">
           <ErrorIcon fontSize="small" sx={{ mr: 0.5, width: '18px', height: '18px' }} />
-          {formik.errors.websiteId}
+          {formik.errors.websites}
         </FormHelperText>
       )}
     </>
   );
 };
 
-export default WebsiteSelect;
+export default WebsiteMultipleSelect;

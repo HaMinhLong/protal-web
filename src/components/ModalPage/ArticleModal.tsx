@@ -1,30 +1,30 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 // THIRD IMPORT
-import { useEffect, useState } from "react";
-import { Box, Grid, Button } from "@mui/material";
-import * as yup from "yup";
-import { useFormik } from "formik";
+import { useEffect, useState } from 'react';
+import { Box, Grid, Button } from '@mui/material';
+import * as yup from 'yup';
+import { useFormik } from 'formik';
 
 // ICONS IMPORT
-import SaveIcon from "@mui/icons-material/Save";
-import DoDisturbIcon from "@mui/icons-material/DoDisturb";
+import SaveIcon from '@mui/icons-material/Save';
+import DoDisturbIcon from '@mui/icons-material/DoDisturb';
 
 // PROJECT IMPORT
-import DialogPopUp from "components/Extended/DialogPopUp";
-import { useDispatch } from "app/store";
-import StatusFilter from "components/Common/StatusFilter";
-import createNotification from "components/Extended/Notification";
-import TextFieldCustom from "components/Extended/TextFieldCustom";
-import Loading from "components/Extended/Loading";
-import WebsiteSelect from "components/Common/WebsiteSelect";
-import CategorySelect from "components/Common/CategorySelect";
-import CkEditor from "components/Extended/CkEditor";
-import { removeVietnameseTones } from "utils/utils";
-import TabWrapper from "components/Extended/TabWrapper";
+import DialogPopUp from 'components/Extended/DialogPopUp';
+import { useDispatch } from 'app/store';
+import StatusFilter from 'components/Common/StatusFilter';
+import createNotification from 'components/Extended/Notification';
+import TextFieldCustom from 'components/Extended/TextFieldCustom';
+import Loading from 'components/Extended/Loading';
+import WebsiteSelect from 'components/Common/WebsiteSelect';
+import CategorySelect from 'components/Common/CategorySelect';
+import CkEditor from 'components/Extended/CkEditor';
+import { removeVietnameseTones } from 'utils/utils';
+import TabWrapper from 'components/Extended/TabWrapper';
 
 // TYPES IMPORT
-import { ArticleType, ResponseError } from "types/article";
-import UploadImage from "components/Extended/UploadImage";
+import { ArticleType, ResponseError } from 'types/article';
+import UploadImage from 'components/Extended/UploadImage';
 
 interface Props {
   open: boolean;
@@ -47,60 +47,56 @@ const ArticleModal = ({ open, dataEdit, handleClose, getList }: Props) => {
     } else {
       setLoading(true);
       dispatch({
-        type: "article/getOne",
+        type: 'article/getOne',
         payload: {
-          id: dataEdit?.id,
+          id: dataEdit?.id
         },
         callback: (res) => {
           setLoading(false);
           if (res?.success === true) {
             const {
-              results: { list },
+              results: { list }
             } = res;
             setArticle(list);
           } else if (res?.success === false) {
-            createNotification("error", res?.message);
+            createNotification('error', res?.message);
           }
-        },
+        }
       });
     }
   }, [open]);
 
   const validationSchema = yup.object().shape({
-    title: yup
-      .string()
-      .trim()
-      .max(254)
-      .required("Vui lòng nhập tiêu đề tin tức"),
-    url: yup.string().trim().max(254).required("Vui lòng nhập url"),
+    title: yup.string().trim().max(254).required('Vui lòng nhập tiêu đề tin tức'),
+    url: yup.string().trim().max(254).required('Vui lòng nhập url'),
     description: yup.string().trim().max(1000),
     author: yup.string().trim().max(254),
     source: yup.string().trim().max(254),
     label: yup.string().trim().max(254),
-    websiteId: yup.string().required("Vui lòng chọn website"),
-    categoryId: yup.string().required("Vui lòng chọn chuyên mục"),
+    websiteId: yup.string().required('Vui lòng chọn website'),
+    categoryId: yup.string().required('Vui lòng chọn chuyên mục')
   });
 
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      title: dataArticle?.title || "",
-      description: dataArticle?.description || "",
-      content: dataArticle?.content || "",
-      url: dataArticle?.url || "",
-      author: dataArticle?.author || "",
-      source: dataArticle?.source || "",
-      label: dataArticle?.label || "",
-      images: dataArticle?.images || "",
-      websiteId: dataArticle?.websiteId || "",
-      categoryId: dataArticle?.categoryId || "",
-      categoryName: dataArticle?.category?.text || "",
-      status: dataArticle?.status === 0 ? 0 : 1,
+      title: dataArticle?.title || '',
+      description: dataArticle?.description || '',
+      content: dataArticle?.content || '',
+      url: dataArticle?.url || '',
+      author: dataArticle?.author || '',
+      source: dataArticle?.source || '',
+      label: dataArticle?.label || '',
+      images: dataArticle?.images || '',
+      websiteId: dataArticle?.websiteId || '',
+      categoryId: dataArticle?.categoryId || '',
+      categoryName: dataArticle?.category?.text || '',
+      status: dataArticle?.status === 0 ? 0 : 1
     },
     validationSchema,
     onSubmit: (values) => {
       handleSubmit(values);
-    },
+    }
   });
 
   const handleSubmit = (values: ArticleType) => {
@@ -108,51 +104,51 @@ const ArticleModal = ({ open, dataEdit, handleClose, getList }: Props) => {
     const addItem = {
       ...values,
       title: values?.title?.trim(),
-      titleOld: dataArticle?.title?.trim(),
+      titleOld: dataArticle?.title?.trim()
     };
 
     if (dataArticle?.id) {
       dispatch({
-        type: "article/update",
+        type: 'article/update',
         payload: {
           id: dataArticle?.id,
-          params: addItem,
+          params: addItem
         },
         callback: (res) => {
           if (res?.success) {
-            createNotification("success", res?.message);
+            createNotification('success', res?.message);
             getList();
             closePopUp();
           } else {
             setErrors(res.error);
-            createNotification("error", res.message);
+            createNotification('error', res.message);
           }
           setLoading(false);
-        },
+        }
       });
     } else {
       dispatch({
-        type: "article/add",
+        type: 'article/add',
         payload: addItem,
         callback: (res) => {
           setLoading(false);
           if (res?.success) {
-            createNotification("success", res?.message);
+            createNotification('success', res?.message);
             getList();
             closePopUp();
           } else {
             setErrors(res.error);
-            createNotification("error", res.message);
+            createNotification('error', res.message);
           }
-        },
+        }
       });
     }
   };
 
   const convertTitleToUrl = (value: string) => {
     const noTones = removeVietnameseTones(value);
-    const url = noTones?.split(" ")?.join("-")?.toLowerCase();
-    formik.setFieldValue("url", url);
+    const url = noTones?.split(' ')?.join('-')?.toLowerCase();
+    formik.setFieldValue('url', url);
   };
 
   const closePopUp = () => {
@@ -165,7 +161,7 @@ const ArticleModal = ({ open, dataEdit, handleClose, getList }: Props) => {
   const tabWrapper = [
     {
       value: 0,
-      label: "Thông tin cơ bản",
+      label: 'Thông tin cơ bản',
       tab: (
         <Grid container spacing={3}>
           <Grid item xs={12} md={6} lg={8}>
@@ -181,39 +177,18 @@ const ArticleModal = ({ open, dataEdit, handleClose, getList }: Props) => {
             />
           </Grid>
           <Grid item xs={12} md={6} lg={4}>
-            <TextFieldCustom
-              name="url"
-              formik={formik}
-              errors={errors}
-              required
-              label="Đường dẫn"
-            />
+            <TextFieldCustom name="url" formik={formik} errors={errors} required label="Đường dẫn" />
           </Grid>
           <Grid item xs={12} md={6} lg={4}>
-            <TextFieldCustom
-              name="author"
-              formik={formik}
-              errors={errors}
-              label="Tác giả"
-            />
+            <TextFieldCustom name="author" formik={formik} errors={errors} label="Tác giả" />
           </Grid>
 
           <Grid item xs={12} md={6} lg={4}>
-            <TextFieldCustom
-              name="source"
-              formik={formik}
-              errors={errors}
-              label="Nguôn"
-            />
+            <TextFieldCustom name="source" formik={formik} errors={errors} label="Nguôn" />
           </Grid>
 
           <Grid item xs={12} md={6} lg={4}>
-            <TextFieldCustom
-              name="label"
-              formik={formik}
-              errors={errors}
-              label="Nhãn"
-            />
+            <TextFieldCustom name="label" formik={formik} errors={errors} label="Nhãn" />
           </Grid>
 
           <Grid item xs={12} md={6} lg={4}>
@@ -222,79 +197,54 @@ const ArticleModal = ({ open, dataEdit, handleClose, getList }: Props) => {
               setFieldValue={formik.setFieldValue}
               addOrEdit={true}
               handleChange={() => {
-                formik.setFieldValue("categoryId", "");
-                formik.setFieldValue("categoryName", "");
+                formik.setFieldValue('categoryId', '');
+                formik.setFieldValue('categoryName', '');
               }}
             />
           </Grid>
 
           <Grid item xs={12} md={6} lg={4}>
-            <CategorySelect
-              formik={formik}
-              setFieldValue={formik.setFieldValue}
-              addOrEdit={true}
-              websiteId={formik?.values?.websiteId}
-            />
+            <CategorySelect formik={formik} setFieldValue={formik.setFieldValue} addOrEdit={true} websiteId={formik?.values?.websiteId} />
           </Grid>
 
           <Grid item xs={12} md={6} lg={4}>
-            <StatusFilter
-              addOrEdit={false}
-              formik={formik}
-              setFieldValue={formik.setFieldValue}
-            />
+            <StatusFilter addOrEdit={false} formik={formik} setFieldValue={formik.setFieldValue} />
           </Grid>
 
           <Grid item xs={12} md={6} lg={8}>
-            <TextFieldCustom
-              name="description"
-              formik={formik}
-              errors={errors}
-              label="Nội dung ngắn"
-              multiline
-              rows={6}
-            />
+            <TextFieldCustom name="description" formik={formik} errors={errors} label="Nội dung ngắn" multiline rows={6} />
           </Grid>
 
           <Grid item xs={12} md={6} lg={4}>
-            <UploadImage
-              image={formik.values.images}
-              setFieldValue={formik.setFieldValue}
-              field="images"
-              multiple
-            />
+            <UploadImage image={formik.values.images} setFieldValue={formik.setFieldValue} field="images" multiple />
           </Grid>
         </Grid>
-      ),
+      )
     },
     {
       value: 1,
-      label: "Nội dung",
+      label: 'Nội dung',
       tab: (
         <CkEditor
           handleChange={(data) => {
-            formik?.setFieldValue("content", data);
+            formik?.setFieldValue('content', data);
           }}
           data={formik?.values?.content}
         />
-      ),
-    },
+      )
+    }
   ];
 
   return (
     <DialogPopUp
       open={open}
-      title={
-        dataArticle?.id
-          ? `Cập nhật thông tin ${dataArticle?.title}`
-          : "Thêm mới tin tức"
-      }
+      title={dataArticle?.id ? `Cập nhật thông tin ${dataArticle?.title}` : 'Thêm mới tin tức'}
       handleClose={() => {
         closePopUp();
       }}
-      styleBox={{ minWidth: "1300px", minHeight: "700px" }}
-      styleChildBox={{ p: "0px 30px 20px" }}
-      styleTitle={{ p: "10px 30px" }}
+      styleBox={{ minWidth: '1300px', minHeight: '700px' }}
+      styleChildBox={{ p: '0px 30px 20px' }}
+      styleTitle={{ p: '10px 30px' }}
       showButtonCloseDialog
     >
       <Box>
@@ -303,25 +253,14 @@ const ArticleModal = ({ open, dataEdit, handleClose, getList }: Props) => {
           <Box
             sx={{
               mt: 3,
-              display: "flex",
-              justifyContent: "center",
+              display: 'flex',
+              justifyContent: 'center'
             }}
           >
-            <Button
-              onClick={() => closePopUp()}
-              size="small"
-              variant="outlined"
-              sx={{ mr: "10px" }}
-              endIcon={<DoDisturbIcon />}
-            >
+            <Button onClick={() => closePopUp()} size="small" variant="outlined" sx={{ mr: '10px' }} endIcon={<DoDisturbIcon />}>
               Hủy
             </Button>
-            <Button
-              size="small"
-              variant="contained"
-              type="submit"
-              endIcon={<SaveIcon />}
-            >
+            <Button size="small" variant="contained" type="submit" endIcon={<SaveIcon />}>
               Lưu lại
             </Button>
           </Box>
