@@ -36,6 +36,11 @@ const MainRoutes = {
   ),
   children: [
     {
+      path: '/',
+      role: [ADMIN_TYPE],
+      element: <Dashboard />
+    },
+    {
       path: '/dashboard',
       role: [ADMIN_TYPE],
       element: <Dashboard />

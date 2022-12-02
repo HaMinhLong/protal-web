@@ -1,52 +1,40 @@
 // THIRD-PARTY
-import { Divider, List, Typography } from "@mui/material";
-import { ReactNode } from "react";
-import { useTheme } from "@mui/material/styles";
+import { Divider, List, Typography } from '@mui/material';
+import { ReactNode } from 'react';
+import { useTheme } from '@mui/material/styles';
 
 // PROJECT IMPORTS
-import NavCollapse from "../NavCollapse";
-import NavItem from "../NavItem";
-import { GenericCardProps } from "types";
+import NavCollapse from '../NavCollapse';
+import NavItem from '../NavItem';
+import { GenericCardProps } from 'types';
 
 export interface NavGroupProps {
   item: {
     id?: string;
     type?: string;
     role: number[];
-    icon?: GenericCardProps["iconPrimary"];
-    children?: NavGroupProps["item"][];
+    icon?: GenericCardProps['iconPrimary'];
+    children?: NavGroupProps['item'][];
     title?: ReactNode | string;
     caption?: ReactNode | string;
-    color?: "primary" | "secondary" | "default" | undefined;
+    color?: 'primary' | 'secondary' | 'default' | undefined;
   };
 }
 
 const NavGroup = ({ item }: NavGroupProps) => {
   const theme = useTheme();
-  const user = JSON.parse(localStorage.getItem("user") || "{}");
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
 
   const items = item.children?.map((menu) => {
     switch (menu.type) {
-      case "collapse":
-        if (
-          menu.role.findIndex(
-            (roleItem: number) => roleItem === user?.userGroupId
-          ) !== -1
-            ? 1
-            : 0 || !menu.role
-        ) {
+      case 'collapse':
+        if (menu.role.findIndex((roleItem: number) => roleItem === user?.userGroupId) !== -1 ? 1 : 0 || !menu.role) {
           return <NavCollapse key={menu.id} menu={menu} level={1} />;
         }
         return null;
 
-      case "item":
-        if (
-          menu.role.findIndex(
-            (roleItem: number) => roleItem === user?.userGroupId
-          ) !== -1
-            ? 1
-            : 0 || !menu.role
-        ) {
+      case 'item':
+        if (menu.role.findIndex((roleItem: number) => roleItem === user?.userGroupId) !== -1 ? 1 : 0 || !menu.role) {
           return <NavItem key={menu.id} item={menu} level={1} />;
         }
         return null;
@@ -68,12 +56,12 @@ const NavGroup = ({ item }: NavGroupProps) => {
             <Typography
               variant="caption"
               sx={{
-                fontSize: "0.875rem",
+                fontSize: '0.875rem',
                 fontWeight: 500,
                 color: theme.palette.grey[600],
-                padding: "6px",
-                textTransform: "capitalize",
-                marginTop: "10px",
+                padding: '6px',
+                textTransform: 'capitalize',
+                marginTop: '10px'
               }}
               display="block"
               gutterBottom
@@ -83,10 +71,10 @@ const NavGroup = ({ item }: NavGroupProps) => {
                 <Typography
                   variant="caption"
                   sx={{
-                    fontSize: "0.6875rem",
+                    fontSize: '0.6875rem',
                     fontWeight: 500,
                     color: theme.palette.text.secondary,
-                    textTransform: "capitalize",
+                    textTransform: 'capitalize'
                   }}
                   display="block"
                   gutterBottom

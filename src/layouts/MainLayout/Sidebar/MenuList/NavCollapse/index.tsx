@@ -10,6 +10,7 @@ import { useTheme } from '@mui/material/styles';
 import NavItem from '../NavItem';
 import useConfig from 'hooks/useConfig';
 import { NavGroupProps } from '../NavGroup';
+import { RootState, useSelector } from 'app/store';
 
 interface NavCollapseProps {
   menu: NavGroupProps['item'];
@@ -23,6 +24,10 @@ const NavCollapse = ({ menu, level }: NavCollapseProps) => {
 
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState<string | null | undefined>(null);
+
+  const { openItem } = useSelector((state: RootState) => state.menu);
+
+  const selectedItem = !!menu?.children?.find((item) => item.id === openItem?.[0]);
 
   const handleClick = () => {
     setOpen(!open);
@@ -80,8 +85,8 @@ const NavCollapse = ({ menu, level }: NavCollapseProps) => {
   ) : (
     <FiberManualRecordIcon
       sx={{
-        width: selected === menu.id ? 8 : 6,
-        height: selected === menu.id ? 8 : 6
+        width: selectedItem ? 8 : 6,
+        height: selectedItem ? 8 : 6
       }}
       fontSize={level > 0 ? 'inherit' : 'medium'}
     />
@@ -94,30 +99,25 @@ const NavCollapse = ({ menu, level }: NavCollapseProps) => {
           borderRadius: `${borderRadius}px`,
           mb: 0.5,
           alignItems: 'flex-start',
-          backgroundColor:
-            level > 1 ? 'transparent !important' : selected === menu.id ? `${theme.palette.primary.dark} !important` : 'inherit',
+          backgroundColor: level > 1 ? 'transparent !important' : selectedItem ? `${theme.palette.grey[300]} !important` : 'inherit',
           py: level > 1 ? 1 : 1.25,
           pl: `${level * 24}px`
         }}
-        selected={selected === menu.id}
+        selected={selectedItem}
         onClick={handleClick}
       >
         <ListItemIcon
           sx={{
             my: 'auto',
             minWidth: !menu.icon ? 18 : 36,
-            color: `${selected === menu.id && level === 1 ? theme.palette.background.paper : theme.palette.primary.dark} !important`
+            color: `${theme.palette.primary.dark} !important`
           }}
         >
           {menuIcon}
         </ListItemIcon>
         <ListItemText
           primary={
-            <Typography
-              variant={selected === menu.id ? 'h5' : 'body1'}
-              color={selected === menu.id ? theme.palette.background.paper : 'inherit'}
-              sx={{ my: 'auto', fontWeight: 700 }}
-            >
+            <Typography variant={selectedItem ? 'h5' : 'body1'} color={'inherit'} sx={{ my: 'auto', fontWeight: 700 }}>
               {menu.title}
             </Typography>
           }

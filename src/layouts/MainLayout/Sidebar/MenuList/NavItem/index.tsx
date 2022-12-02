@@ -24,7 +24,7 @@ const NavItem = ({ item, level }: NavItemProps) => {
 
   const matchesSM = useMediaQuery(theme.breakpoints.down('lg'));
 
-  const isSelected = openItem.findIndex((id) => id === item.id) > -1;
+  const isSelected = openItem?.[0] === item?.id;
 
   const { borderRadius } = useConfig();
 
@@ -82,9 +82,10 @@ const NavItem = ({ item, level }: NavItemProps) => {
         borderRadius: `${borderRadius}px`,
         mb: 0.5,
         alignItems: 'flex-start',
-        backgroundColor: level > 1 ? 'transparent !important' : isSelected ? `${theme.palette.primary.dark} !important` : 'inherit',
+        backgroundColor: isSelected ? `${theme.palette.primary.dark} !important` : 'inherit',
         py: level > 1 ? 1 : 1.25,
-        pl: `${level * 24}px`
+        pl: `${level * 24}px`,
+        zIndex: 1
       }}
       selected={openItem?.findIndex((id) => id === item.id) > -1}
       onClick={() => itemHandler(item.id!)}
@@ -93,7 +94,7 @@ const NavItem = ({ item, level }: NavItemProps) => {
         sx={{
           my: 'auto',
           minWidth: !item?.icon ? 18 : 36,
-          color: `${isSelected && level === 1 ? theme.palette.background.paper : theme.palette.primary.dark} !important`
+          color: `${isSelected ? theme.palette.background.paper : theme.palette.primary.dark} !important`
         }}
       >
         {itemIcon}
@@ -103,7 +104,7 @@ const NavItem = ({ item, level }: NavItemProps) => {
           <Typography
             variant={openItem?.findIndex((id) => id === item.id) > -1 ? 'h5' : 'body1'}
             sx={{ fontWeight: 700 }}
-            color={isSelected && level === 1 ? '#fff' : 'inherit'}
+            color={isSelected ? '#fff' : 'inherit'}
           >
             {item.title}
           </Typography>
