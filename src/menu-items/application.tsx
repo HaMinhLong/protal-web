@@ -123,7 +123,7 @@ const application = {
     },
     {
       id: 'Danh muc',
-      title: 'Danh muc',
+      title: 'Danh mục',
       type: 'collapse',
       role: [ADMIN_TYPE, CUSTOMER_TYPE],
       breadcrumbs: true,
@@ -185,8 +185,8 @@ const application = {
       ]
     },
     {
-      id: 'Tin túc',
-      title: 'Tin túc',
+      id: 'Tin tức',
+      title: 'Tin tức',
       type: 'item',
       url: '/article',
       role: [ADMIN_TYPE, CUSTOMER_TYPE],
