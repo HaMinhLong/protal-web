@@ -1,33 +1,33 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 // THIRD IMPORT
-import { useEffect, useState } from "react";
-import { Box, Grid, Button, Checkbox } from "@mui/material";
-import * as yup from "yup";
-import { useFormik } from "formik";
+import { useEffect, useState } from 'react';
+import { Box, Grid, Button, Checkbox, useMediaQuery, useTheme } from '@mui/material';
+import * as yup from 'yup';
+import { useFormik } from 'formik';
 
 // ICONS IMPORT
-import SaveIcon from "@mui/icons-material/Save";
-import DoDisturbIcon from "@mui/icons-material/DoDisturb";
+import SaveIcon from '@mui/icons-material/Save';
+import DoDisturbIcon from '@mui/icons-material/DoDisturb';
 
 // PROJECT IMPORT
-import DialogPopUp from "components/Extended/DialogPopUp";
-import { useDispatch } from "app/store";
-import StatusFilter from "components/Common/StatusFilter";
-import createNotification from "components/Extended/Notification";
-import TextFieldCustom from "components/Extended/TextFieldCustom";
-import Loading from "components/Extended/Loading";
-import WebsiteSelect from "components/Common/WebsiteSelect";
-import CategorySelect from "components/Common/CategorySelect";
-import CkEditor from "components/Extended/CkEditor";
-import { removeVietnameseTones } from "utils/utils";
-import TabWrapper from "components/Extended/TabWrapper";
-import ProducerSelect from "components/Common/ProducerSelect";
-import SupplierSelect from "components/Common/SupplierSelect";
-import ProductClass from "components/ProductClass";
+import DialogPopUp from 'components/Extended/DialogPopUp';
+import { useDispatch } from 'app/store';
+import StatusFilter from 'components/Common/StatusFilter';
+import createNotification from 'components/Extended/Notification';
+import TextFieldCustom from 'components/Extended/TextFieldCustom';
+import Loading from 'components/Extended/Loading';
+import WebsiteSelect from 'components/Common/WebsiteSelect';
+import CategorySelect from 'components/Common/CategorySelect';
+import CkEditor from 'components/Extended/CkEditor';
+import { removeVietnameseTones } from 'utils/utils';
+import TabWrapper from 'components/Extended/TabWrapper';
+import ProducerSelect from 'components/Common/ProducerSelect';
+import SupplierSelect from 'components/Common/SupplierSelect';
+import ProductClass from 'components/ProductClass';
 
 // TYPES IMPORT
-import { ProductType, ResponseError } from "types/product";
-import UploadImage from "components/Extended/UploadImage";
+import { ProductType, ResponseError } from 'types/product';
+import UploadImage from 'components/Extended/UploadImage';
 
 interface Props {
   open: boolean;
@@ -38,10 +38,13 @@ interface Props {
 
 const ProductModal = ({ open, dataEdit, handleClose, getList }: Props) => {
   const dispatch = useDispatch();
+  const theme = useTheme();
+
+  const matchDownMD = useMediaQuery(theme.breakpoints.down('lg'));
 
   const [dataProduct, setDataProduct] = useState<ProductType>({
     productClass1s: [],
-    productClass2s: [],
+    productClass2s: []
   });
   const [loading, setLoading] = useState<boolean>(false);
   const [errors, setErrors] = useState<ResponseError>({});
@@ -53,69 +56,63 @@ const ProductModal = ({ open, dataEdit, handleClose, getList }: Props) => {
     } else {
       setLoading(true);
       dispatch({
-        type: "product/getOne",
+        type: 'product/getOne',
         payload: {
-          id: dataEdit?.id,
+          id: dataEdit?.id
         },
         callback: (res) => {
           setLoading(false);
           if (res?.success === true) {
             const {
-              results: { list },
+              results: { list }
             } = res;
             setDataProduct(list);
           } else if (res?.success === false) {
-            createNotification("error", res?.message);
+            createNotification('error', res?.message);
           }
-        },
+        }
       });
     }
   }, [open]);
 
   const validationSchema = yup.object().shape({
-    name: yup.string().trim().max(254).required("Vui lòng nhập tên sản phẩm"),
-    url: yup.string().trim().max(254).required("Vui lòng nhập url"),
+    name: yup.string().trim().max(254).required('Vui lòng nhập tên sản phẩm'),
+    url: yup.string().trim().max(254).required('Vui lòng nhập url'),
     description: yup.string().trim().max(1000),
     author: yup.string().trim().max(254),
-    price: yup.number().min(1, "Vui lòng nhập giá tiền lớn hơn 0"),
-    negotiablePrice: yup.number().min(1, "Vui lòng nhập giá thỏa thuận hơn 0"),
+    price: yup.number().min(1, 'Vui lòng nhập giá tiền lớn hơn 0'),
+    negotiablePrice: yup.number().min(1, 'Vui lòng nhập giá thỏa thuận hơn 0'),
     source: yup.string().trim().max(254),
     label: yup.string().trim().max(254),
-    websiteId: yup.string().required("Vui lòng chọn website"),
-    categoryId: yup.string().required("Vui lòng chọn chuyên mục"),
+    websiteId: yup.string().required('Vui lòng chọn website'),
+    categoryId: yup.string().required('Vui lòng chọn chuyên mục')
   });
 
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      name: dataProduct?.name || "",
-      url: dataProduct?.url || "",
+      name: dataProduct?.name || '',
+      url: dataProduct?.url || '',
       price: dataProduct?.price || 0,
       negotiablePrice: dataProduct?.negotiablePrice || 0,
-      description: dataProduct?.description || "",
-      content: dataProduct?.content || "",
-      images: dataProduct?.images || "",
-      websiteId: dataProduct?.websiteId || "",
-      categoryId: dataProduct?.categoryId || "",
-      producerId: dataProduct?.producerId || "",
-      supplierId: dataProduct?.supplierId || "",
-      categoryName: dataProduct?.category?.text || "",
-      productClass1s:
-        dataProduct?.productClass1s?.length > 0
-          ? dataProduct?.productClass1s
-          : [],
-      productClass2s:
-        dataProduct?.productClass2s?.length > 0
-          ? dataProduct?.productClass2s
-          : [],
+      description: dataProduct?.description || '',
+      content: dataProduct?.content || '',
+      images: dataProduct?.images || '',
+      websiteId: dataProduct?.websiteId || '',
+      categoryId: dataProduct?.categoryId || '',
+      producerId: dataProduct?.producerId || '',
+      supplierId: dataProduct?.supplierId || '',
+      categoryName: dataProduct?.category?.text || '',
+      productClass1s: dataProduct?.productClass1s?.length > 0 ? dataProduct?.productClass1s : [],
+      productClass2s: dataProduct?.productClass2s?.length > 0 ? dataProduct?.productClass2s : [],
       isSale: dataProduct?.isSale || false,
       productPrices: dataProduct?.productPrices || [],
-      status: dataProduct?.status === 0 ? 0 : 1,
+      status: dataProduct?.status === 0 ? 0 : 1
     },
     validationSchema,
     onSubmit: (values) => {
       handleSubmit(values);
-    },
+    }
   });
 
   const handleSubmit = (values: ProductType) => {
@@ -123,54 +120,54 @@ const ProductModal = ({ open, dataEdit, handleClose, getList }: Props) => {
     const addItem = {
       ...values,
       name: values?.name?.trim(),
-      nameOld: dataProduct?.name?.trim(),
+      nameOld: dataProduct?.name?.trim()
     };
 
     if (dataProduct?.id) {
       dispatch({
-        type: "product/update",
+        type: 'product/update',
         payload: {
           id: dataProduct?.id,
-          params: addItem,
+          params: addItem
         },
         callback: (res) => {
           if (res?.success) {
-            createNotification("success", res?.message);
+            createNotification('success', res?.message);
             getList();
             closePopUp();
           } else {
             setErrors(res.error);
-            createNotification("error", res.message);
+            createNotification('error', res.message);
           }
           setLoading(false);
-        },
+        }
       });
     } else {
       dispatch({
-        type: "product/add",
+        type: 'product/add',
         payload: addItem,
         callback: (res) => {
           setLoading(false);
           if (res?.success) {
-            createNotification("success", res?.message);
+            createNotification('success', res?.message);
             getList();
             closePopUp();
           } else {
             setErrors(res.error);
-            createNotification("error", res.message);
+            createNotification('error', res.message);
           }
-        },
+        }
       });
     }
   };
 
   const convertTitleToUrl = (value: string) => {
     const noTones = removeVietnameseTones(value);
-    const url = noTones?.split(" ")?.join("-")?.toLowerCase();
-    formik.setFieldValue("url", url);
+    const url = noTones?.split(' ')?.join('-')?.toLowerCase();
+    formik.setFieldValue('url', url);
   };
 
-  const label = { inputProps: { "aria-label": "Giảm giá" } };
+  const label = { inputProps: { 'aria-label': 'Giảm giá' } };
 
   const closePopUp = () => {
     handleClose();
@@ -182,7 +179,7 @@ const ProductModal = ({ open, dataEdit, handleClose, getList }: Props) => {
   const tabWrapper = [
     {
       value: 0,
-      label: "Thông tin cơ bản",
+      label: 'Thông tin cơ bản',
       tab: (
         <Grid container spacing={3}>
           <Grid item xs={12} md={6} lg={4}>
@@ -199,21 +196,11 @@ const ProductModal = ({ open, dataEdit, handleClose, getList }: Props) => {
           </Grid>
 
           <Grid item xs={12} md={6} lg={4}>
-            <TextFieldCustom
-              name="url"
-              formik={formik}
-              errors={errors}
-              required
-              label="Đường dẫn"
-            />
+            <TextFieldCustom name="url" formik={formik} errors={errors} required label="Đường dẫn" />
           </Grid>
 
           <Grid item xs={12} md={6} lg={4}>
-            <ProducerSelect
-              formik={formik}
-              setFieldValue={formik.setFieldValue}
-              addOrEdit={true}
-            />
+            <ProducerSelect formik={formik} setFieldValue={formik.setFieldValue} addOrEdit={true} />
           </Grid>
 
           <Grid item xs={12} md={6} lg={4}>
@@ -222,75 +209,38 @@ const ProductModal = ({ open, dataEdit, handleClose, getList }: Props) => {
               setFieldValue={formik.setFieldValue}
               addOrEdit={true}
               handleChange={() => {
-                formik.setFieldValue("categoryId", "");
-                formik.setFieldValue("categoryName", "");
+                formik.setFieldValue('categoryId', '');
+                formik.setFieldValue('categoryName', '');
               }}
             />
           </Grid>
 
           <Grid item xs={12} md={6} lg={4}>
-            <CategorySelect
-              formik={formik}
-              setFieldValue={formik.setFieldValue}
-              addOrEdit={true}
-              websiteId={formik?.values?.websiteId}
-            />
+            <CategorySelect formik={formik} setFieldValue={formik.setFieldValue} addOrEdit={true} websiteId={formik?.values?.websiteId} />
           </Grid>
 
           <Grid item xs={12} md={6} lg={4}>
-            <SupplierSelect
-              formik={formik}
-              setFieldValue={formik.setFieldValue}
-              addOrEdit={true}
-            />
+            <SupplierSelect formik={formik} setFieldValue={formik.setFieldValue} addOrEdit={true} />
           </Grid>
 
           <Grid item xs={12} md={6} lg={4}>
-            <TextFieldCustom
-              name="price"
-              formik={formik}
-              errors={errors}
-              label="Giá sản phẩm"
-              type="number"
-            />
+            <TextFieldCustom name="price" formik={formik} errors={errors} label="Giá sản phẩm" type="number" />
           </Grid>
 
           <Grid item xs={12} md={6} lg={4}>
-            <TextFieldCustom
-              name="negotiablePrice"
-              formik={formik}
-              errors={errors}
-              label="Giá sale"
-              type="number"
-            />
+            <TextFieldCustom name="negotiablePrice" formik={formik} errors={errors} label="Giá sale" type="number" />
           </Grid>
 
           <Grid item xs={12} md={6} lg={4}>
-            <StatusFilter
-              addOrEdit={false}
-              formik={formik}
-              setFieldValue={formik.setFieldValue}
-            />
+            <StatusFilter addOrEdit={false} formik={formik} setFieldValue={formik.setFieldValue} />
           </Grid>
 
           <Grid item xs={12} md={12} lg={8}>
-            <TextFieldCustom
-              name="description"
-              formik={formik}
-              errors={errors}
-              label="Nội dung ngắn"
-              multiline
-              rows={6}
-            />
+            <TextFieldCustom name="description" formik={formik} errors={errors} label="Nội dung ngắn" multiline rows={6} />
           </Grid>
 
           <Grid item xs={12} md={6} lg={4}>
-            <UploadImage
-              image={formik.values.images}
-              setFieldValue={formik.setFieldValue}
-              field="images"
-              multiple
-            />
+            <UploadImage image={formik.values.images} setFieldValue={formik.setFieldValue} field="images" multiple />
           </Grid>
           <Grid item xs={12} md={6} lg={4}>
             Sale sản phẩm
@@ -298,46 +248,42 @@ const ProductModal = ({ open, dataEdit, handleClose, getList }: Props) => {
               {...label}
               checked={formik?.values?.isSale}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                formik.setFieldValue("isSale", e.target.checked);
+                formik.setFieldValue('isSale', e.target.checked);
               }}
             />
           </Grid>
         </Grid>
-      ),
+      )
     },
     {
       value: 1,
-      label: "Nội dung",
+      label: 'Nội dung',
       tab: (
         <CkEditor
           handleChange={(data) => {
-            formik?.setFieldValue("content", data);
+            formik?.setFieldValue('content', data);
           }}
           data={formik?.values?.content}
         />
-      ),
+      )
     },
     {
       value: 2,
-      label: "Nhóm phân loại",
-      tab: <ProductClass formikProp={formik} />,
-    },
+      label: 'Nhóm phân loại',
+      tab: <ProductClass formikProp={formik} />
+    }
   ];
 
   return (
     <DialogPopUp
       open={open}
-      title={
-        dataProduct?.id
-          ? `Cập nhật thông tin ${dataProduct?.name}`
-          : "Thêm mới sản phẩm"
-      }
+      title={dataProduct?.id ? `Cập nhật thông tin ${dataProduct?.name}` : 'Thêm mới sản phẩm'}
       handleClose={() => {
         closePopUp();
       }}
-      styleBox={{ minWidth: "1300px", minHeight: "700px" }}
-      styleChildBox={{ p: "0px 30px 20px" }}
-      styleTitle={{ p: "10px 30px" }}
+      styleBox={{ minWidth: matchDownMD ? '100%' : '1300px', minHeight: '700px' }}
+      styleChildBox={{ p: `0px 30px 20px` }}
+      styleTitle={{ p: '10px 30px' }}
       showButtonCloseDialog
     >
       <Box>
@@ -346,25 +292,14 @@ const ProductModal = ({ open, dataEdit, handleClose, getList }: Props) => {
           <Box
             sx={{
               mt: 3,
-              display: "flex",
-              justifyContent: "center",
+              display: 'flex',
+              justifyContent: 'center'
             }}
           >
-            <Button
-              onClick={() => closePopUp()}
-              size="small"
-              variant="outlined"
-              sx={{ mr: "10px" }}
-              endIcon={<DoDisturbIcon />}
-            >
+            <Button onClick={() => closePopUp()} size="small" variant="outlined" sx={{ mr: '10px' }} endIcon={<DoDisturbIcon />}>
               Hủy
             </Button>
-            <Button
-              size="small"
-              variant="contained"
-              type="submit"
-              endIcon={<SaveIcon />}
-            >
+            <Button size="small" variant="contained" type="submit" endIcon={<SaveIcon />}>
               Lưu lại
             </Button>
           </Box>

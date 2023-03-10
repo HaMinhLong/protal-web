@@ -1,6 +1,6 @@
 // THIRD IMPORT
 import { useEffect, useState } from 'react';
-import { Box, Typography, Button, Tooltip, IconButton } from '@mui/material';
+import { Box, Typography, Button, Tooltip, IconButton, useMediaQuery, useTheme } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 
@@ -30,6 +30,9 @@ interface WebsiteUserType {
 
 const GrantPermissionModal = ({ open, id, handleClose }: Props) => {
   const dispatch = useDispatch();
+  const theme = useTheme();
+
+  const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
 
   const [loading, setLoading] = useState<boolean>(false);
   const [websiteUsers, setWebsiteUsers] = useState<WebsiteUserType[]>([]);
@@ -116,7 +119,7 @@ const GrantPermissionModal = ({ open, id, handleClose }: Props) => {
       handleClose={() => {
         closePopUp();
       }}
-      styleBox={{ minWidth: '500px', maxWidth: '500px', minHeight: '350px' }}
+      styleBox={{ minWidth: matchDownSM ? '100%' : '500px', maxWidth: '500px', minHeight: '350px' }}
       styleChildBox={{ p: '20px 30px 20px' }}
       styleTitle={{ p: '10px 30px' }}
       showButtonCloseDialog

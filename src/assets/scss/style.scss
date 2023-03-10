@@ -4,244 +4,250 @@
 @import '~react-perfect-scrollbar/dist/css/styles.css';
 // ==============================|| LIGHT BOX ||============================== //
 .fullscreen .react-images__blanket {
-    z-index: 1200;
+  z-index: 1200;
 }
 
 // ==============================|| APEXCHART ||============================== //
 .apexcharts-legend-series .apexcharts-legend-marker {
-    margin-right: 8px;
+  margin-right: 8px;
 }
 
 // ==============================|| PERFECT SCROLLBAR ||============================== //
 .scrollbar-container {
-    .ps__rail-y {
-        &:hover>.ps__thumb-y,
-        &:focus>.ps__thumb-y,
-        &.ps--clicking .ps__thumb-y {
-            background-color: $grey500;
-            width: 5px;
-        }
+  .ps__rail-y {
+    &:hover > .ps__thumb-y,
+    &:focus > .ps__thumb-y,
+    &.ps--clicking .ps__thumb-y {
+      background-color: $grey500;
+      width: 5px;
     }
-    .ps__thumb-y {
-        background-color: $grey500;
-        border-radius: 6px;
-        width: 5px;
-        right: 0;
-    }
+  }
+  .ps__thumb-y {
+    background-color: $grey500;
+    border-radius: 6px;
+    width: 5px;
+    right: 0;
+  }
 }
 
 .scrollbar-container.ps,
-.scrollbar-container>.ps {
-    &.ps--active-y>.ps__rail-y {
-        width: 5px;
-        background-color: transparent !important;
-        z-index: 999;
-        &:hover,
-        &.ps--clicking {
-            width: 5px;
-            background-color: transparent;
-        }
+.scrollbar-container > .ps {
+  &.ps--active-y > .ps__rail-y {
+    width: 5px;
+    background-color: transparent !important;
+    z-index: 999;
+    &:hover,
+    &.ps--clicking {
+      width: 5px;
+      background-color: transparent;
     }
-    &.ps--scrolling-y>.ps__rail-y,
-    &.ps--scrolling-x>.ps__rail-x {
-        opacity: 0.4;
-        background-color: transparent;
-    }
+  }
+  &.ps--scrolling-y > .ps__rail-y,
+  &.ps--scrolling-x > .ps__rail-x {
+    opacity: 0.4;
+    background-color: transparent;
+  }
 }
 
 // ==============================|| ANIMATION KEYFRAMES ||============================== //
 @keyframes wings {
-    50% {
-        transform: translateY(-40px);
-    }
-    100% {
-        transform: translateY(0px);
-    }
+  50% {
+    transform: translateY(-40px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
 }
 
 @keyframes blink {
-    50% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-    }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 @keyframes bounce {
-    0%,
-    20%,
-    53%,
-    to {
-        animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
-        transform: translateZ(0);
-    }
-    40%,
-    43% {
-        animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
-        transform: translate3d(0, -5px, 0);
-    }
-    70% {
-        animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
-        transform: translate3d(0, -7px, 0);
-    }
-    80% {
-        transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
-        transform: translateZ(0);
-    }
-    90% {
-        transform: translate3d(0, -2px, 0);
-    }
+  0%,
+  20%,
+  53%,
+  to {
+    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+    transform: translateZ(0);
+  }
+  40%,
+  43% {
+    animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+    transform: translate3d(0, -5px, 0);
+  }
+  70% {
+    animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+    transform: translate3d(0, -7px, 0);
+  }
+  80% {
+    transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+    transform: translateZ(0);
+  }
+  90% {
+    transform: translate3d(0, -2px, 0);
+  }
 }
 
 @keyframes slideY {
-    0%,
-    50%,
-    100% {
-        transform: translateY(0px);
-    }
-    25% {
-        transform: translateY(-10px);
-    }
-    75% {
-        transform: translateY(10px);
-    }
+  0%,
+  50%,
+  100% {
+    transform: translateY(0px);
+  }
+  25% {
+    transform: translateY(-10px);
+  }
+  75% {
+    transform: translateY(10px);
+  }
 }
 
 @keyframes slideX {
-    0%,
-    50%,
-    100% {
-        transform: translateX(0px);
-    }
-    25% {
-        transform: translateX(-10px);
-    }
-    75% {
-        transform: translateX(10px);
-    }
+  0%,
+  50%,
+  100% {
+    transform: translateX(0px);
+  }
+  25% {
+    transform: translateX(-10px);
+  }
+  75% {
+    transform: translateX(10px);
+  }
 }
 
 .error-custom {
-    display: flex;
-    align-items: center;
-    line-height: 1em;
-    margin: 0;
-    margin-top: 8px;
-    font-size: 13px;
+  display: flex;
+  align-items: center;
+  line-height: 1em;
+  margin: 0;
+  margin-top: 8px;
+  font-size: 13px;
 }
 
 .input-label {
-    font-size: 14px;
-    position: relative;
-    top: -3px;
-    >span {
-        color: #bc2626;
-    }
+  font-size: 14px;
+  position: relative;
+  top: -3px;
+  > span {
+    color: #bc2626;
+  }
 }
 
 .style-label {
-    margin-top: 0px;
-    margin-bottom: 5px;
-    color: #202839;
-    font-weight: 400;
-    letter-spacing: 0.15px;
-    line-height: 26px;
+  margin-top: 0px;
+  margin-bottom: 5px;
+  color: #202839;
+  font-weight: 400;
+  letter-spacing: 0.15px;
+  line-height: 26px;
 }
 
 .style-label2 {
-    margin-top: 0px;
-    margin-bottom: 5px;
-    color: $primaryDark;
-    font-weight: 400;
-    letter-spacing: 0.15px;
-    line-height: 26px;
+  margin-top: 0px;
+  margin-bottom: 5px;
+  color: $primaryDark;
+  font-weight: 400;
+  letter-spacing: 0.15px;
+  line-height: 26px;
 }
 
 .lds-hourglass {
-    display: inline-block;
-    position: relative;
-    width: 50px;
-    height: 50px;
+  display: inline-block;
+  position: relative;
+  width: 50px;
+  height: 50px;
 }
 
 .lds-hourglass:after {
-    content: ' ';
-    display: block;
-    border-radius: 50%;
-    width: 0;
-    height: 0;
-    margin: 8px;
-    box-sizing: border-box;
-    border: 20px solid $primaryDark;
-    border-color: $primaryDark transparent $primaryDark transparent;
-    animation: lds-hourglass 1.2s infinite;
+  content: ' ';
+  display: block;
+  border-radius: 50%;
+  width: 0;
+  height: 0;
+  margin: 8px;
+  box-sizing: border-box;
+  border: 20px solid $primaryDark;
+  border-color: $primaryDark transparent $primaryDark transparent;
+  animation: lds-hourglass 1.2s infinite;
 }
 
 @keyframes lds-hourglass {
-    0% {
-        transform: rotate(0);
-        animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
-    }
-    50% {
-        transform: rotate(900deg);
-        animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
-    }
-    100% {
-        transform: rotate(1800deg);
-    }
+  0% {
+    transform: rotate(0);
+    animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+  }
+  50% {
+    transform: rotate(900deg);
+    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+  100% {
+    transform: rotate(1800deg);
+  }
 }
 
 @media (max-width: 1440px) {
-    .box-popup {
-        padding: 30px 45px;
-    }
+  .box-popup {
+    padding: 30px 45px;
+  }
 }
 
 @media (max-width: 768px) {
-    .box-popup {
-        padding: 30px 40px;
-    }
+  .box-popup {
+    padding: 15px;
+  }
+}
+
+@media (max-width: 540px) {
+  .box-popup {
+    padding: 10px;
+  }
 }
 
 // CK EDITOR
 .ck.ck-content .image {
-    position: relative;
-    width: 400px;
+  position: relative;
+  width: 400px;
 }
 
 .ck.ck-content .image img {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .ck.ck-content .image::before {
-    content: '';
-    padding-top: 100%;
-    display: block;
+  content: '';
+  padding-top: 100%;
+  display: block;
 }
 
 .content {
-    figure {
-        margin: 0px;
-    }
-    .image img,
-    picture img {
-        position: relative;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 60%;
-        height: 400px;
-        object-fit: cover;
-        margin: 10px 0px;
-    }
-    td figure img {
-        width: 100% !important;
-        height: 100% !important;
-        margin: 0px !important;
-    }
+  figure {
+    margin: 0px;
+  }
+  .image img,
+  picture img {
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 400px;
+    object-fit: cover;
+    margin: 10px 0px;
+  }
+  td figure img {
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0px !important;
+  }
 }

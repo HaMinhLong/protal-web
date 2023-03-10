@@ -1,13 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 // THIRD IMPORT
 import { useEffect, useState } from 'react';
+import { Box, Button, IconButton, useMediaQuery, useTheme } from '@mui/material';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import SaveIcon from '@mui/icons-material/Save';
 import ClearIcon from '@mui/icons-material/Clear';
 
 // PROJECT IMPORT
 import DialogPopUp from 'components/Extended/DialogPopUp';
-import { Box, Button, IconButton } from '@mui/material';
 
 interface Props {
   open: boolean;
@@ -18,6 +18,11 @@ interface Props {
 const END_POINT_IMAGE = process.env.REACT_APP_SERVER;
 
 const PreviewImage = ({ open, images, handleChangeImage }: Props) => {
+  const theme = useTheme();
+
+  const matchDownMD = useMediaQuery(theme.breakpoints.down('lg'));
+  const matchDownSX = useMediaQuery(theme.breakpoints.down('sm'));
+
   const [visible, setVisible] = useState<boolean>(true);
   const [imagePreview, setImagePreview] = useState<string>('');
   const [imagesState, setImagesState] = useState<any>([]);
@@ -87,7 +92,7 @@ const PreviewImage = ({ open, images, handleChangeImage }: Props) => {
       handleClose={() => {
         closePopUp();
       }}
-      styleBox={{ width: '1000px', minHeight: '550px' }}
+      styleBox={{ minWidth: matchDownMD ? '100%' : '1000px', minHeight: '550px' }}
       styleChildBox={{ p: '20px 30px' }}
       styleTitle={{ p: '10px 30px' }}
       showButtonCloseDialog
@@ -96,7 +101,7 @@ const PreviewImage = ({ open, images, handleChangeImage }: Props) => {
         <Box
           sx={{
             width: '100%',
-            height: '450px',
+            height: matchDownSX ? '250px' : '450px',
             p: '0px 120px',
             background: '#d6d6d6',
             mb: '20px'
@@ -115,7 +120,7 @@ const PreviewImage = ({ open, images, handleChangeImage }: Props) => {
         </Box>
         <Box
           sx={{
-            height: '100px',
+            height: matchDownSX ? '80px' : '100px',
             overflowX: 'auto',
             overflowY: 'hidden',
             display: 'flex',
@@ -139,7 +144,7 @@ const PreviewImage = ({ open, images, handleChangeImage }: Props) => {
                             sx={{
                               position: 'relative',
                               height: '100%',
-                              width: '150px',
+                              width: matchDownSX ? '120px' : '150px',
                               cursor: 'pointer',
                               mr: '10px',
                               border: `3px solid ${image === imagePreview ? '#2196f3' : '#d6d6d6'}`
