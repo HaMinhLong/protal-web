@@ -8,6 +8,8 @@ import ClearIcon from '@mui/icons-material/Clear';
 
 // PROJECT IMPORT
 import DialogPopUp from 'components/Extended/DialogPopUp';
+import { useDispatch } from 'app/store';
+import createNotification from 'components/Extended/Notification';
 
 interface Props {
   open: boolean;
@@ -18,6 +20,7 @@ interface Props {
 const END_POINT_IMAGE = process.env.REACT_APP_SERVER;
 
 const PreviewImage = ({ open, images, handleChangeImage }: Props) => {
+  const dispatch = useDispatch();
   const theme = useTheme();
 
   const matchDownMD = useMediaQuery(theme.breakpoints.down('lg'));
@@ -38,6 +41,21 @@ const PreviewImage = ({ open, images, handleChangeImage }: Props) => {
 
   const closePopUp = () => {
     setVisible(!visible);
+  };
+
+  const deleteImage = (image: string) => {
+    dispatch({
+      type: 'image/delete',
+      payload: { image },
+      callback: (res) => {
+        if (res?.success) {
+          setImagesState((currentImage) => currentImage.filter((item) => item.image !== image));
+          createNotification('error', res.message);
+        } else {
+          createNotification('error', res.message);
+        }
+      }
+    });
   };
 
   const getItemStyle = (isDragging, draggableStyle) => ({
@@ -160,8 +178,7 @@ const PreviewImage = ({ open, images, handleChangeImage }: Props) => {
                             <IconButton
                               onClick={(e) => {
                                 e.preventDefault();
-
-                                setImagesState((currentImage) => currentImage.filter((item) => item.image !== image));
+                                deleteImage(image);
                               }}
                               size="small"
                               sx={{

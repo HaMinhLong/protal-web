@@ -1,19 +1,7 @@
-import { put, call, takeLatest, takeEvery } from "redux-saga/effects";
-import {
-  save,
-  info,
-  query,
-  updateStatusSlice,
-} from "features/category/categorySlice";
-import {
-  getListCategory,
-  getOneCategory,
-  createCategory,
-  updateCategory,
-  updateStatusCategory,
-  deleteCategory,
-} from "api/category";
-import { uploadImage } from "api/upload";
+import { put, call, takeLatest, takeEvery } from 'redux-saga/effects';
+import { save, info, query, updateStatusSlice } from 'features/category/categorySlice';
+import { getListCategory, getOneCategory, createCategory, updateCategory, updateStatusCategory, deleteCategory } from 'api/category';
+import { uploadImage, deleteImage } from 'api/upload';
 
 function* getList({ payload, callback }) {
   try {
@@ -68,12 +56,21 @@ function* handleUploadImage({ payload, callback }) {
   }
 }
 
+function* handleDeleteImage({ payload, callback }) {
+  try {
+    const { data } = yield call(deleteImage, payload);
+    if (callback && data) callback(data);
+  } catch (error: any) {
+    if (callback) callback(error);
+  }
+}
+
 function* updateRecord({ payload: { id, params }, callback }) {
   try {
     const { data } = yield call(updateCategory, id, params);
     if (callback && data) callback(data);
   } catch (error: any) {
-    console.log("error", error);
+    console.log('error', error);
     if (callback) callback(error);
   }
 }
@@ -85,7 +82,7 @@ function* updateStatus({ payload: { id, params }, callback }) {
     yield put(
       updateStatusSlice({
         id: id,
-        status: params.status,
+        status: params.status
       })
     );
 
@@ -104,14 +101,15 @@ function* deleteRecord({ payload: { id }, callback }) {
   }
 }
 
-const typeFetch: any = "category/fetch";
-const typeGetOne: any = "category/getOne";
-const typeAdd: any = "category/add";
-const typeFetchLazyLoading: any = "category/fetchLazyLoading";
-const typeUpdate: any = "category/update";
-const typeUpdateStatus: any = "category/updateStatus";
-const typeDelete: any = "category/delete";
-const typeImageUpload: any = "image/upload";
+const typeFetch: any = 'category/fetch';
+const typeGetOne: any = 'category/getOne';
+const typeAdd: any = 'category/add';
+const typeFetchLazyLoading: any = 'category/fetchLazyLoading';
+const typeUpdate: any = 'category/update';
+const typeUpdateStatus: any = 'category/updateStatus';
+const typeDelete: any = 'category/delete';
+const typeImageUpload: any = 'image/upload';
+const typeImageDeleteImage: any = 'image/delete';
 
 export function* categorySaga(): any {
   yield takeLatest(typeFetch, getList);
@@ -122,4 +120,5 @@ export function* categorySaga(): any {
   yield takeLatest(typeUpdateStatus, updateStatus);
   yield takeLatest(typeDelete, deleteRecord);
   yield takeLatest(typeImageUpload, handleUploadImage);
+  yield takeLatest(typeImageDeleteImage, handleDeleteImage);
 }

@@ -142,14 +142,7 @@ const CategoryGroupDrawer = ({ visible, closeDrawer, dataEdit, getList }: Props)
                 justifyContent: 'flex-end'
               }}
             >
-              <Button
-                onClick={() => changeDrawer()}
-                size="small"
-                variant="outlined"
-                sx={{ mr: '10px' }}
-                type="submit"
-                endIcon={<DoDisturbIcon />}
-              >
+              <Button onClick={() => changeDrawer()} size="small" variant="outlined" sx={{ mr: '10px' }} endIcon={<DoDisturbIcon />}>
                 Hủy
               </Button>
               <Button size="small" variant="contained" type="submit" endIcon={<SaveIcon />}>

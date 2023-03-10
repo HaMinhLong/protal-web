@@ -1,5 +1,7 @@
-import axiosServices from "utils/axios";
+import axiosServices from 'utils/axios';
 
 const uploadImage = (params) => axiosServices.post(`upload`, params);
 
-export { uploadImage };
+const deleteImage = (params) => axiosServices.delete(`image`, { data: { params } });
+
+export { uploadImage, deleteImage };
