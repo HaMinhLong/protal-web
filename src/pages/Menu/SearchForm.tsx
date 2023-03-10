@@ -1,26 +1,22 @@
 // THIRD IMPORT
-import { Dispatch, SetStateAction } from "react";
-import { Grid, Button } from "@mui/material";
-import { useFormik } from "formik";
+import { Dispatch, SetStateAction } from 'react';
+import { Grid, Button, useMediaQuery, useTheme } from '@mui/material';
+import { useFormik } from 'formik';
 
 // ICON IMPORT
-import SearchIcon from "@mui/icons-material/Search";
-import AddIcon from "@mui/icons-material/Add";
+import SearchIcon from '@mui/icons-material/Search';
+import AddIcon from '@mui/icons-material/Add';
 
 // PROJECT IMPORT
-import {
-  menuWebsite,
-  filter,
-  save,
-} from "features/menuWebsite/menuWebsiteSlice";
-import { useDispatch, useSelector } from "app/store";
-import StatusFilter from "components/Common/StatusFilter";
-import LocationSelect from "components/Common/LocationSelect";
-import createNotification from "components/Extended/Notification";
-import WebsiteSelect from "components/Common/WebsiteSelect";
+import { menuWebsite, filter, save } from 'features/menuWebsite/menuWebsiteSlice';
+import { useDispatch, useSelector } from 'app/store';
+import StatusFilter from 'components/Common/StatusFilter';
+import LocationSelect from 'components/Common/LocationSelect';
+import createNotification from 'components/Extended/Notification';
+import WebsiteSelect from 'components/Common/WebsiteSelect';
 
 // TYPES IMPORT
-import { FilterMenu } from "types/menuWebsite";
+import { FilterMenu } from 'types/menuWebsite';
 
 interface Props {
   selectedCategory: string | number;
@@ -32,27 +28,24 @@ interface Props {
 
 const PAGE_SIZE = 1000;
 
-const SearchForm = ({
-  selectedCategory,
-  setSelectedCategory,
-  setVisibleDrawer,
-  setLoading,
-  setIsAddNew,
-}: Props) => {
+const SearchForm = ({ selectedCategory, setSelectedCategory, setVisibleDrawer, setLoading, setIsAddNew }: Props) => {
   const dispatch = useDispatch();
+  const theme = useTheme();
+
+  const matchDownXS = useMediaQuery(theme.breakpoints.down('sm'));
 
   const menuWebsiteState = useSelector(menuWebsite);
 
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      websiteId: menuWebsiteState?.filter?.websiteId || "",
+      websiteId: menuWebsiteState?.filter?.websiteId || '',
       location: menuWebsiteState?.filter?.location || 1,
-      status: menuWebsiteState?.filter?.status || "",
+      status: menuWebsiteState?.filter?.status || ''
     },
     onSubmit: (values) => {
       handleSearch(values);
-    },
+    }
   });
 
   const handleSearch = (values: FilterMenu) => {
@@ -65,38 +58,37 @@ const SearchForm = ({
     const queryName: FilterMenu = {
       websiteId: values?.websiteId,
       location: values?.location,
-      status: `${values?.status}`,
+      status: `${values?.status}`
     };
 
     if (!values?.status) {
       delete queryName.status;
     }
 
-    if (values?.websiteId === "") {
+    if (values?.websiteId === '') {
       delete queryName.websiteId;
     }
 
-    if (values?.location === "") {
+    if (values?.location === '') {
       delete queryName.location;
     }
 
     const query = {
       filter: JSON.stringify(queryName),
       range: JSON.stringify([0, PAGE_SIZE]),
-      attributes:
-        "id,text,droppable,parent,icon,url,position,websiteId,status,createdAt",
+      attributes: 'id,text,droppable,parent,icon,url,position,websiteId,status,createdAt'
     };
 
     dispatch(filter(values));
     dispatch({
-      type: "menuWebsite/fetch",
+      type: 'menuWebsite/fetch',
       payload: query,
       callback: (res) => {
         setLoading(false);
         if (res?.success === false) {
-          createNotification("error", res?.message);
+          createNotification('error', res?.message);
         }
-      },
+      }
     });
   };
 
@@ -106,46 +98,28 @@ const SearchForm = ({
         <Grid item xs={12} md={12} lg={12} xl={8}>
           <Grid container spacing={2}>
             <Grid item xs={12} md={6} lg={4}>
-              <WebsiteSelect
-                formik={formik}
-                setFieldValue={formik.setFieldValue}
-                addOrEdit={false}
-              />
+              <WebsiteSelect formik={formik} setFieldValue={formik.setFieldValue} addOrEdit={false} />
             </Grid>
 
             <Grid item xs={12} md={6} lg={4}>
-              <LocationSelect
-                formik={formik}
-                setFieldValue={formik.setFieldValue}
-                addOrEdit={false}
-              />
+              <LocationSelect formik={formik} setFieldValue={formik.setFieldValue} addOrEdit={false} />
             </Grid>
 
             <Grid item xs={12} md={6} lg={4}>
-              <StatusFilter
-                addOrEdit={false}
-                formik={formik}
-                setFieldValue={formik.setFieldValue}
-              />
+              <StatusFilter addOrEdit={false} formik={formik} setFieldValue={formik.setFieldValue} />
             </Grid>
           </Grid>
         </Grid>
-        <Grid
-          item
-          xs={12}
-          md={12}
-          lg={12}
-          xl={4}
-          sx={{ display: "flex", justifyContent: "flex-end" }}
-        >
-          <Button variant="contained" endIcon={<SearchIcon />} type="submit">
+        <Grid item xs={12} md={12} lg={12} xl={4} sx={{ display: 'flex', justifyContent: 'flex-end', flexWrap: 'wrap' }}>
+          <Button fullWidth={matchDownXS} variant="contained" endIcon={<SearchIcon />} type="submit">
             Tìm kiếm
           </Button>
           <Button
+            fullWidth={matchDownXS}
             variant="outlined"
             color="success"
             endIcon={<AddIcon />}
-            sx={{ ml: 2 }}
+            sx={{ ml: matchDownXS ? 0 : 2, mt: matchDownXS ? 1 : 0 }}
             onClick={() => {
               setVisibleDrawer(true);
               setIsAddNew(true);
@@ -155,13 +129,14 @@ const SearchForm = ({
             Thêm mới
           </Button>
           <Button
+            fullWidth={matchDownXS}
             variant="outlined"
             color="success"
             endIcon={<AddIcon />}
-            sx={{ ml: 2 }}
+            sx={{ ml: matchDownXS ? 0 : 2, mt: matchDownXS ? 1 : 0 }}
             onClick={() => {
               setVisibleDrawer(true);
-              setSelectedCategory("");
+              setSelectedCategory('');
               setIsAddNew(true);
             }}
           >

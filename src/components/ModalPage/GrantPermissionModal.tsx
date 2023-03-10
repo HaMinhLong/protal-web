@@ -167,6 +167,7 @@ const GrantPermissionModal = ({ open, id, handleClose }: Props) => {
           <Box
             sx={{
               mt: 3,
+              mb: matchDownSM ? 5 : 0,
               display: 'flex',
               justifyContent: 'center'
             }}

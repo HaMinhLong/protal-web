@@ -165,6 +165,7 @@ const ProductOrderModal = ({ open, dataEdit, handleClose, formikProp, getList }:
           <Box
             sx={{
               mt: 3,
+              mb: matchDownMD ? 5 : 0,
               display: 'flex',
               justifyContent: 'center'
             }}
