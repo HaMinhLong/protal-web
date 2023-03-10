@@ -1,29 +1,29 @@
 // THIRD IMPORT
-import React from "react";
-import { CssBaseline } from "@mui/material";
+import React from 'react';
+import { CssBaseline } from '@mui/material';
 
 // PROJECT IMPORT
-import Routes from "routes";
-import { JWTProvider as AuthProvider } from "contexts/JWTContext";
-import Snackbar from "components/Extended/Snackbar";
+import Routes from 'routes';
+import { JWTProvider as AuthProvider } from 'contexts/JWTContext';
+import Snackbar from 'components/Extended/Snackbar';
 
 // TYPE IMPROT
-import ThemeCustomization from "themes";
-import NavigationScroll from "layouts/NavigationScroll";
+import ThemeCustomization from 'themes';
+import NavigationScroll from 'layouts/NavigationScroll';
 // import RTLLayout from "components/RTLLayout";
-import { NotificationContainer } from "react-notifications";
+import { NotificationContainer } from 'react-notifications';
 
 const App = () => {
   return (
     <>
       <ThemeCustomization>
-        <CssBaseline/>
-         <NotificationContainer/>
+        <CssBaseline />
+        <NotificationContainer />
         <NavigationScroll>
           <AuthProvider>
             <>
-              <Routes/>
-              <Snackbar/>
+              <Routes />
+              <Snackbar />
             </>
           </AuthProvider>
         </NavigationScroll>

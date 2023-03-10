@@ -1,16 +1,9 @@
 /* eslint-disable no-nested-ternary */
 // THIRD IMPORT
-import React from "react";
-import {
-  Dialog,
-  Box,
-  Typography,
-  useMediaQuery,
-  IconButton,
-  DialogContent,
-} from "@mui/material";
-import { useTheme } from "@mui/material/styles";
-import ClearIcon from "@mui/icons-material/Clear";
+import React from 'react';
+import { Dialog, Box, Typography, useMediaQuery, IconButton, DialogContent } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
+import ClearIcon from '@mui/icons-material/Clear';
 
 interface Props {
   open: boolean;
@@ -33,11 +26,11 @@ const DialogPopUp = ({
   styleBox,
   styleTitle,
   styleChildBox,
-  showButtonCloseDialog,
+  showButtonCloseDialog
 }: Props) => {
   const theme = useTheme();
-  const matchDownSM = useMediaQuery(theme.breakpoints.down("sm"));
-  const matchDownMD = useMediaQuery(theme.breakpoints.down("lg"));
+  const matchDownSM = useMediaQuery(theme.breakpoints.down('sm'));
+  const matchDownMD = useMediaQuery(theme.breakpoints.down('lg'));
 
   return (
     <Dialog
@@ -49,51 +42,51 @@ const DialogPopUp = ({
       fullScreen
       sx={{
         // '& .MuiBackdrop-root': { backgroundColor: 'transparent' },
-        "&>div:nth-of-type(3)": {
-          "&>div": {
+        '&>div:nth-of-type(3)': {
+          '&>div': {
             m: 0,
-            borderRadius: matchDownSM ? "0px" : "15px",
-            width: matchDownSM ? "100%" : "auto",
-            height: matchDownSM ? "100vh" : "auto",
-            background: "#F9FAFB",
-            ...styleDialog,
-          },
-        },
+            borderRadius: matchDownSM ? '0px' : '15px',
+            width: matchDownSM ? '100%' : 'auto',
+            height: matchDownSM ? '100vh' : 'auto',
+            background: '#F9FAFB',
+            ...styleDialog
+          }
+        }
       }}
     >
       {open && (
         <Box>
           <DialogContent
             sx={{
-              maxHeight: "90vh",
-              minHeight: "450px",
-              overflowY: "auto",
-              p: "0px",
-              position: "relative",
-              width: matchDownSM ? "100%" : matchDownMD ? "750px" : "800px",
-              ...styleBox,
+              maxHeight: '90vh',
+              minHeight: '450px',
+              overflowY: 'auto',
+              p: '0px',
+              position: 'relative',
+              width: matchDownSM ? '100%' : matchDownMD ? '750px' : '800px',
+              ...styleBox
             }}
           >
             <Box
               sx={{
-                position: "sticky",
+                position: 'sticky',
                 top: 0,
-                borderBottom: "1px solid #BCC7D2",
+                borderBottom: '1px solid #BCC7D2',
                 pb: 1,
-                width: "100%",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                backgroundColor: "#F9FAFB",
+                width: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                backgroundColor: '#F9FAFB',
                 zIndex: 9999,
-                ...styleTitle,
+                ...styleTitle
               }}
             >
               <Typography
                 sx={{
-                  fontSize: "18px",
+                  fontSize: '18px',
                   fontWeight: 600,
-                  "&:first-letter": { textTransform: "capitalize" },
+                  '&:first-letter': { textTransform: 'capitalize' }
                 }}
               >
                 {title}

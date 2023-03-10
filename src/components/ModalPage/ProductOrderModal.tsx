@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 // THIRD IMPORT
 import { useEffect, useState } from 'react';
-import { Box, Button, Grid } from '@mui/material';
+import { Box, Button, Grid, useMediaQuery, useTheme } from '@mui/material';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
 
@@ -38,6 +38,10 @@ const initialData: ProductOrderType = {
 };
 
 const ProductOrderModal = ({ open, dataEdit, handleClose, formikProp }: Props) => {
+  const theme = useTheme();
+
+  const matchDownMD = useMediaQuery(theme.breakpoints.down('lg'));
+
   const [dataProductOrder, setDataProductOrder] = useState<ProductOrderType>(initialData);
 
   useEffect(() => {
@@ -111,7 +115,7 @@ const ProductOrderModal = ({ open, dataEdit, handleClose, formikProp }: Props) =
       handleClose={() => {
         closePopUp();
       }}
-      styleBox={{ minWidth: '800px', minHeight: '350px' }}
+      styleBox={{ minWidth: matchDownMD ? '100%' : '800px', minHeight: '350px' }}
       styleChildBox={{ p: '0px 30px 20px' }}
       styleTitle={{ p: '10px 30px' }}
       showButtonCloseDialog

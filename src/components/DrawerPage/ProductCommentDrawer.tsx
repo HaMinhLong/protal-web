@@ -7,6 +7,7 @@ import * as yup from 'yup';
 
 // ICONS IMPORT
 import SaveIcon from '@mui/icons-material/Save';
+import DoDisturbIcon from '@mui/icons-material/DoDisturb';
 
 // PROJECT IMPORT
 import TextFieldCustom from 'components/Extended/TextFieldCustom';
@@ -166,6 +167,16 @@ const ProductCommentDrawer = ({ visible, closeDrawer, dataEdit, getList }: Props
                 justifyContent: 'flex-end'
               }}
             >
+              <Button
+                onClick={() => changeDrawer()}
+                size="small"
+                variant="outlined"
+                sx={{ mr: '10px' }}
+                type="submit"
+                endIcon={<DoDisturbIcon />}
+              >
+                Hủy
+              </Button>
               <Button size="small" variant="contained" type="submit" endIcon={<SaveIcon />}>
                 Lưu lại
               </Button>

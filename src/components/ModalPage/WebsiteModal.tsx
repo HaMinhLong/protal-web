@@ -1,6 +1,6 @@
 // THIRD IMPORT
 import { useState } from 'react';
-import { Box, Grid, Button } from '@mui/material';
+import { Box, Grid, Button, useMediaQuery, useTheme } from '@mui/material';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
@@ -32,6 +32,9 @@ interface Props {
 
 const WebsiteModal = ({ visible, closeDrawer, dataEdit, getList }: Props) => {
   const dispatch = useDispatch();
+  const theme = useTheme();
+
+  const matchDownMD = useMediaQuery(theme.breakpoints.down('lg'));
 
   const [loading, setLoading] = useState<boolean>(false);
   const [errors, setErrors] = useState<ResponseError>({});
@@ -182,7 +185,7 @@ const WebsiteModal = ({ visible, closeDrawer, dataEdit, getList }: Props) => {
           closePopUp();
         }}
         styleBox={{
-          minWidth: '1000px',
+          minWidth: matchDownMD ? '100%' : '1000px',
           minHeight: '500px',
           maxHeight: '1200px'
         }}

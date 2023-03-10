@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 // THIRD IMPORT
 import { useEffect, useState } from 'react';
-import { Box, Grid, Button } from '@mui/material';
+import { Box, Grid, Button, useMediaQuery, useTheme } from '@mui/material';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
 
@@ -35,6 +35,9 @@ interface Props {
 
 const ArticleModal = ({ open, dataEdit, handleClose, getList }: Props) => {
   const dispatch = useDispatch();
+  const theme = useTheme();
+
+  const matchDownMD = useMediaQuery(theme.breakpoints.down('lg'));
 
   const [dataArticle, setArticle] = useState<ArticleType>({});
   const [loading, setLoading] = useState<boolean>(false);
@@ -242,7 +245,7 @@ const ArticleModal = ({ open, dataEdit, handleClose, getList }: Props) => {
       handleClose={() => {
         closePopUp();
       }}
-      styleBox={{ minWidth: '1300px', minHeight: '700px' }}
+      styleBox={{ minWidth: matchDownMD ? '100%' : '1300px', minHeight: '700px' }}
       styleChildBox={{ p: '0px 30px 20px' }}
       styleTitle={{ p: '10px 30px' }}
       showButtonCloseDialog

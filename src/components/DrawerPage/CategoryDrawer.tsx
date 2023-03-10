@@ -1,35 +1,28 @@
 // THIRD IMPORT
-import { useEffect, useState } from "react";
-import {
-  Drawer,
-  Box,
-  useMediaQuery,
-  Grid,
-  Typography,
-  Divider,
-  Button,
-} from "@mui/material";
-import { useTheme } from "@mui/material/styles";
-import { useFormik } from "formik";
-import * as yup from "yup";
+import { useEffect, useState } from 'react';
+import { Drawer, Box, useMediaQuery, Grid, Typography, Divider, Button } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
+import { useFormik } from 'formik';
+import * as yup from 'yup';
 
 // ICONS IMPORT
-import SaveIcon from "@mui/icons-material/Save";
+import SaveIcon from '@mui/icons-material/Save';
+import DoDisturbIcon from '@mui/icons-material/DoDisturb';
 
 // PROJECT IMPORT
-import TextFieldCustom from "components/Extended/TextFieldCustom";
-import StatusFilter from "components/Common/StatusFilter";
-import { useDispatch } from "app/store";
-import createNotification from "components/Extended/Notification";
-import WebsiteSelect from "components/Common/WebsiteSelect";
-import CategoryGroupSelect from "components/Common/CategoryGroupSelect";
-import UploadImage from "components/Extended/UploadImage";
-import Loading from "components/Extended/Loading";
-import { removeVietnameseTones } from "utils/utils";
+import TextFieldCustom from 'components/Extended/TextFieldCustom';
+import StatusFilter from 'components/Common/StatusFilter';
+import { useDispatch } from 'app/store';
+import createNotification from 'components/Extended/Notification';
+import WebsiteSelect from 'components/Common/WebsiteSelect';
+import CategoryGroupSelect from 'components/Common/CategoryGroupSelect';
+import UploadImage from 'components/Extended/UploadImage';
+import Loading from 'components/Extended/Loading';
+import { removeVietnameseTones } from 'utils/utils';
 
 // TYPES IMPORT
-import { CategoryType, ResponseError } from "types/category";
-import VisibleHomeSelect from "components/Common/VisibleHomeSelect";
+import { CategoryType, ResponseError } from 'types/category';
+import VisibleHomeSelect from 'components/Common/VisibleHomeSelect';
 
 interface Props {
   visible: boolean;
@@ -39,16 +32,10 @@ interface Props {
   isAddNew: boolean;
 }
 
-const CategoryDrawer = ({
-  visible,
-  closeDrawer,
-  dataEdit,
-  isAddNew,
-  getList,
-}: Props) => {
+const CategoryDrawer = ({ visible, closeDrawer, dataEdit, isAddNew, getList }: Props) => {
   const dispatch = useDispatch();
   const theme = useTheme();
-  const matchDownSM = useMediaQuery(theme.breakpoints.down("md"));
+  const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
 
   const [loading, setLoading] = useState<boolean>(false);
   const [errors, setErrors] = useState<ResponseError>({});
@@ -61,57 +48,52 @@ const CategoryDrawer = ({
     } else {
       setLoading(true);
       dispatch({
-        type: "category/getOne",
+        type: 'category/getOne',
         payload: {
-          id: dataEdit?.id,
+          id: dataEdit?.id
         },
         callback: (res) => {
           setLoading(false);
           if (res?.success === true) {
             const {
-              results: { list },
+              results: { list }
             } = res;
             setDataCategory(list);
           } else if (res?.success === false) {
-            createNotification("error", res?.message);
+            createNotification('error', res?.message);
           }
-        },
+        }
       });
     }
   }, [visible]);
 
   const validationSchema = yup.object().shape({
-    text: yup.string().trim().max(50).required("Vui lòng nhập tên chuyên mục"),
-    url: yup.string().trim().max(50).required("Vui lòng nhập URL"),
+    text: yup.string().trim().max(50).required('Vui lòng nhập tên chuyên mục'),
+    url: yup.string().trim().max(50).required('Vui lòng nhập URL'),
     description: yup.string().trim().max(1000),
-    websiteId: yup.string().required("Vui lòng chọn website"),
-    categoryGroupId: yup.string().required("Vui lòng chọn nhóm chuyên mục"),
+    websiteId: yup.string().required('Vui lòng chọn website'),
+    categoryGroupId: yup.string().required('Vui lòng chọn nhóm chuyên mục')
   });
 
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      text: !isAddNew && dataCategory?.text ? dataCategory?.text : "",
-      description:
-        !isAddNew && dataCategory?.description ? dataCategory?.description : "",
-      url: !isAddNew && dataCategory?.url ? dataCategory?.url : "",
+      text: !isAddNew && dataCategory?.text ? dataCategory?.text : '',
+      description: !isAddNew && dataCategory?.description ? dataCategory?.description : '',
+      url: !isAddNew && dataCategory?.url ? dataCategory?.url : '',
       position: isAddNew ? 1 : dataCategory?.position,
       parent: isAddNew ? dataEdit?.id || 0 : dataCategory?.parent,
       isHome: isAddNew ? false : dataCategory?.isHome,
-      images: !isAddNew && dataCategory?.images ? dataCategory?.images : "",
-      websiteId:
-        !isAddNew && dataCategory?.websiteId ? dataCategory?.websiteId : "",
-      categoryGroupId:
-        !isAddNew && dataCategory?.categoryGroupId
-          ? dataCategory?.categoryGroupId
-          : "",
+      images: !isAddNew && dataCategory?.images ? dataCategory?.images : '',
+      websiteId: !isAddNew && dataCategory?.websiteId ? dataCategory?.websiteId : '',
+      categoryGroupId: !isAddNew && dataCategory?.categoryGroupId ? dataCategory?.categoryGroupId : '',
       droppable: true,
-      status: dataCategory?.status === 0 ? 0 : 1,
+      status: dataCategory?.status === 0 ? 0 : 1
     },
     validationSchema,
     onSubmit: (values) => {
       handleSubmit(values);
-    },
+    }
   });
 
   const handleSubmit = (values: any) => {
@@ -119,43 +101,43 @@ const CategoryDrawer = ({
     const addItem = {
       ...values,
       text: values?.text?.trim(),
-      textOld: dataCategory?.text?.trim(),
+      textOld: dataCategory?.text?.trim()
     };
 
     if (dataCategory?.id && !isAddNew) {
       dispatch({
-        type: "category/update",
+        type: 'category/update',
         payload: {
           id: dataCategory?.id,
-          params: addItem,
+          params: addItem
         },
         callback: (res) => {
           if (res?.success) {
-            createNotification("success", res?.message);
+            createNotification('success', res?.message);
             getList();
             changeDrawer();
           } else {
             setErrors(res.error);
-            createNotification("error", res.message);
+            createNotification('error', res.message);
           }
           setLoading(false);
-        },
+        }
       });
     } else {
       dispatch({
-        type: "category/add",
+        type: 'category/add',
         payload: addItem,
         callback: (res) => {
           setLoading(false);
           if (res?.success) {
-            createNotification("success", res?.message);
+            createNotification('success', res?.message);
             getList();
             changeDrawer();
           } else {
             setErrors(res.error);
-            createNotification("error", res.message);
+            createNotification('error', res.message);
           }
-        },
+        }
       });
     }
   };
@@ -169,32 +151,25 @@ const CategoryDrawer = ({
 
   const convertTitleToUrl = (value: string) => {
     const noTones = removeVietnameseTones(value);
-    const url = noTones?.split(" ")?.join("-")?.toLowerCase();
-    formik.setFieldValue("url", `/${url}`);
+    const url = noTones?.split(' ')?.join('-')?.toLowerCase();
+    formik.setFieldValue('url', `/${url}`);
   };
 
   return (
     <>
-      <Drawer anchor={"right"} open={visible} onClose={changeDrawer}>
+      <Drawer anchor={'right'} open={visible} onClose={changeDrawer}>
         <Box
           sx={{
-            width: matchDownSM ? "100%" : "400px",
-            p: 2,
+            width: matchDownSM ? '100%' : '400px',
+            p: 2
           }}
         >
           <Typography variant="h4" sx={{ mb: 3 }}>
-            {dataCategory?.id
-              ? `Cập nhật thông tin ${dataCategory?.text}`
-              : "Thêm mới chuyên mục"}
+            {dataCategory?.id ? `Cập nhật thông tin ${dataCategory?.text}` : 'Thêm mới chuyên mục'}
             <Divider sx={{ mt: 1 }} />
           </Typography>
           <form onSubmit={formik.handleSubmit}>
-            <UploadImage
-              image={formik.values.images}
-              setFieldValue={formik.setFieldValue}
-              field="images"
-              multiple
-            />
+            <UploadImage image={formik.values.images} setFieldValue={formik.setFieldValue} field="images" multiple />
             <Grid container spacing={3}>
               <Grid item xs={12}>
                 <TextFieldCustom
@@ -210,55 +185,27 @@ const CategoryDrawer = ({
               </Grid>
 
               <Grid item xs={12}>
-                <TextFieldCustom
-                  name="url"
-                  formik={formik}
-                  errors={errors}
-                  label="URL"
-                  required
-                />
+                <TextFieldCustom name="url" formik={formik} errors={errors} label="URL" required />
               </Grid>
 
               <Grid item xs={12}>
-                <WebsiteSelect
-                  formik={formik}
-                  setFieldValue={formik.setFieldValue}
-                  addOrEdit={true}
-                />
+                <WebsiteSelect formik={formik} setFieldValue={formik.setFieldValue} addOrEdit={true} />
               </Grid>
 
               <Grid item xs={12}>
-                <CategoryGroupSelect
-                  formik={formik}
-                  setFieldValue={formik.setFieldValue}
-                  addOrEdit={true}
-                />
+                <CategoryGroupSelect formik={formik} setFieldValue={formik.setFieldValue} addOrEdit={true} />
               </Grid>
 
               <Grid item xs={12}>
-                <VisibleHomeSelect
-                  formik={formik}
-                  setFieldValue={formik.setFieldValue}
-                />
+                <VisibleHomeSelect formik={formik} setFieldValue={formik.setFieldValue} />
               </Grid>
 
               <Grid item xs={12}>
-                <TextFieldCustom
-                  name="description"
-                  formik={formik}
-                  errors={errors}
-                  label="Mô tả"
-                  multiline
-                  rows={3}
-                />
+                <TextFieldCustom name="description" formik={formik} errors={errors} label="Mô tả" multiline rows={3} />
               </Grid>
 
               <Grid item xs={12}>
-                <StatusFilter
-                  addOrEdit={true}
-                  formik={formik}
-                  setFieldValue={formik.setFieldValue}
-                />
+                <StatusFilter addOrEdit={true} formik={formik} setFieldValue={formik.setFieldValue} />
               </Grid>
             </Grid>
             <Grid
@@ -266,16 +213,21 @@ const CategoryDrawer = ({
               xs={12}
               sx={{
                 mt: 3,
-                display: "flex",
-                justifyContent: "flex-end",
+                display: 'flex',
+                justifyContent: 'flex-end'
               }}
             >
               <Button
+                onClick={() => changeDrawer()}
                 size="small"
-                variant="contained"
+                variant="outlined"
+                sx={{ mr: '10px' }}
                 type="submit"
-                endIcon={<SaveIcon />}
+                endIcon={<DoDisturbIcon />}
               >
+                Hủy
+              </Button>
+              <Button size="small" variant="contained" type="submit" endIcon={<SaveIcon />}>
                 Lưu lại
               </Button>
             </Grid>

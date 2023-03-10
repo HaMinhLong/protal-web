@@ -1,34 +1,27 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 // THIRD IMPORT
-import { useEffect, useState } from "react";
-import {
-  Drawer,
-  Box,
-  useMediaQuery,
-  Grid,
-  Typography,
-  Divider,
-  Button,
-} from "@mui/material";
-import { useTheme } from "@mui/material/styles";
-import { useFormik } from "formik";
-import * as yup from "yup";
+import { useEffect, useState } from 'react';
+import { Drawer, Box, useMediaQuery, Grid, Typography, Divider, Button } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
+import { useFormik } from 'formik';
+import * as yup from 'yup';
 
 // ICONS IMPORT
-import SaveIcon from "@mui/icons-material/Save";
+import SaveIcon from '@mui/icons-material/Save';
+import DoDisturbIcon from '@mui/icons-material/DoDisturb';
 
 // PROJECT IMPORT
-import TextFieldCustom from "components/Extended/TextFieldCustom";
-import StatusFilter from "components/Common/StatusFilter";
-import { useDispatch } from "app/store";
-import createNotification from "components/Extended/Notification";
-import LocationSelect from "components/Common/LocationSelect";
-import WebsiteSelect from "components/Common/WebsiteSelect";
-import Loading from "components/Extended/Loading";
-import { removeVietnameseTones } from "utils/utils";
+import TextFieldCustom from 'components/Extended/TextFieldCustom';
+import StatusFilter from 'components/Common/StatusFilter';
+import { useDispatch } from 'app/store';
+import createNotification from 'components/Extended/Notification';
+import LocationSelect from 'components/Common/LocationSelect';
+import WebsiteSelect from 'components/Common/WebsiteSelect';
+import Loading from 'components/Extended/Loading';
+import { removeVietnameseTones } from 'utils/utils';
 
 // TYPES IMPORT
-import { MenuType, ResponseError } from "types/menuWebsite";
+import { MenuType, ResponseError } from 'types/menuWebsite';
 
 interface Props {
   visible: boolean;
@@ -38,16 +31,10 @@ interface Props {
   getList: () => void;
 }
 
-const WebsiteGroupDrawer = ({
-  visible,
-  closeDrawer,
-  dataEdit,
-  isAddNew,
-  getList,
-}: Props) => {
+const WebsiteGroupDrawer = ({ visible, closeDrawer, dataEdit, isAddNew, getList }: Props) => {
   const dispatch = useDispatch();
   const theme = useTheme();
-  const matchDownSM = useMediaQuery(theme.breakpoints.down("md"));
+  const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
 
   const [loading, setLoading] = useState<boolean>(false);
   const [errors, setErrors] = useState<ResponseError>({});
@@ -60,53 +47,53 @@ const WebsiteGroupDrawer = ({
     } else {
       setLoading(true);
       dispatch({
-        type: "menuWebsite/getOne",
+        type: 'menuWebsite/getOne',
         payload: {
-          id: dataEdit?.id,
+          id: dataEdit?.id
         },
         callback: (res) => {
           setLoading(false);
           if (res?.success === true) {
             const {
-              results: { list },
+              results: { list }
             } = res;
             setDataMenu(list);
           } else if (res?.success === false) {
-            createNotification("error", res?.message);
+            createNotification('error', res?.message);
           }
-        },
+        }
       });
     }
   }, [visible]);
 
   const validationSchema = yup.object().shape({
-    text: yup.string().trim().max(50).required("Vui lòng nhập tên menu"),
-    url: yup.string().trim().max(50).required("Vui lòng nhập URL"),
+    text: yup.string().trim().max(50).required('Vui lòng nhập tên menu'),
+    url: yup.string().trim().max(50).required('Vui lòng nhập URL'),
     icon: yup.string().trim().max(254),
-    location: yup.string().required("Vui lòng chọn vị trí menu"),
-    status: yup.string().trim().required("Vui lòng nhập trạng thái"),
-    websiteId: yup.string().required("Vui lòng chọn website"),
+    location: yup.string().required('Vui lòng chọn vị trí menu'),
+    status: yup.string().trim().required('Vui lòng nhập trạng thái'),
+    websiteId: yup.string().required('Vui lòng chọn website')
   });
 
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      text: !isAddNew && dataMenu?.text ? dataMenu?.text : "",
-      url: !isAddNew && dataMenu?.url ? dataMenu?.url : "",
-      icon: !isAddNew && dataMenu?.icon ? dataMenu?.icon : "",
+      text: !isAddNew && dataMenu?.text ? dataMenu?.text : '',
+      url: !isAddNew && dataMenu?.url ? dataMenu?.url : '',
+      icon: !isAddNew && dataMenu?.icon ? dataMenu?.icon : '',
       position: isAddNew ? 1 : dataMenu?.position,
       location: isAddNew ? 1 : dataMenu?.location,
-      websiteId: !isAddNew && dataMenu?.websiteId ? dataMenu?.websiteId : "",
+      websiteId: !isAddNew && dataMenu?.websiteId ? dataMenu?.websiteId : '',
       parent: isAddNew ? dataEdit?.id || 0 : dataMenu?.parent,
       droppable: true,
       categoryId: null,
       articleId: null,
-      status: dataMenu?.status === 0 ? 0 : 1,
+      status: dataMenu?.status === 0 ? 0 : 1
     },
     validationSchema,
     onSubmit: (values) => {
       handleSubmit(values);
-    },
+    }
   });
 
   const handleSubmit = (values: any) => {
@@ -116,53 +103,53 @@ const WebsiteGroupDrawer = ({
       text: values?.text?.trim(),
       textOld: dataMenu?.text?.trim(),
       url: values?.url?.trim(),
-      icon: values?.icon?.trim(),
+      icon: values?.icon?.trim()
     };
 
     if (dataMenu?.id && !isAddNew) {
       dispatch({
-        type: "menuWebsite/update",
+        type: 'menuWebsite/update',
         payload: {
           id: dataMenu?.id,
           params: {
-            ...addItem,
-          },
+            ...addItem
+          }
         },
         callback: (res) => {
           if (res?.success) {
-            createNotification("success", res?.message);
+            createNotification('success', res?.message);
             getList();
             changeDrawer();
           } else {
             setErrors(res.error);
-            createNotification("error", res.message);
+            createNotification('error', res.message);
           }
           setLoading(false);
-        },
+        }
       });
     } else {
       dispatch({
-        type: "menuWebsite/add",
+        type: 'menuWebsite/add',
         payload: addItem,
         callback: (res) => {
           setLoading(false);
           if (res?.success) {
-            createNotification("success", res?.message);
+            createNotification('success', res?.message);
             getList();
             changeDrawer();
           } else {
             setErrors(res.error);
-            createNotification("error", res.message);
+            createNotification('error', res.message);
           }
-        },
+        }
       });
     }
   };
 
   const convertTitleToUrl = (value: string) => {
     const noTones = removeVietnameseTones(value);
-    const url = noTones?.split(" ")?.join("-")?.toLowerCase();
-    formik.setFieldValue("url", `/${url}`);
+    const url = noTones?.split(' ')?.join('-')?.toLowerCase();
+    formik.setFieldValue('url', `/${url}`);
   };
 
   const changeDrawer = () => {
@@ -174,17 +161,15 @@ const WebsiteGroupDrawer = ({
 
   return (
     <>
-      <Drawer anchor={"right"} open={visible} onClose={changeDrawer}>
+      <Drawer anchor={'right'} open={visible} onClose={changeDrawer}>
         <Box
           sx={{
-            width: matchDownSM ? "100%" : "400px",
-            p: 2,
+            width: matchDownSM ? '100%' : '400px',
+            p: 2
           }}
         >
           <Typography variant="h4" sx={{ mb: 3 }}>
-            {dataMenu?.id && !isAddNew
-              ? `Cập nhật thông tin ${dataMenu?.text}`
-              : "Thêm mới menu website"}
+            {dataMenu?.id && !isAddNew ? `Cập nhật thông tin ${dataMenu?.text}` : 'Thêm mới menu website'}
             <Divider sx={{ mt: 1 }} />
           </Typography>
           <form onSubmit={formik.handleSubmit}>
@@ -203,46 +188,23 @@ const WebsiteGroupDrawer = ({
               </Grid>
 
               <Grid item xs={12}>
-                <TextFieldCustom
-                  name="url"
-                  formik={formik}
-                  errors={errors}
-                  label="URL"
-                  required
-                />
+                <TextFieldCustom name="url" formik={formik} errors={errors} label="URL" required />
               </Grid>
 
               <Grid item xs={12}>
-                <TextFieldCustom
-                  name="icon"
-                  formik={formik}
-                  errors={errors}
-                  label="Icon"
-                />
+                <TextFieldCustom name="icon" formik={formik} errors={errors} label="Icon" />
               </Grid>
 
               <Grid item xs={12}>
-                <WebsiteSelect
-                  formik={formik}
-                  setFieldValue={formik.setFieldValue}
-                  addOrEdit={true}
-                />
+                <WebsiteSelect formik={formik} setFieldValue={formik.setFieldValue} addOrEdit={true} />
               </Grid>
 
               <Grid item xs={12}>
-                <LocationSelect
-                  formik={formik}
-                  setFieldValue={formik.setFieldValue}
-                  addOrEdit={true}
-                />
+                <LocationSelect formik={formik} setFieldValue={formik.setFieldValue} addOrEdit={true} />
               </Grid>
 
               <Grid item xs={12}>
-                <StatusFilter
-                  addOrEdit={true}
-                  formik={formik}
-                  setFieldValue={formik.setFieldValue}
-                />
+                <StatusFilter addOrEdit={true} formik={formik} setFieldValue={formik.setFieldValue} />
               </Grid>
             </Grid>
             <Grid
@@ -250,16 +212,21 @@ const WebsiteGroupDrawer = ({
               xs={12}
               sx={{
                 mt: 3,
-                display: "flex",
-                justifyContent: "flex-end",
+                display: 'flex',
+                justifyContent: 'flex-end'
               }}
             >
               <Button
+                onClick={() => changeDrawer()}
                 size="small"
-                variant="contained"
+                variant="outlined"
+                sx={{ mr: '10px' }}
                 type="submit"
-                endIcon={<SaveIcon />}
+                endIcon={<DoDisturbIcon />}
               >
+                Hủy
+              </Button>
+              <Button size="small" variant="contained" type="submit" endIcon={<SaveIcon />}>
                 Lưu lại
               </Button>
             </Grid>
