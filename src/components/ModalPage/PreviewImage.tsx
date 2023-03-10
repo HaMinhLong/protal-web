@@ -184,7 +184,7 @@ const PreviewImage = ({ open, images, handleChangeImage }: Props) => {
             </Droppable>
           </DragDropContext>
         </Box>
-        <Box sx={{ mb: matchDownMD ? 5 : 0, mt: '20px', display: 'flex' }} justifyContent="flex-end">
+        <Box sx={{ mb: matchDownMD ? 15 : 0, mt: '20px', display: 'flex' }} justifyContent="flex-end">
           <Button sx={{ mr: '10px' }} size="small" variant="outlined" onClick={() => closePopUp()}>
             Hủy
           </Button>

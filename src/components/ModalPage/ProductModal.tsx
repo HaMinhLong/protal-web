@@ -292,7 +292,7 @@ const ProductModal = ({ open, dataEdit, handleClose, getList }: Props) => {
           <Box
             sx={{
               mt: 3,
-              mb: matchDownMD ? 5 : 0,
+              mb: matchDownMD ? 15 : 0,
               display: 'flex',
               justifyContent: 'center'
             }}
